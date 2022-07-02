@@ -14,4 +14,4 @@
 
 ## Sobre
 
-Este repositório é destinado ao projeto desenvolvindo na disciplina de Sistemas de Bancos de dados 1 na Universidade de Brasília.
+Este repositório é destinado ao projeto desenvolvido na disciplina de Sistemas de Bancos de dados 1 na Universidade de Brasília.
