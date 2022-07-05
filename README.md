@@ -23,7 +23,7 @@ Você jogará com o Luffy e espero que a história emocionante do jogo e do anim
 
 Autor do anime : Eiichiro Oda
 
-### Kaizoku ou ni ore wa naru! 
-### Eu serei o Rei dos Piratas!
+### "Kaizoku ou ni ore wa naru!" - Monkey D. Luffy
+### "Eu serei o Rei dos Piratas!" - Monkey D. Luffy
 
-Este repositório é destinado ao projeto desenvolvido na disciplina de Sistemas de Bancos de dados 1 na Universidade de Brasília.
+Este repositório é destinado ao projeto desenvolvido na disciplina de Sistemas de Bancos de Dados 1 na Universidade de Brasília.
