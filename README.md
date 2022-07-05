@@ -27,3 +27,9 @@ Autor do anime : Eiichiro Oda
 ### "Eu serei o Rei dos Piratas!" - Monkey D. Luffy
 
 Este repositório é destinado ao projeto desenvolvido na disciplina de Sistemas de Bancos de Dados 1 na Universidade de Brasília.
+
+## Apresentações
+
+[Apresentação Módulo 1](https://youtu.be/J68yiBu_BsI)
+
+
