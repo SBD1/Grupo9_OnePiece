@@ -21,6 +21,8 @@ Luffy começa sua jornada pirata no mar East Blue e começa a juntar uma tripula
 
 Você jogará com o Luffy e espero que a história emocionante do jogo e do anime te inspire a ser uma pessoa melhor !!!
 
+Autor do anime : Eichiro Oda
+
 # Kaizoku ou ni ore wa naru!
 
 Este repositório é destinado ao projeto desenvolvido na disciplina de Sistemas de Bancos de dados 1 na Universidade de Brasília.
