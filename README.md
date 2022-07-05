@@ -7,7 +7,7 @@
 
 | Nome                             | Matrícula | 
 | -------------------------------- | --------- | 
-| Bernardo Chaves Pissutt   | 190103302 |
+| Bernardo Chaves Pissutti   | 190103302 |
 | Luan Vasco Cavalcante   | 190111836 | 
 | Nicolas Roberto de Queiroz | 200042360 | 
 | Thalisson Alves Goncalves de Jesus| 190117401 | 
