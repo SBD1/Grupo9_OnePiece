@@ -28,8 +28,17 @@ Autor do anime : Eiichiro Oda
 
 Este repositório é destinado ao projeto desenvolvido na disciplina de Sistemas de Bancos de Dados 1 na Universidade de Brasília.
 
-## Apresentações
+## Uso Docker para postgres
+Dê o comando : 
+ - sudo docker-compose up
 
+Para o Adminer abra seu navegador de preferência e vá até a porta : 
+ - localhost:8080
+
+Ou para abrir no terminal no modo interativo :
+ - sudo docker exec -it grupo9_onepiece_db_1 psql -U postgres -W
+
+## Apresentações
 [Apresentação Módulo 1](https://youtu.be/J68yiBu_BsI)
 
 
