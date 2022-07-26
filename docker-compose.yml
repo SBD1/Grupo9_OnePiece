@@ -8,6 +8,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: one_piece
     volumes:
       - ./game/setup/ddl.sql:/docker-entrypoint-initdb.d/ddl.sql
 
