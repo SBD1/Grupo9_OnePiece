@@ -5,15 +5,20 @@ import psycopg2
 
 
 def create_tables():
-    """Create tables in the database."""
-    connection = psycopg2.connect("host=localhost dbname=one_piece user=postgres password=postgres")
+    '''Create tables in the database.'''
+    connection = psycopg2.connect(
+        host=os.getenv('DB_HOST', 'localhost'),
+        dbname=os.getenv('DB_NAME', 'one_piece'),
+        user=os.getenv('DB_USER', 'postgres'),
+        password=os.getenv('DB_PASSWORD', 'postgres')
+    )
 
     cursor = connection.cursor()
-    with open(os.path.join(os.path.dirname(__file__), "ddl.sql"), 'r') as f:
+    with open(os.path.join(os.path.dirname(__file__), 'ddl.sql'), 'r') as f:
         file_content = re.sub(r'\n', ' ', re.sub(r'.*--.*', '', f.read()))
         for line in file_content.split(';'):
             line = line.strip()
-            if line.startswith("--"):
+            if line.startswith('--'):
                 print(f'Skipping comment: {line}\n')
                 continue
             if not line:
