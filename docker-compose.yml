@@ -8,8 +8,16 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: one_piece
+    volumes:
+      - ./game/setup/ddl.sql:/docker-entrypoint-initdb.d/ddl.sql
 
-  adminer:
-    image: adminer
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: postgres@email.com
+      PGADMIN_DEFAULT_PASSWORD: postgres
+    depends_on:
+      - db
     ports:
-      - 8080:8080
+      - 8080:80
