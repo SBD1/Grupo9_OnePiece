@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS personagem_nao_hostil (
     grupo_ocupacao TEXT NOT NULL,
     is_vendedor BOOLEAN NOT NULL DEFAULT FALSE,
     is_personagem_historia BOOLEAN NOT NULL DEFAULT FALSE,
-    id_missao INTEGER NOT NULL,
+    id_missao INTEGER DEFAULT NULL,
 
     PRIMARY KEY (id_personagem)
 );
@@ -122,9 +122,9 @@ CREATE TABLE IF NOT EXISTS item_equipavel (
 
 CREATE TABLE IF NOT EXISTS inventario (
     id_personagem INTEGER NOT NULL,
-    id_item_consumivel INTEGER NOT NULL,
-    qtd_item_consumivel INTEGER NOT NULL,
-    id_item_equipavel INTEGER NOT NULL,
+    id_item_consumivel INTEGER DEFAULT NULL,
+    qtd_item_consumivel INTEGER DEFAULT NULL,
+    id_item_equipavel INTEGER DEFAULT NULL,
 
     CONSTRAINT fk_personagem_inventario FOREIGN KEY (id_personagem) 
         REFERENCES personagem_principal(id_personagem) ON DELETE RESTRICT,
