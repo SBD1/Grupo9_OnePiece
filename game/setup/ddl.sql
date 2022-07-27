@@ -215,3 +215,4 @@ CREATE TABLE IF NOT EXISTS regiao (
 
 ALTER TABLE personagem_nao_hostil ADD CONSTRAINT fk_missao_personagem_nao_hostil 
     FOREIGN KEY (id_missao) REFERENCES missao_principal (id_missao) ON DELETE RESTRICT;
+
