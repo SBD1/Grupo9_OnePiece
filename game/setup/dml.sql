@@ -15,10 +15,10 @@ INSERT INTO poder_especial (nome, id_personagem_principal, descricao, dano, ener
 -- https://onepiece.fandom.com/pt/wiki/Navios
 
 INSERT INTO personagem_principal (nome,ocupacao,grupo_ocupacao,berries,energia,fraqueza,experiencia,vida,capacidade_de_itens) VALUES 
-('Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',150,100,'Kairoseki',1,100,10),
-('Marinheiro 1','Marinheiro','Marinha',150,100,'Akuma no mi',1,100),
+('Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',150,100,'Kairoseki',1,100,10)
 
 INSERT INTO inimigo (nome,ocupacao,grupo_ocupacao,berries,energia,fraqueza,experiencia,vida) VALUES 
+('Marinheiro 1','Marinheiro','Marinha',150,100,'Akuma no mi',1,100),
 ('Marinheiro 2','Marinheiro','Marinha',250,100,'Akuma no mi',2,100),
 ('Marinheiro 3','Marinheiro','Marinha',500,100,'Raki',3,100),
 ('Marinheiro 4','Marinheiro','Marinha',1000,100,'Raki do rei',4,100),
