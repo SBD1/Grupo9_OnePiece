@@ -116,6 +116,7 @@ CREATE TABLE IF NOT EXISTS item_equipavel (
     tipo item_equipavel_tipo NOT NULL,
     qtd_dano INTEGER NOT NULL,
     CHECK(qtd_dano >= 0),
+    equipado BOOLEAN DEFAULT FALSE,
 
     PRIMARY KEY (id_item)
 );
