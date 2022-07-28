@@ -30,7 +30,6 @@ INSERT INTO inimigo (nome,ocupacao,grupo_ocupacao,berries,energia,fraqueza,exper
 ('Buggy','Pirata','Capitão dos Piratas Buggy',1000,200,'Akuma no mi',2,150),
 ('Arlong','Pirata','Capitão dos Piratas do Arlong',50000,250,'Akuma no mi',3,250);
 
-
 INSERT INTO ilha (nome,descricao) VALUES 
 ('Ilha do Capitão Morgan','Ilha com uma base da Marinha, comandada pelo Capitão Morgan. Um marinheiro temido tanto pela população quanto pela marinha.Zoro aparece capturado nessa ilha'),
 ('Orange Town','Ilha tomada pelo Buggy, cujo prefeito se chama Boodle'),
@@ -40,4 +39,23 @@ INSERT INTO ilha (nome,descricao) VALUES
 
 INSERT INTO regiao (descricao,tipo,norte,sul,leste,oeste,id_ilha)
 VALUES ('Porto','Cidade',1,-1,-1,3,0);
+
+INSERT INTO personagem_nao_hostil (nome, ocupacao, grupo_ocupacao, is_vendedor, is_personagem_historia, id_missao)
+VALUES
+('Coby', 'Cidadao', 'Nenhum', false, true, 41 );
+('vendedor', 'Cidadao', 'Comercializar itens basicos', true, false, NULL );
+('Mãe da Rika', 'Cidadao', 'Dona de casa', false, true, 43 );
+('Rika', 'Cidadao', 'Brincar', false, true, 44 );
+('Marinheiro', 'Marinheiro', 'Patrulhar', false, false, NULL );
+('Prefeito', 'Cidadao', 'Gerir um ilha', false, false, NULL );
+('Comerciante', 'Cidadao', 'Vender e comprar itens de pessoas', true, false, NULL );
+('Chuchu', 'Cidadao', 'Ser um cachorro', false, true, 48 );
+
+INSERT INTO inventario (id_personagem, id_item_consumivel, qtd_item_consumivel, id_item_equipavel)
+VALUES 
+(1, NULL, NULL, NULL);
+(1, NULL, NULL, NULL);
+(2, NULL, NULL, NULL);
+(2, NULL, NULL, NULL);
+(1, NULL, NULL, NULL);
 
