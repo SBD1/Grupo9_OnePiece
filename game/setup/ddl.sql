@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS barco (
 CREATE TABLE IF NOT EXISTS poder_especial (
     nome VARCHAR(20) NOT NULL,
     id_personagem_principal INTEGER NOT NULL,
-    descricao VARCHAR(100) NOT NULL DEFAULT '',
+    descricao VARCHAR(250) NOT NULL DEFAULT '',
     dano INTEGER NOT NULL,
     CHECK(dano >= 0),
     energia INTEGER NOT NULL,
