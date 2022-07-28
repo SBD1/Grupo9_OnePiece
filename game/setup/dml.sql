@@ -60,7 +60,7 @@ VALUES
 (1, NULL, NULL, NULL);
 
 -- Missões
-INSERT INTO missao_principal (nome, descricao, qtd_experiencia, dificuldade, id_personagem)
+INSERT INTO missao (nome, descricao, qtd_experiencia, dificuldade, id_personagem)
 VALUES ('Começo da jornada', 'Luffy derrota Alvida e segue sua viagem junto de Coby pra formar uma tripulação', 10, 0, NULL);
 
     INSERT INTO objetivo (id_missao, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil)
@@ -69,7 +69,7 @@ VALUES ('Começo da jornada', 'Luffy derrota Alvida e segue sua viagem junto de 
     INSERT INTO objetivo (id_missao, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil)
     VALUES (1, '', 'Luffy da o golpe final e manda Alvida pelos ares', 'DerrotarInimigo', NULL, NULL, NULL);
 
-INSERT INTO missao_principal (nome, descricao, qtd_experiencia, dificuldade, id_personagem)
+INSERT INTO missao (nome, descricao, qtd_experiencia, dificuldade, id_personagem)
 VALUES ('O grande espadachim aparece', 'Luffy e Coby conhecem e libertam o Caçador de Piratas Roronoa Zoro, que foi preso pelo Capitão Morgan e seu filho Helmeppo', 10, 0, NULL);
 
     INSERT INTO objetivo (id_missao, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil)
@@ -81,7 +81,7 @@ VALUES ('O grande espadachim aparece', 'Luffy e Coby conhecem e libertam o Caça
     INSERT INTO objetivo (id_missao, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil)
     VALUES (2, '', 'Luffy liberta Roronoa Zoro e devolve suas espadas', 'FalarComNPC', NULL, NULL, NULL);
 
-INSERT INTO missao_principal (nome, descricao, qtd_experiencia, dificuldade, id_personagem)
+INSERT INTO missao (nome, descricao, qtd_experiencia, dificuldade, id_personagem)
 VALUES ('Morgan VS Luffy', 'Luffy e o mais novo membro de sua tripulação, Roronoa Zoro, lutam contra o Capitão Morgan', 10, 0, NULL);
 
     INSERT INTO objetivo (id_missao, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil)
@@ -93,7 +93,7 @@ VALUES ('Morgan VS Luffy', 'Luffy e o mais novo membro de sua tripulação, Roro
     INSERT INTO objetivo (id_missao, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil)
     VALUES (3, '', 'Coby se dispede de Luffy para seguir sua ambição de se tornar um marinheiro.', 'FalarComNPC', NULL, NULL, NULL);
 
-INSERT INTO missao_principal (nome, descricao, qtd_experiencia, dificuldade, id_personagem)
+INSERT INTO missao (nome, descricao, qtd_experiencia, dificuldade, id_personagem)
 VALUES ('Palhaço-Pirata, Capitão Buggy', 'Luffy e Zoro se deparam o Capitão Buggy', 10, 0, NULL);
 
     INSERT INTO objetivo (id_missao, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil)
@@ -102,7 +102,7 @@ VALUES ('Palhaço-Pirata, Capitão Buggy', 'Luffy e Zoro se deparam o Capitão B
     INSERT INTO objetivo (id_missao, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil)
     VALUES (4, '', 'Nami engana Luffy e o entrega para Buggy', 'DerrotarInimigo', NULL, NULL, NULL);
 
-INSERT INTO missao_principal (nome, descricao, qtd_experiencia, dificuldade, id_personagem)
+INSERT INTO missao (nome, descricao, qtd_experiencia, dificuldade, id_personagem)
 VALUES ('Mohji, o domador VS Luffy', 'Luffy consegue se libertar da jaula em que estava preso e luta contra Mohji e Richie', 10, 0, NULL);
 
     INSERT INTO objetivo (id_missao, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil)
