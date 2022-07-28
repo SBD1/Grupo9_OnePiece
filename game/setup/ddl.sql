@@ -53,10 +53,7 @@ CREATE TABLE IF NOT EXISTS personagem_nao_hostil (
     grupo_ocupacao TEXT NOT NULL,
     is_vendedor BOOLEAN NOT NULL DEFAULT FALSE,
     is_personagem_historia BOOLEAN NOT NULL DEFAULT FALSE,
-<<<<<<< HEAD
     id_missao INTEGER DEFAULT NULL,
-=======
->>>>>>> fe8e33bde0556f39eca0b163e053f73f6bad55b5
 
     PRIMARY KEY (id_personagem)
 );
