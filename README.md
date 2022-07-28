@@ -28,8 +28,24 @@ Autor do anime : Eiichiro Oda
 
 Este repositório é destinado ao projeto desenvolvido na disciplina de Sistemas de Bancos de Dados 1 na Universidade de Brasília.
 
-## Apresentações
+## Uso Docker para postgres
 
+Na raiz do projeto, dê o comando : 
+```bash
+sudo docker-compose up
+```
+
+Para o pgAdmin4 abra seu navegador de preferência e vá até a URL abaixo. Quando solicitado preencha o campo e-mail com `postgres@email.com` e o campo senho com `postgres`: 
+```
+localhost:8080
+```
+
+Ou para abrir o postgres no terminal, vá para a raiz do projeto e rode o comando abaixo. Quando solicitado utilize a senha `postgres` :
+```bash
+sudo docker-compose exec db psql -U postgres -W
+```
+
+## Apresentações
 [Apresentação Módulo 1](https://youtu.be/J68yiBu_BsI)
 
 
