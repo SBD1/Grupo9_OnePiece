@@ -1,3 +1,5 @@
+begin;
+
 INSERT INTO barco (id_barco, nome, ocupacao, grupo_ocupacao, capacidade_de_itens) VALUES 
 (default, 'Thousand Sunny', 'value3', 'value4', 400),
 (default, 'Miss Love Duck', 'value3', 'value4', 250),
@@ -115,3 +117,5 @@ VALUES
 ('abacaxi', 'Recupera vida', 50, 20, 20, 0, FALSE);
 ('laminada', 'aumenta o dano do personagem quando equipado', 15, 60, 10, 15, TRUE),
 ('rapidez', 'aumenta o dano do personagem quando equipado', 8, 90, 5, 12, TRUE);
+
+commit;

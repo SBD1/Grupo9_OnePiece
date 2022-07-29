@@ -1,3 +1,4 @@
+begin;
 -- Persongens
 
 CREATE TYPE personagem_ocupacao AS ENUM (
@@ -194,3 +195,5 @@ CREATE TABLE IF NOT EXISTS regiao (
     CONSTRAINT fk_regiao_ilha FOREIGN KEY (id_ilha)
         REFERENCES ilha(id_ilha) ON DELETE RESTRICT
 );
+
+commit;
