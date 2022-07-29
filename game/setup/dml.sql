@@ -1,23 +1,32 @@
 begin;
 
-INSERT INTO barco (id_barco, nome, ocupacao, grupo_ocupacao, capacidade_de_itens) VALUES 
-(default, 'Thousand Sunny', 'value3', 'value4', 400),
-(default, 'Miss Love Duck', 'value3', 'value4', 250),
-(default, 'Utan Sonar', 'value3', 'value4', 300),
-(default, 'Moby Dick', 'value3', 'value4', 350),
-(default, 'Holandês Voador', 'value3', 'value4', 500);
-
-INSERT INTO poder_especial (nome, id_personagem_principal, descricao, dano, energia) VALUES 
-('Gomu gomu no Hammer', auto, 'cascudo com as duas mãos', 300, 400),
-('Bounceman',auto,' cobre seus braços com Busoshoku Haki antes de morder seu antebraço. Semelhante à forma como ele ativa o Gear Third, ele sopra uma incrível quantidade de ar em seu corpo, mas desta vez ele infla sua estrutura muscular antes de distribuir o ar em todo o seu corpo, com ênfase na sua metade superior.',800,250),
-('Tankman', auto, 'Nesta forma, ele se assemelha a uma bola com proporções exageradas: enquanto seus braços e pernas são ligeiramente pequenos em relação ao corpo, seu torso com Busoshoku Haki-revestido torna-se muito maior e completamente redondo, embora ainda há músculos nos braços e no peitoral.', 900, 300),
-('Snakeman', auto, 'Em vez de vapor, essa forma produz uma substância gasosa que aparece como uma mistura de vapor e fogo e, como suas outras contrapartes, também parece ser colocada sobre seus ombros como um lenço, enquanto sob esta forma. Seus punhos também se flexionam diferentemente, com os primeiros nós dos dedos sendo estendidos, semelhante ao punho de leopardo.', 950, 350),
-('Kinniku Fusen', auto, 'dá um soco como um Gomu Gomu no Pistol, mas ele pode redirecionar seu soco à um número indeterminado de vezes, sem perder o impulso, mantendo a sua força tremenda.', 1000, 500);
-
--- https://onepiece.fandom.com/pt/wiki/Navios
+INSERT INTO item (nome, descricao, preco, qtd_energia, qtd_vida, qtd_dano, is_equipavel)
+VALUES
+('bergamota', 'Recupera vida', 10, 0, 20, 0, FALSE),
+('melancia', 'Recupera vida', 10, 20, 0, 0, FALSE),
+('guarana', 'Recupera vida', 30, 10, 10, 0, FALSE),
+('abacaxi', 'Recupera vida', 50, 20, 20, 0, FALSE),
+('laminada', 'aumenta o dano do personagem quando equipado', 15, 60, 10, 15, TRUE),
+('rapidez', 'aumenta o dano do personagem quando equipado', 8, 90, 5, 12, TRUE);
 
 INSERT INTO personagem_principal (nome,ocupacao,grupo_ocupacao,berries,energia,fraqueza,experiencia,vida,capacidade_de_itens) VALUES 
-('Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',150,100,'Kairoseki',1,100,10)
+('Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',150,100,'Kairoseki',1,100,10);
+
+INSERT INTO barco (nome, ocupacao, grupo_ocupacao, capacidade_de_itens) VALUES 
+('Thousand Sunny', 'Pirata', 'Membro', 400),
+('Miss Love Duck', 'Pirata', 'Membro', 250),
+('Utan Sonar', 'Pirata', 'Membro', 300),
+('Moby Dick', 'Pirata', 'Membro', 350),
+('Holandês Voador', 'Pirata', 'Membro', 500);
+
+INSERT INTO poder_especial (nome, id_personagem_principal, descricao, dano, energia) VALUES 
+('Gomu gomu no Hammer', 1, 'cascudo com as duas mãos', 300, 400),
+('Bounceman',1,' cobre seus braços com Busoshoku Haki antes de morder seu antebraço. Semelhante à forma como ele ativa o Gear Third, ele sopra uma incrível quantidade de ar em seu corpo, mas desta vez ele infla sua estrutura muscular antes de distribuir o ar em todo o seu corpo, com ênfase na sua metade superior.',800,250),
+('Tankman', 1, 'Nesta forma, ele se assemelha a uma bola com proporções exageradas: enquanto seus braços e pernas são ligeiramente pequenos em relação ao corpo, seu torso com Busoshoku Haki-revestido torna-se muito maior e completamente redondo, embora ainda há músculos nos braços e no peitoral.', 900, 300),
+('Snakeman', 1, 'Em vez de vapor, essa forma produz uma substância gasosa que aparece como uma mistura de vapor e fogo e, como suas outras contrapartes, também parece ser colocada sobre seus ombros como um lenço, enquanto sob esta forma. Seus punhos também se flexionam diferentemente, com os primeiros nós dos dedos sendo estendidos, semelhante ao punho de leopardo.', 950, 350),
+('Kinniku Fusen', 1, 'dá um soco como um Gomu Gomu no Pistol, mas ele pode redirecionar seu soco à um número indeterminado de vezes, sem perder o impulso, mantendo a sua força tremenda.', 1000, 500);
+
+-- https://onepiece.fandom.com/pt/wiki/Navios
 
 INSERT INTO inimigo (nome,ocupacao,grupo_ocupacao,berries,energia,fraqueza,experiencia,vida) VALUES 
 ('Marinheiro 1','Marinheiro','Marinha',150,100,'Akuma no mi',1,100),
@@ -41,26 +50,26 @@ INSERT INTO ilha (nome,descricao) VALUES
 
 INSERT INTO personagem_nao_hostil (nome, ocupacao, grupo_ocupacao, is_vendedor, is_personagem_historia)
 VALUES
-('Coby', 'Cidadao', 'Nenhum', false, true);
-('vendedor', 'Cidadao', 'Comercializar itens basicos', true, false);
-('Mãe da Rika', 'Cidadao', 'Dona de casa', false, true);
-('Rika', 'Cidadao', 'Brincar', false, true);
-('Marinheiro', 'Marinheiro', 'Patrulhar', false, false);
-('Prefeito', 'Cidadao', 'Gerir um ilha', false, false);
-('Comerciante', 'Cidadao', 'Vender e comprar itens de pessoas', true, false);
+('Coby', 'Cidadao', 'Nenhum', false, true),
+('vendedor', 'Cidadao', 'Comercializar itens basicos', true, false),
+('Mãe da Rika', 'Cidadao', 'Dona de casa', false, true),
+('Rika', 'Cidadao', 'Brincar', false, true),
+('Marinheiro', 'Marinheiro', 'Patrulhar', false, false),
+('Prefeito', 'Cidadao', 'Gerir um ilha', false, false),
+('Comerciante', 'Cidadao', 'Vender e comprar itens de pessoas', true, false),
 ('Chuchu', 'Cidadao', 'Ser um cachorro', false, true);
 
 INSERT INTO inventario (id_personagem, id_item, qtd_item)
 VALUES 
-(1, 1, 1);
-(1, 2, 3);
-(2, 3, 2);
-(2, 4, 3);
+(1, 1, 1),
+(1, 2, 3),
+(2, 3, 2),
+(2, 4, 3),
 (1, 5, 2);
 
 -- Missões
 INSERT INTO missao (nome, descricao, qtd_experiencia, dificuldade, id_personagem)
-VALUES ('Começo da jornada', 'Luffy derrota Alvida e segue sua viagem junto de Coby pra formar uma tripulação', 10, 0, NULL);
+VALUES ('Começo da jornada', 'Luffy derrota Alvida e segue sua viagem junto de Coby pra formar uma tripulação', 10, 0, 1);
 
     INSERT INTO objetivo (id_missao, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil)
     VALUES (1, '', 'Luffy derrota piratas do bando da Alvida', 'DerrotarInimigo', NULL, NULL, NULL);
@@ -69,7 +78,7 @@ VALUES ('Começo da jornada', 'Luffy derrota Alvida e segue sua viagem junto de 
     VALUES (1, '', 'Luffy da o golpe final e manda Alvida pelos ares', 'DerrotarInimigo', NULL, NULL, NULL);
 
 INSERT INTO missao (nome, descricao, qtd_experiencia, dificuldade, id_personagem)
-VALUES ('O grande espadachim aparece', 'Luffy e Coby conhecem e libertam o Caçador de Piratas Roronoa Zoro, que foi preso pelo Capitão Morgan e seu filho Helmeppo', 10, 0, NULL);
+VALUES ('O grande espadachim aparece', 'Luffy e Coby conhecem e libertam o Caçador de Piratas Roronoa Zoro, que foi preso pelo Capitão Morgan e seu filho Helmeppo', 10, 0, 1);
 
     INSERT INTO objetivo (id_missao, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil)
     VALUES (2, '', 'Luffy derrota os marinheiros que estavam guardando as espadas de Roronoa Zoro', 'DerrotarInimigo', NULL, NULL, NULL);
@@ -81,7 +90,7 @@ VALUES ('O grande espadachim aparece', 'Luffy e Coby conhecem e libertam o Caça
     VALUES (2, '', 'Luffy liberta Roronoa Zoro e devolve suas espadas', 'FalarComNPC', NULL, NULL, NULL);
 
 INSERT INTO missao (nome, descricao, qtd_experiencia, dificuldade, id_personagem)
-VALUES ('Morgan VS Luffy', 'Luffy e o mais novo membro de sua tripulação, Roronoa Zoro, lutam contra o Capitão Morgan', 10, 0, NULL);
+VALUES ('Morgan VS Luffy', 'Luffy e o mais novo membro de sua tripulação, Roronoa Zoro, lutam contra o Capitão Morgan', 10, 0, 1);
 
     INSERT INTO objetivo (id_missao, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil)
     VALUES (3, '', 'Luffy e Zoro derrotam os marinheiros que estavam protegendo o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL);
@@ -93,7 +102,7 @@ VALUES ('Morgan VS Luffy', 'Luffy e o mais novo membro de sua tripulação, Roro
     VALUES (3, '', 'Coby se dispede de Luffy para seguir sua ambição de se tornar um marinheiro.', 'FalarComNPC', NULL, NULL, NULL);
 
 INSERT INTO missao (nome, descricao, qtd_experiencia, dificuldade, id_personagem)
-VALUES ('Palhaço-Pirata, Capitão Buggy', 'Luffy e Zoro se deparam o Capitão Buggy', 10, 0, NULL);
+VALUES ('Palhaço-Pirata, Capitão Buggy', 'Luffy e Zoro se deparam o Capitão Buggy', 10, 0, 1);
 
     INSERT INTO objetivo (id_missao, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil)
     VALUES (4, '', 'Luffy derrota piratas do Capitão Buggy', 'DerrotarInimigo', NULL, NULL, NULL);
@@ -102,20 +111,9 @@ VALUES ('Palhaço-Pirata, Capitão Buggy', 'Luffy e Zoro se deparam o Capitão B
     VALUES (4, '', 'Nami engana Luffy e o entrega para Buggy', 'DerrotarInimigo', NULL, NULL, NULL);
 
 INSERT INTO missao (nome, descricao, qtd_experiencia, dificuldade, id_personagem)
-VALUES ('Mohji, o domador VS Luffy', 'Luffy consegue se libertar da jaula em que estava preso e luta contra Mohji e Richie', 10, 0, NULL);
+VALUES ('Mohji, o domador VS Luffy', 'Luffy consegue se libertar da jaula em que estava preso e luta contra Mohji e Richie', 10, 0, 1);
 
     INSERT INTO objetivo (id_missao, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil)
     VALUES (4, '', 'Luffy enfrenta Richie', 'DerrotarInimigo', NULL, NULL, NULL);
-
-
--- Itens
-INSERT INTO item (nome, descricao, preco, qtd_energia, qtd_vida, qtd_dano, is_equipavel)
-VALUES
-('bergamota', 'Recupera vida', 10, 0, 20, 0, FALSE),
-('melancia', 'Recupera vida', 10, 20, 0, 0, FALSE),
-('guarana', 'Recupera vida', 30, 10, 10, 0, FALSE),
-('abacaxi', 'Recupera vida', 50, 20, 20, 0, FALSE);
-('laminada', 'aumenta o dano do personagem quando equipado', 15, 60, 10, 15, TRUE),
-('rapidez', 'aumenta o dano do personagem quando equipado', 8, 90, 5, 12, TRUE);
 
 commit;
