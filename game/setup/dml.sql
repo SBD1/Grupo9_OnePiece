@@ -37,9 +37,6 @@ INSERT INTO ilha (nome,descricao) VALUES
 ('Baratie','Restaurante Marítmo comandado pelo chefe Zeff. Zeff tem um filho chamado Sanji, um cozinheiro romântico que ama mulheres.'),
 ('Ilhas Conami','Arquipélogo de Ilhas onde Nami nasceu. Era um arquipélogo quieto, até Arlong e seus piratas chegarem.');
 
-INSERT INTO regiao (descricao,tipo,norte,sul,leste,oeste,id_ilha)
-VALUES ('Porto','Cidade',1,-1,-1,3,0);
-
 INSERT INTO personagem_nao_hostil (nome, ocupacao, grupo_ocupacao, is_vendedor, is_personagem_historia)
 VALUES
 ('Coby', 'Cidadao', 'Nenhum', false, true);
@@ -51,13 +48,13 @@ VALUES
 ('Comerciante', 'Cidadao', 'Vender e comprar itens de pessoas', true, false);
 ('Chuchu', 'Cidadao', 'Ser um cachorro', false, true);
 
-INSERT INTO inventario (id_personagem, id_item_consumivel, qtd_item_consumivel, id_item_equipavel)
+INSERT INTO inventario (id_personagem, id_item, qtd_item)
 VALUES 
-(1, NULL, NULL, NULL);
-(1, NULL, NULL, NULL);
-(2, NULL, NULL, NULL);
-(2, NULL, NULL, NULL);
-(1, NULL, NULL, NULL);
+(1, 1, 1);
+(1, 2, 3);
+(2, 3, 2);
+(2, 4, 3);
+(1, 5, 2);
 
 -- Missões
 INSERT INTO missao (nome, descricao, qtd_experiencia, dificuldade, id_personagem)
@@ -110,14 +107,11 @@ VALUES ('Mohji, o domador VS Luffy', 'Luffy consegue se libertar da jaula em que
 
 
 -- Itens
-INSERT INTO item_consumivel (id_item_consumivel, nome, descricao, peso, preco, qtd_energia, qtd_vida)
+INSERT INTO item (nome, descricao, preco, qtd_energia, qtd_vida, qtd_dano, is_equipavel)
 VALUES
-(1, 'bergamota', 'Recupera vida', 5, 10, 0, 20),
-(2, 'melancia', 'Recupera vida', 20, 10, 20, 0),
-(3, 'guarana', 'Recupera vida', 5, 30, 10, 10),
-(4, 'abacaxi', 'Recupera vida', 10, 50, 20, 20);
-
-INSERT INTO item_equipavel (id_item, nome, descricao, peso, preco, tipo, qtd_dano)
-VALUES
-(1, 'laminada', 'aumenta o dano do personagem quando equipado', 15, 60, Espada, 15),
-(2, 'rapidez', 'aumenta o dano do personagem quando equipado', 8, 90, revolver, 12);
+('bergamota', 'Recupera vida', 10, 0, 20, 0, FALSE),
+('melancia', 'Recupera vida', 10, 20, 0, 0, FALSE),
+('guarana', 'Recupera vida', 30, 10, 10, 0, FALSE),
+('abacaxi', 'Recupera vida', 50, 20, 20, 0, FALSE);
+('laminada', 'aumenta o dano do personagem quando equipado', 15, 60, 10, 15, TRUE),
+('rapidez', 'aumenta o dano do personagem quando equipado', 8, 90, 5, 12, TRUE);
