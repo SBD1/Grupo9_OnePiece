@@ -31,13 +31,9 @@ FROM barco;
 
 SELECT * FROM barco WHERE nome='Moby Dick'
 
--- Item equipavel
+-- Item
 SELECT * FROM item WHERE is_equipavel= 'TRUE'
-
--- Item não equipavel
-
 SELECT * FROM item where is_equipavel = 'FALSE';
-
 
 SELECT nome, descricao, preco, qtd_energia, qtd_vida FROM item where nome = 'bergamota';
 SELECT nome, descricao, preco, qtd_energia, qtd_vida FROM item where nome = 'melancia';
@@ -46,3 +42,5 @@ SELECT nome, descricao, preco, qtd_energia, qtd_vida FROM item where nome = 'aba
 SELECT nome, descricao, preco, qtd_energia, qtd_vida FROM item where nome = 'bergamota';
 SELECT nome, descricao, preco, qtd_energia, qtd_vida, qtd_dano FROM item where nome = 'laminada';
 SELECT nome, descricao, preco, qtd_energia, qtd_vida, qtd_dano FROM item where nome = 'rapidez';
+
+
