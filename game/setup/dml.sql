@@ -3,9 +3,9 @@ begin;
 INSERT INTO item (nome, descricao, preco, qtd_energia, qtd_vida, qtd_dano, is_equipavel)
 VALUES
 ('bergamota', 'Recupera vida', 10, 0, 20, 0, FALSE),
-('melancia', 'Recupera vida', 10, 20, 0, 0, FALSE),
-('guarana', 'Recupera vida', 30, 10, 10, 0, FALSE),
-('abacaxi', 'Recupera vida', 50, 20, 20, 0, FALSE),
+('melancia', 'Recupera energia', 10, 20, 0, 0, FALSE),
+('guarana', 'Recupera vida e energia', 30, 10, 10, 0, FALSE),
+('abacaxi', 'Recupera vida e energia', 50, 20, 20, 0, FALSE),
 ('laminada', 'aumenta o dano do personagem quando equipado', 15, 60, 10, 15, TRUE),
 ('rapidez', 'aumenta o dano do personagem quando equipado', 8, 90, 5, 12, TRUE);
 
@@ -117,3 +117,12 @@ VALUES ('Mohji, o domador VS Luffy', 'Luffy consegue se libertar da jaula em que
     VALUES (4, '', 'Luffy enfrenta Richie', 'DerrotarInimigo', NULL, NULL, NULL);
 
 commit;
+
+--- listar itens
+SELECT * FROM item where nome = 'bergamota';
+SELECT * FROM item where nome = 'melancia';
+SELECT * FROM item where nome = 'guarana';
+SELECT * FROM item where nome = 'abacaxi';
+SELECT * FROM item where nome = 'bergamota';
+SELECT * FROM item where nome = 'laminada';
+SELECT * FROM item where nome = 'rapidez';
