@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS item (
     CHECK(qtd_energia >= 0),
     qtd_vida INTEGER NOT NULL,
     CHECK(qtd_vida >= 0),
-    qtd_dano INTEGER NOT NULL,
+    qtd_dano INTEGER,
     CHECK(qtd_dano >= 0),
     is_equipavel BOOLEAN NOT NULL,
 
