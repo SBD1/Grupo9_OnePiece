@@ -43,4 +43,8 @@ SELECT nome, descricao, preco, qtd_energia, qtd_vida FROM item where nome = 'ber
 SELECT nome, descricao, preco, qtd_energia, qtd_vida, qtd_dano FROM item where nome = 'laminada';
 SELECT nome, descricao, preco, qtd_energia, qtd_vida, qtd_dano FROM item where nome = 'rapidez';
 
+-- Personagem não hostil
 
+SELECT nome, ocupacao, grupo_ocupacao, is_vendedor
+FROM personagem_nao_hostil 
+WHERE id_personagem=%d
