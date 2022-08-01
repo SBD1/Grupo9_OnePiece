@@ -11,12 +11,14 @@ services:
       POSTGRES_DB: one_piece
     volumes:
       - ./game/setup/ddl.sql:/docker-entrypoint-initdb.d/ddl.sql
+      - ./game/setup/dml.sql:/docker-entrypoint-initdb.d/dml.sql
 
   pgadmin:
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: postgres@email.com
       PGADMIN_DEFAULT_PASSWORD: postgres
+      PGADMIN_LISTEN_ADDRESS: 0.0.0.0
     depends_on:
       - db
     ports:
