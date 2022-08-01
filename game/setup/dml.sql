@@ -8,7 +8,10 @@ VALUES
 (6,'rapidez', 'aumenta o dano do personagem quando equipado', 8, 90, 5, 12, TRUE);
 
 INSERT INTO personagem_principal (id_personagem, nome,ocupacao,grupo_ocupacao,berries,energia,fraqueza,experiencia,vida,capacidade_de_itens) VALUES 
-(1,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',150,100,'Kairoseki',1,100,10);
+(1,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',150,100,'Kairoseki',1,120,10),
+(2,'Roronoa Zoro','Pirata','Piratas do Chapéu de Palha',100,100,'Cortar Ferro',1,100,10),
+(3,'Sanji','Pirata','Piratas do Chapéu de Palha',1000,100,'Cortar Ferro',1,100,15),
+(4,'Nami','Pirata','Piratas do Chapéu de Palha',1000000,75,'Tritões',1,100,8);
 
 INSERT INTO barco (id_barco,nome, ocupacao, grupo_ocupacao, capacidade_de_itens) VALUES 
 (1,'Thousand Sunny', 'Pirata', 'Membro', 400),
