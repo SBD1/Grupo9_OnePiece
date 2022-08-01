@@ -85,7 +85,6 @@ SELECT * FROM regiao;
 
 SELECT * from regiao where id_ilha = 1;
 
--- Gambiarra para conseguir selecionar a coluna que vc quer em um lugar só
 WITH
     current_reg AS (VALUES (1))
     
