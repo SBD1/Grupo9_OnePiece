@@ -89,3 +89,18 @@ INSERT INTO objetivo (id_missao, nome, descricao, tipo, id_item, id_inimigo, id_
 (4, '', 'Nami engana Luffy e o entrega para Buggy', 'DerrotarInimigo', NULL, NULL, NULL),
 (4, '', 'Luffy enfrenta Richie', 'DerrotarInimigo', NULL, NULL, NULL);
     
+
+insert into regiao (descricao,tipo,norte,sul,leste,oeste,id_ilha)
+values 
+('Porto onde você pode viajar para outras cidades','Cidade',2,NULL,NULL,4,1), -- 1
+('Feira onde você pode comprar itens','Cidade',3,NULL,1,NULL,1), -- 2
+('Taverna onde você encontra variedades da cachaça, mas o Luffy só toma leite','Cidade',NULL,3,2,NULL,1), -- 3
+('Base da Marinha, parece que Zoro se encontra lá, Converse com Rika.','Cidade',NULL,1,NULL,3,1),  -- 4
+('Porto de Orange Town','Cidade',6,NULL,7,NULL,2), -- 5
+('Loja Cachorro Xuxu','Cidade',NULL,7,5,NULL,2), -- 6
+('Base Buggy','Cidade',NULL,8,NULL,6,2), -- 7
+('Casa do Prefeito','Cidade',7,NULL,NULL,5,2),-- 8
+('Porto saída Sul','Cidade',10,NULL,12,NULL,3), -- 9
+('Loja Cachorro Xuxu','Cidade',NULL,7,5,NULL,3), -- 10
+('Base Buggy','Cidade',NULL,8,NULL,6,3), -- 11
+('Casa do Prefeito','Cidade',7,NULL,NULL,5,3); -- 12
