@@ -8,7 +8,18 @@ WHERE dano > 900 AND energia >= 300;
 
 SELECT * FROM poder_especial WHERE nome='Tankman';
 
+-- Objetivo
+SELECT * FROM objetivo WHERE is_active = true;
+
+SELECT * FROM objetivo WHERE id_missao = %d;
+
+SELECT * FROM objetivo WHERE is_completed = true;
+
+SELECT * FROM objetivo WHERE id_missao = %d AND id_objetivo = %d;
+
 -- Missao
+SELECT * FROM missao WHERE id_missao = %d;
+
 SELECT qtd_experiencia 
 FROM missao 
 WHERE id_missao = 1;
