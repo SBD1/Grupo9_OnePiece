@@ -70,4 +70,18 @@ SELECT * FROM ilha;
 
 -- Região 
 
+SELECT * FROM regiao;
+
+SELECT * from regiao where id_ilha = 1;
+
+-- Gambiarra para conseguir selecionar a coluna que vc quer em um lugar só
+WITH
+    current_reg AS (VALUES (1))
+    
+select * from regiao where id_regiao IN (
+    (SELECT norte from regiao where id_regiao = (table current_reg)) UNION 
+    (SELECT sul from regiao where id_regiao = (table current_reg)) UNION
+    (SELECT leste from regiao where id_regiao = (table current_reg)) UNION
+    (SELECT oeste from regiao where id_regiao = (table current_reg))
+);
 
