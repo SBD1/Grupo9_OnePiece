@@ -10,8 +10,8 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: one_piece
     volumes:
-      - ./modelo_2/SQL/ddl.sql:/docker-entrypoint-initdb.d/ddl.sql
-      - ./modelo_2/SQL/dml.sql:/docker-entrypoint-initdb.d/dml.sql
+      - ./modulo_2/SQL/ddl.sql:/docker-entrypoint-initdb.d/ddl.sql
+      - ./modulo_2/SQL/dml.sql:/docker-entrypoint-initdb.d/dml.sql
 
   pgadmin:
     image: dpage/pgadmin4
