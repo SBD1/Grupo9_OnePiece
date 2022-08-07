@@ -6,7 +6,9 @@ CREATE TYPE personagem_ocupacao AS ENUM (
 );
 
 CREATE TYPE personagem_grupo_ocupacao AS ENUM (
-    'Lider', 'Membro'
+    'Marinha', 'Piratas do Chapéu de Palha','Piratas do Buggy',
+    'Pirata','Piratas do Arlong','Piratas da Alvida','Piratas do Baratie',
+    'Piratas do Crocodile','Piratas do Barba Branca'
 );
 
 CREATE TABLE IF NOT EXISTS personagem_principal (
@@ -70,8 +72,14 @@ CREATE TABLE IF NOT EXISTS barco (
     PRIMARY KEY (id_barco)
 );
 
+CREATE TYPE tipo_poder_especial AS ENUM (
+    'Kairoseki', 'Ferro', 'Mulher','Tritões','Água do Mar','Akuma no mi',
+);
+
+
 CREATE TABLE IF NOT EXISTS poder_especial (
     nome VARCHAR(20) NOT NULL,
+    tipo_poder tipo_poder_especial NOT NULL,
     id_personagem_principal INTEGER NOT NULL,
     descricao TEXT NOT NULL DEFAULT '',
     dano INTEGER NOT NULL,
@@ -79,7 +87,7 @@ CREATE TABLE IF NOT EXISTS poder_especial (
     energia INTEGER NOT NULL,
     CHECK(energia >= 0),
 
-    PRIMARY KEY (nome, id_personagem_principal),
+    PRIMARY KEY (nome),
     CONSTRAINT fk_personagem_principal FOREIGN KEY (id_personagem_principal) 
         REFERENCES personagem_principal(id_personagem) ON DELETE RESTRICT
 );

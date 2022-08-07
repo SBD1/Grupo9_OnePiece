@@ -10,22 +10,56 @@ VALUES
 INSERT INTO personagem_principal (id_personagem, nome,ocupacao,grupo_ocupacao,berries,energia,fraqueza,experiencia,vida,capacidade_de_itens) VALUES 
 (1,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',150,100,'Kairoseki',1,120,10),
 (2,'Roronoa Zoro','Pirata','Piratas do Chapéu de Palha',100,100,'Cortar Ferro',1,100,10),
-(3,'Sanji','Pirata','Piratas do Chapéu de Palha',1000,100,'Cortar Ferro',1,100,15),
+(3,'Sanji','Pirata','Piratas do Chapéu de Palha',1000,100,'',1,100,15),
 (4,'Nami','Pirata','Piratas do Chapéu de Palha',1000000,75,'Tritões',1,100,8);
 
 INSERT INTO barco (id_barco,nome, ocupacao, grupo_ocupacao, capacidade_de_itens) VALUES 
-(1,'Thousand Sunny', 'Pirata', 'Membro', 400),
-(2,'Miss Love Duck', 'Pirata', 'Membro', 250),
-(3,'Utan Sonar', 'Pirata', 'Membro', 300),
-(4,'Moby Dick', 'Pirata', 'Membro', 350),
-(5,'Holandês Voador', 'Pirata', 'Membro', 500);
+(1,'Thousand Sunny', 'Pirata', 'Piratas do Chapéu de Palha', 400),
+(2,'Miss Love Duck', 'Pirata', 'Piratas do Bon Chan', 250),
+(3,'Moby Dick', 'Pirata', 'Piratas do Barba Branca', 1000),
+(4,'Going Merry', 'Pirata', 'Membro', 200),
+(5,'Oro Jackson', 'Pirata', 'Piratas do Roger', 1000);
 
-INSERT INTO poder_especial (nome, id_personagem_principal, descricao, dano, energia) VALUES 
-('Gomu gomu no Hammer', 1, 'cascudo com as duas mãos', 300, 400),
-('Bounceman',1,' cobre seus braços com Busoshoku Haki antes de morder seu antebraço. Semelhante à forma como ele ativa o Gear Third, ele sopra uma incrível quantidade de ar em seu corpo, mas desta vez ele infla sua estrutura muscular antes de distribuir o ar em todo o seu corpo, com ênfase na sua metade superior.',800,250),
-('Tankman', 1, 'Nesta forma, ele se assemelha a uma bola com proporções exageradas: enquanto seus braços e pernas são ligeiramente pequenos em relação ao corpo, seu torso com Busoshoku Haki-revestido torna-se muito maior e completamente redondo, embora ainda há músculos nos braços e no peitoral.', 900, 300),
-('Snakeman', 1, 'Em vez de vapor, essa forma produz uma substância gasosa que aparece como uma mistura de vapor e fogo e, como suas outras contrapartes, também parece ser colocada sobre seus ombros como um lenço, enquanto sob esta forma. Seus punhos também se flexionam diferentemente, com os primeiros nós dos dedos sendo estendidos, semelhante ao punho de leopardo.', 950, 350),
-('Kinniku Fusen', 1, 'dá um soco como um Gomu Gomu no Pistol, mas ele pode redirecionar seu soco à um número indeterminado de vezes, sem perder o impulso, mantendo a sua força tremenda.', 1000, 500);
+-- poderia criar um tipo para poder especial e a fraqueza seria um tipo
+INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, energia) VALUES 
+-- Fraqueza de todos os usuários de akuma no mi.
+('Pistola de Kairoseki','Kairoseki', 1, 'Pistola com tiro de Kairoseki', 25, 10),
+('Fuzil de Kairoseki','Kairoseki',1,'Fuzil forte com tiro de Kairoseki',100,50),
+('Canhão de Kairoseki','Kairoseki',1,'Canhão de tiro de Kairoseki',200,100),
+('Balde de Água do Mar','Água do Mar',1,'Um balde de água do mar para atingir  usuários de Akuma no Mi.',50,10),
+
+-- Fraqueza do Sanji, mas não só dele especificamente
+('Mulher Feia','Mulher', 1, 'Mulher feia que impede que Sanji a ataque', 100, 0),
+('Mulher Bonita','Mulher', 1, 'Mullher bonita que além de impedir que Sanji a ataque, tira sua energia', 150, 0),
+
+-- Poderes especiais de espadachins que não cortam ferro.
+('Espadada especial de Ferro','Ferro', 1, 'Espadada Especial de Ferro', 50, 100),
+
+-- Poderes especiais relacionadas a tritões
+('Lança de água','Tritões', 1, 'Lança de água do mar lançada pelo tritão.', 200, 100),
+('Mizu shot.','Tritões', 1, 'Tiro disparado pelo tritão de água', 80, 50),
+('Mizu Rain Shot.','Tritões', 1, 'Rajada de tiro disparado pelo tritão de água', 150, 100),
+
+-- Poderes especiais Luffy
+('Gomu Gomu no Pistol','Akuma no mi','Soco pistola do Luffy',80,50),
+('Gomu Gomu no Gatling Gun','Akuma no mi','Metralhadora de Soco pistola do Luffy',140,100),
+('Gomu Gomu no Axe','Akuma no mi','Luffy estica o pé lá no alto e desce de uma vez dando uma pézada da peste.',160,80),
+('Gomu Gomu no Rocket','Akuma no mi','Luffy se lança para atingir o alvo.',50,25),
+
+-- Poderes especiais do Zoro
+('Ittoryu Iai: Shishi Sonson','Ferro','Zoro usa uma espada só dando um corte selvagemente forte.',100,100),
+('Santoryuu Tatsumaki','Ferro','Zoro cria um furacão rodando as suas 3 espadas.',50,25),
+('Santoryuu Onigiri','Ferro','Zoro corta o alvo com 3 cortes rápidos',50,25),
+('Santoryuu Daisen Sekai','Ferro','Zoro corta qualquer alvo com o corte mais forte.',50,25),
+('Santoryuu Onigiri','Ferro','Zoro usa as 3 espadas dando 3 cortes simultâneos',50,25),
+
+-- Espadadas
+('Espadada especial de Ferro','Ferro', 1, 'Espadada Especial de Ferro', 50, 100),
+
+-- 
+('','', 1, 'dá um soco como um Gomu Gomu no Pistol, mas ele pode redirecionar seu soco à um número indeterminado de vezes, sem perder o impulso, mantendo a sua força tremenda.', 1000, 500),
+('','Mulher', 1, 'Nesta forma, ele se assemelha a uma bola com proporções exageradas: enquanto seus braços e pernas são ligeiramente pequenos em relação ao corpo, seu torso com Busoshoku Haki-revestido torna-se muito maior e completamente redondo, embora ainda há músculos nos braços e no peitoral.', 900, 300),
+('','Ferro', 1, 'Em vez de vapor, essa forma produz uma substância gasosa que aparece como uma mistura de vapor e fogo e, como suas outras contrapartes, também parece ser colocada sobre seus ombros como um lenço, enquanto sob esta forma. Seus punhos também se flexionam diferentemente, com os primeiros nós dos dedos sendo estendidos, semelhante ao punho de leopardo.', 950, 350);
 
 
 INSERT INTO inimigo (nome,ocupacao,grupo_ocupacao,berries,energia,fraqueza,experiencia,vida) VALUES 
