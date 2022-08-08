@@ -1,3 +1,4 @@
+begin;
 
 INSERT INTO item (id_item,nome, descricao, preco, qtd_energia, qtd_vida, qtd_dano, is_equipavel)
 VALUES
@@ -96,7 +97,7 @@ INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, ene
 ('Mulher Bonita','Mulher', 1, 'Mullher bonita que além de impedir que Sanji a ataque, tira sua energia', 150, 0),
 
 -- Poderes especiais de espadachins que não cortam ferro.
-('Espadada especial de Ferro','Ferro', 1, 'Espadada Especial de Ferro', 50, 100),
+-- ('Espadada especial de Ferro','Ferro', 1, 'Espadada Especial de Ferro', 50, 100),
 
 -- Poderes especiais relacionadas a tritões
 ('Lança de água','Tritões', 1, 'Lança de água do mar lançada pelo tritão.', 200, 100),
@@ -114,7 +115,7 @@ INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, ene
 ('Santoryuu Tatsumaki','Ferro',2,'Zoro cria um furacão rodando as suas 3 espadas.',50,25),
 ('Santoryuu Onigiri','Ferro',2,'Zoro corta o alvo com 3 cortes rápidos',50,25),
 ('Santoryuu Daisen Sekai','Ferro',2,'Zoro corta qualquer alvo com o corte mais forte.',50,25),
-('Santoryuu Onigiri','Ferro',2,'Zoro usa as 3 espadas dando 3 cortes simultâneos',50,25),
+-- ('Santoryuu Onigiri','Ferro',2,'Zoro usa as 3 espadas dando 3 cortes simultâneos',50,25),
 
 -- Espadadas
 ('Espadada especial de Ferro','Ferro', 1, 'Espadada Especial de Ferro', 50, 100);
@@ -161,25 +162,23 @@ VALUES
 -- Missões
 
 INSERT INTO missao (id_missao, nome, descricao, qtd_experiencia, dificuldade, id_personagem) VALUES 
-(1,'Começo da jornada', 'Luffy derrota Alvida e segue sua viagem junto de Coby pra formar uma tripulação', 10, 0, 1),
-(2,'O grande espadachim aparece', 'Luffy e Coby conhecem e libertam o Caçador de Piratas Roronoa Zoro, que foi preso pelo Capitão Morgan e seu filho Helmeppo', 10, 0, 1),
-(3,'Morgan VS Luffy', 'Luffy e o mais novo membro de sua tripulação, Roronoa Zoro, lutam contra o Capitão Morgan', 10, 0, 1),
-(4,'Palhaço-Pirata, Capitão Buggy', 'Luffy e Zoro se deparam o Capitão Buggy', 10, 0, 1),
-(5,'Mohji, o domador VS Luffy', 'Luffy consegue se libertar da jaula em que estava preso e luta contra Mohji e Richie', 10, 0, 1);      
-    
-INSERT INTO objetivo (id_missao, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil) VALUES 
-(1, '', 'Luffy derrota piratas do bando da Alvida', 'DerrotarInimigo', NULL, NULL, NULL),
-(1, '', 'Luffy da o golpe final e manda Alvida pelos ares', 'DerrotarInimigo', NULL, NULL, NULL),
-(2, '', 'Luffy derrota os marinheiros que estavam guardando as espadas de Roronoa Zoro', 'DerrotarInimigo', NULL, NULL, NULL),
-(2, '', 'Luffy pega as espadas de Roronoa Zoro, que tinham sido confiscadas pela marinha', 'PegarItem', NULL, NULL, NULL),
-(2, '', 'Luffy liberta Roronoa Zoro e devolve suas espadas', 'FalarComNPC', NULL, NULL, NULL),
-(3, '', 'Luffy e Zoro derrotam os marinheiros que estavam protegendo o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL),
-(3, '', 'Luffy e Zoro vencem o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL),
-(3, '', 'Coby se dispede de Luffy para seguir sua ambição de se tornar um marinheiro.', 'FalarComNPC', NULL, NULL, NULL),
-(4, '', 'Luffy derrota piratas do Capitão Buggy', 'DerrotarInimigo', NULL, NULL, NULL),
-(4, '', 'Nami engana Luffy e o entrega para Buggy', 'DerrotarInimigo', NULL, NULL, NULL),
-(4, '', 'Luffy enfrenta Richie', 'DerrotarInimigo', NULL, NULL, NULL);
+(1,'Começo da jornada', 'Luffy derrota Alvida e segue sua viagem junto de Coby pra formar uma tripulação', 10, 0, 21),
+(2,'O grande espadachim aparece', 'Luffy e Coby conhecem e libertam o Caçador de Piratas Roronoa Zoro, que foi preso pelo Capitão Morgan e seu filho Helmeppo', 10, 0, 21),
+(3,'Morgan VS Luffy', 'Luffy e o mais novo membro de sua tripulação, Roronoa Zoro, lutam contra o Capitão Morgan', 10, 0, 21),
+(4,'Palhaço-Pirata, Capitão Buggy', 'Luffy e Zoro se deparam o Capitão Buggy', 10, 0, 21),
+(5,'Mohji, o domador VS Luffy', 'Luffy consegue se libertar da jaula em que estava preso e luta contra Mohji e Richie', 10, 0, 21);      
 
+INSERT INTO objetivo (id_missao, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil, status) VALUES 
+(1, '', 'Luffy derrota piratas do bando da Alvida', 'DerrotarInimigo', NULL, NULL, NULL, 'Liberado'),
+(1, '', 'Luffy da o golpe final e manda Alvida pelos ares', 'DerrotarInimigo', NULL, NULL, NULL, 'Bloqueado'),
+(2, '', 'Luffy derrota os marinheiros que estavam guardando as espadas de Roronoa Zoro', 'DerrotarInimigo', NULL, NULL, NULL, 'Bloqueado'),
+(2, '', 'Luffy pega as espadas de Roronoa Zoro, que tinham sido confiscadas pela marinha', 'PegarItem', NULL, NULL, NULL, 'Bloqueado'),
+(2, '', 'Luffy liberta Roronoa Zoro e devolve suas espadas', 'FalarComNPC', NULL, NULL, NULL, 'Bloqueado'),
+(3, '', 'Luffy e Zoro derrotam os marinheiros que estavam protegendo o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL, 'Bloqueado'),
+(3, '', 'Luffy e Zoro vencem o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL, 'Bloqueado'),
+(3, '', 'Coby se dispede de Luffy para seguir sua ambição de se tornar um marinheiro.', 'FalarComNPC', NULL, NULL, NULL, 'Bloqueado'),
+(4, '', 'Luffy derrota piratas do Capitão Buggy', 'DerrotarInimigo', NULL, NULL, NULL, 'Bloqueado'),
+(4, '', 'Nami engana Luffy e o entrega para Buggy', 'DerrotarInimigo', NULL, NULL, NULL, 'Bloqueado'),
+(4, '', 'Luffy enfrenta Richie', 'DerrotarInimigo', NULL, NULL, NULL, 'Bloqueado');
 
-
-
+commit;

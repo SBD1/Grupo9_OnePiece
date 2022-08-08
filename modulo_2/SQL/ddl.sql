@@ -146,7 +146,7 @@ CREATE TYPE tipo_poder_especial AS ENUM (
 
 
 CREATE TABLE IF NOT EXISTS poder_especial (
-    nome VARCHAR(20) NOT NULL,
+    nome VARCHAR(40) NOT NULL,
     tipo_poder tipo_poder_especial NOT NULL,
     id_personagem INTEGER NOT NULL,
     descricao TEXT NOT NULL DEFAULT '',
