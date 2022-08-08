@@ -1,3 +1,5 @@
+BEGIN;
+
 INSERT INTO item (id_item,nome, descricao, preco, qtd_energia, qtd_vida, qtd_dano, is_equipavel)
 VALUES
 (1,'bergamota', 'Recupera vida', 10, 0, 20, NULL, FALSE),
@@ -17,7 +19,7 @@ INSERT INTO barco (id_barco,nome, ocupacao, grupo_ocupacao, capacidade_de_itens)
 (1,'Thousand Sunny', 'Pirata', 'Piratas do Chapéu de Palha', 400),
 (2,'Miss Love Duck', 'Pirata', 'Piratas do Bon Chan', 250),
 (3,'Moby Dick', 'Pirata', 'Piratas do Barba Branca', 1000),
-(4,'Going Merry', 'Pirata', 'Membro', 200),
+(4,'Going Merry', 'Pirata', 'Piratas do Chapéu de Palha', 200),
 (5,'Oro Jackson', 'Pirata', 'Piratas do Roger', 1000);
 
 -- poderia criar um tipo para poder especial e a fraqueza seria um tipo
@@ -70,10 +72,10 @@ INSERT INTO inimigo (nome,ocupacao,grupo_ocupacao,berries,energia,fraqueza,exper
 ('Akainu','Marinheiro','Almirante da Marinha',1000000,10000,'Kairoseki',10,10000),
 ('Alkiji','Marinheiro','Almirante da Marinha',900000,10000,'Kairoseki',10,10000),
 ('Kizaru','Marinheiro','Almirante da Marinha',1200000,10000,'Kairoseki',10,10000),
-('Alvida','Pirata','Piratas Alvida',1000,100,'Akuma no mi',1,100),
+('Alvida','Pirata','Piratas da Alvida',1000,100,'Akuma no mi',1,100),
 ('Morgan','Marinheiro','Capitão da Marinha',3000,150,'Akuma no mi',1,100),
-('Buggy','Pirata','Capitão dos Piratas Buggy',1000,200,'Akuma no mi',2,150),
-('Arlong','Pirata','Capitão dos Piratas do Arlong',50000,250,'Akuma no mi',3,250);
+('Buggy','Pirata','Piratas do Buggy',1000,200,'Akuma no mi',2,150),
+('Arlong','Pirata','Piratas do Arlong',50000,250,'Akuma no mi',3,250);
 
 INSERT INTO ilha (id_ilha,nome,descricao) VALUES 
 (1,'Ilha do Capitão Morgan','Ilha com uma base da Marinha, comandada pelo Capitão Morgan. Um marinheiro temido tanto pela população quanto pela marinha.Zoro aparece capturado nessa ilha'),
@@ -126,15 +128,28 @@ INSERT INTO objetivo (id_missao, nome, descricao, tipo, id_item, id_inimigo, id_
 
 insert into regiao (descricao,tipo,norte,sul,leste,oeste,id_ilha)
 values 
-('Porto onde você pode viajar para outras cidades','Cidade',2,NULL,NULL,4,1), -- 1
+-- Ilha Capitão Morgan
+('Porto onde você pode viajar para outras cidades','Porto',2,NULL,NULL,4,1), -- 1
 ('Feira onde você pode comprar itens','Cidade',3,NULL,1,NULL,1), -- 2
 ('Taverna onde você encontra variedades da cachaça, mas o Luffy só toma leite','Cidade',NULL,3,2,NULL,1), -- 3
 ('Base da Marinha, parece que Zoro se encontra lá, Converse com Rika.','Cidade',NULL,1,NULL,3,1),  -- 4
-('Porto de Orange Town','Cidade',6,NULL,7,NULL,2), -- 5
+--Ilha Buggy
+('Porto de Orange Town','Porto',6,NULL,7,NULL,2), -- 5
 ('Loja Cachorro Xuxu','Cidade',NULL,7,5,NULL,2), -- 6
 ('Base Buggy','Cidade',NULL,8,NULL,6,2), -- 7
 ('Casa do Prefeito','Cidade',7,NULL,NULL,5,2),-- 8
-('Porto saída Sul','Cidade',10,NULL,12,NULL,3), -- 9
-('Loja Cachorro Xuxu','Cidade',NULL,7,5,NULL,3), -- 10
-('Base Buggy','Cidade',NULL,8,NULL,6,3), -- 11
-('Casa do Prefeito','Cidade',7,NULL,NULL,5,3); -- 12
+-- Ilha Usopp
+('Porto saída Sul','Porto',10,NULL,NULL,NULL,3), -- 9
+('Centro da cidade','Cidade',NULL,9,11,NULL,3), -- 10
+('Casa da Kaya','Cidade',12,NULL,10,NULL,3), -- 11
+('Porto da Saída Norte','Porto',NULL,11,NULL,NULL,3); -- 12
+-- Baratie
+('Porto','Porto',14,NULL,NULL,NULL,4); -- 13
+('Restaurante','Porto',NULL,11,NULL,NULL,3); -- 14
+('Deck','Porto',NULL,11,NULL,NULL,3); -- 15
+('Barco','Porto',NULL,11,NULL,NULL,3); -- 15
+
+
+
+
+commit;
