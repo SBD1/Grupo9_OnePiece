@@ -6,7 +6,10 @@ CREATE TYPE personagem_ocupacao AS ENUM (
 );
 
 CREATE TYPE personagem_grupo_ocupacao AS ENUM (
-    'Lider', 'Membro'
+    'Marinha', 'Piratas do Chapéu de Palha','Piratas do Buggy',
+    'Pirata','Piratas do Arlong','Piratas da Alvida','Piratas do Baratie',
+    'Piratas do Crocodile','Piratas do Barba Branca','Piratas do Bon Chan','Almirante da Marinha'
+    'Capitão da Marinha','Piratas do Roger'
 );
 
 CREATE TYPE personagem_tipo AS ENUM (
@@ -24,7 +27,7 @@ CREATE TABLE IF NOT EXISTS personagem_principal (
     id_regiao INTEGER NOT NULL,
     nome VARCHAR(20) NOT NULL,
     ocupacao personagem_ocupacao NOT NULL,
-    grupo_ocupacao TEXT NOT NULL,
+    grupo_ocupacao personagem_grupo_ocupacao NOT NULL,
     berries INTEGER NOT NULL DEFAULT 0,
     CHECK(berries >= 0),
     energia INTEGER NOT NULL DEFAULT 0,
@@ -49,7 +52,7 @@ CREATE TABLE IF NOT EXISTS inimigo (
     id_regiao INTEGER NOT NULL,
     nome VARCHAR(20) NOT NULL,
     ocupacao personagem_ocupacao NOT NULL,
-    grupo_ocupacao TEXT NOT NULL,
+    grupo_ocupacao personagem_grupo_ocupacao NOT NULL,
     berries INTEGER NOT NULL DEFAULT 0,
     CHECK(berries >= 0),
     energia INTEGER NOT NULL DEFAULT 0,
@@ -72,7 +75,7 @@ CREATE TABLE IF NOT EXISTS personagem_nao_hostil (
     id_regiao INTEGER NOT NULL,
     nome VARCHAR(20) NOT NULL,
     ocupacao personagem_ocupacao NOT NULL,
-    grupo_ocupacao TEXT NOT NULL,
+    grupo_ocupacao personagem_grupo_ocupacao NOT NULL,
     is_vendedor BOOLEAN NOT NULL DEFAULT FALSE,
     is_personagem_historia BOOLEAN NOT NULL DEFAULT FALSE,
     id_missao INTEGER DEFAULT NULL,
@@ -100,15 +103,20 @@ CREATE TABLE IF NOT EXISTS barco (
     PRIMARY KEY (id_barco)
 );
 
+CREATE TYPE tipo_poder_especial AS ENUM (
+    'Kairoseki', 'Ferro', 'Mulher','Tritões','Água do Mar','Akuma no mi'
+);
+
+
 CREATE TABLE IF NOT EXISTS poder_especial (
     nome VARCHAR(20) NOT NULL,
+    tipo_poder tipo_poder_especial NOT NULL,
     id_personagem INTEGER NOT NULL,
     descricao TEXT NOT NULL DEFAULT '',
     dano INTEGER NOT NULL,
     CHECK(dano >= 0),
     energia INTEGER NOT NULL,
     CHECK(energia >= 0),
-
     PRIMARY KEY (nome, id_personagem),
     CONSTRAINT fk_personagem FOREIGN KEY (id_personagem) 
         REFERENCES personagem(id_personagem) ON DELETE RESTRICT
@@ -203,7 +211,7 @@ CREATE TABLE IF NOT EXISTS ilha (
 );
 
 CREATE TYPE regiao_tipo AS ENUM (
-    'Cidade', 'Floresta', 'Deserto', 'Montanha'
+    'Cidade', 'Floresta', 'Deserto', 'Montanha','Porto'
 );
 
 CREATE TABLE IF NOT EXISTS regiao (
