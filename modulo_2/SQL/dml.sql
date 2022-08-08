@@ -15,41 +15,73 @@ INSERT INTO ilha (id_ilha,nome,descricao) VALUES
 (4,'Baratie','Restaurante Marítmo comandado pelo chefe Zeff. Zeff tem um filho chamado Sanji, um cozinheiro romântico que ama mulheres.'),
 (5,'Ilhas Conami','Arquipélogo de Ilhas onde Nami nasceu. Era um arquipélogo quieto, até Arlong e seus piratas chegarem.');
 
-insert into regiao (descricao,tipo,norte,sul,leste,oeste,id_ilha)
+insert into regiao (id_regiao,descricao,tipo,norte,sul,leste,oeste,id_ilha)
 values 
 -- Ilha Capitão Morgan
-('Porto onde você pode viajar para outras cidades','Porto',2,NULL,NULL,4,1), -- 1
-('Feira onde você pode comprar itens','Cidade',3,NULL,1,NULL,1), -- 2
-('Taverna onde você encontra variedades da cachaça, mas o Luffy só toma leite','Cidade',NULL,3,2,NULL,1), -- 3
-('Base da Marinha, parece que Zoro se encontra lá, Converse com Rika.','Cidade',NULL,1,NULL,3,1),  -- 4
+(1,'Porto onde você pode viajar para outras cidades','Porto',2,NULL,NULL,4,1), -- 1
+(2,'Feira onde você pode comprar itens','Cidade',3,NULL,1,NULL,1), -- 2
+(3,'Taverna onde você encontra variedades da cachaça, mas o Luffy só toma leite','Cidade',NULL,3,2,NULL,1), -- 3
+(4,'Base da Marinha, parece que Zoro se encontra lá, Converse com Rika.','Cidade',NULL,1,NULL,3,1),  -- 4
 --Ilha Buggy
-('Porto de Orange Town','Porto',6,NULL,7,NULL,2), -- 5
-('Loja Cachorro Xuxu','Cidade',NULL,7,5,NULL,2), -- 6
-('Base Buggy','Cidade',NULL,8,NULL,6,2), -- 7
-('Casa do Prefeito','Cidade',7,NULL,NULL,5,2),-- 8
+(5,'Porto de Orange Town','Porto',6,NULL,7,NULL,2), -- 5
+(6,'Loja Cachorro Xuxu','Cidade',NULL,7,5,NULL,2), -- 6
+(7,'Base Buggy','Cidade',NULL,8,NULL,6,2), -- 7
+(8,'Casa do Prefeito','Cidade',7,NULL,NULL,5,2),-- 8
 -- Ilha Usopp
-('Porto saída Sul','Porto',10,NULL,NULL,NULL,3), -- 9
-('Centro da cidade','Cidade',NULL,9,11,NULL,3), -- 10
-('Casa da Kaya','Cidade',12,NULL,10,NULL,3), -- 11
-('Porto da Saída Norte','Porto',NULL,11,NULL,NULL,3), -- 12
+(9,'Porto saída Sul','Porto',10,NULL,NULL,NULL,3), -- 9
+(10,'Centro da cidade','Cidade',NULL,9,11,NULL,3), -- 10
+(11,'Casa da Kaya','Cidade',12,NULL,10,NULL,3), -- 11
+(12,'Porto da Saída Norte','Porto',NULL,11,NULL,NULL,3), -- 12
 -- Baratie
-('Porto','Porto',14,NULL,NULL,NULL,4), -- 13
-('Restaurante','Porto',NULL,11,NULL,NULL,3), -- 14
-('Deck','Porto',NULL,11,NULL,NULL,3), -- 15
-('Barco','Porto',NULL,11,NULL,NULL,3); -- 15
+(13,'Porto','Porto',14,NULL,NULL,NULL,4), -- 13
+(14,'Restaurante','Porto',NULL,11,NULL,NULL,3), -- 14
+(15,'Deck','Porto',NULL,11,NULL,NULL,3), -- 15
+(16,'Barco','Porto',NULL,11,NULL,NULL,3); -- 15
+
+INSERT INTO personagem VALUES 
+(1,'P'),
+(2,'P'),
+(3,'P'),
+(4,'P'),
+(5,'B'),
+(6,'B'),
+(7,'B'),
+(8,'B'),
+(9,'B'),
+(10,'I'),
+(11,'I'),
+(12,'I'),
+(13,'I'),
+(14,'I'),
+(15,'I'),
+(16,'I'),
+(17,'I'),
+(18,'I'),
+(19,'I'),
+(20,'I'),
+(21,'N'),
+(22,'N'),
+(23,'N'),
+(24,'N'),
+(25,'N'),
+(26,'N'),
+(27,'N'),
+(28,'N');
+
+
 
 INSERT INTO personagem_principal (id_personagem, nome,id_regiao,ocupacao,grupo_ocupacao,berries,energia,fraqueza,experiencia,vida,capacidade_de_itens) VALUES 
 (1,'Monkey D. Luffy',1,'Pirata','Piratas do Chapéu de Palha',150,100,'Kairoseki',1,120,10),
 (2,'Roronoa Zoro',2,'Pirata','Piratas do Chapéu de Palha',100,100,'Cortar Ferro',1,100,10),
-(3,'Sanji','Pirata',3,'Piratas do Chapéu de Palha',1000,100,'',1,100,15),
-(4,'Nami','Pirata',1,'Piratas do Chapéu de Palha',1000000,75,'Tritões',1,100,8);
+(3,'Sanji',3,'Pirata','Piratas do Chapéu de Palha',1000,100,'',1,100,15),
+(4,'Nami',1,'Pirata','Piratas do Chapéu de Palha',1000000,75,'Tritões',1,100,8);
 
 INSERT INTO barco (id_barco,id_regiao,nome, ocupacao, grupo_ocupacao, capacidade_de_itens) VALUES 
-(1,1,'Thousand Sunny', 'Pirata', 'Piratas do Chapéu de Palha', 400),
-(2,1,'Miss Love Duck', 'Pirata', 'Piratas do Bon Chan', 250),
-(3,1,'Moby Dick', 'Pirata', 'Piratas do Barba Branca', 1000),
-(4,1,'Going Merry', 'Pirata', 'Piratas do Chapéu de Palha', 200),
-(5,1,'Oro Jackson', 'Pirata', 'Piratas do Roger', 1000);
+(5,1,'Thousand Sunny', 'Pirata', 'Piratas do Chapéu de Palha', 400),
+(6,1,'Miss Love Duck', 'Pirata', 'Piratas do Bon Chan', 250),
+(7,1,'Moby Dick', 'Pirata', 'Piratas do Barba Branca', 1000),
+(8,1,'Going Merry', 'Pirata', 'Piratas do Chapéu de Palha', 200),
+(9,1,'Oro Jackson', 'Pirata', 'Piratas do Roger', 1000);
 
 -- poderia criar um tipo para poder especial e a fraqueza seria um tipo
 INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, energia) VALUES 
@@ -72,51 +104,51 @@ INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, ene
 ('Mizu Rain Shot.','Tritões', 1, 'Rajada de tiro disparado pelo tritão de água', 150, 100),
 
 -- Poderes especiais Luffy
-('Gomu Gomu no Pistol','Akuma no mi','Soco pistola do Luffy',80,50),
-('Gomu Gomu no Gatling Gun','Akuma no mi','Metralhadora de Soco pistola do Luffy',140,100),
-('Gomu Gomu no Axe','Akuma no mi','Luffy estica o pé lá no alto e desce de uma vez dando uma pézada da peste.',160,80),
-('Gomu Gomu no Rocket','Akuma no mi','Luffy se lança para atingir o alvo.',50,25),
+('Gomu Gomu no Pistol','Akuma no mi',1,'Soco pistola do Luffy',80,50),
+('Gomu Gomu no Gatling Gun','Akuma no mi',1,'Metralhadora de Soco pistola do Luffy',140,100),
+('Gomu Gomu no Axe','Akuma no mi',1,'Luffy estica o pé lá no alto e desce de uma vez dando uma pézada da peste.',160,80),
+('Gomu Gomu no Rocket','Akuma no mi',1,'Luffy se lança para atingir o alvo.',50,25),
 
 -- Poderes especiais do Zoro
-('Ittoryu Iai: Shishi Sonson','Ferro','Zoro usa uma espada só dando um corte selvagemente forte.',100,100),
-('Santoryuu Tatsumaki','Ferro','Zoro cria um furacão rodando as suas 3 espadas.',50,25),
-('Santoryuu Onigiri','Ferro','Zoro corta o alvo com 3 cortes rápidos',50,25),
-('Santoryuu Daisen Sekai','Ferro','Zoro corta qualquer alvo com o corte mais forte.',50,25),
-('Santoryuu Onigiri','Ferro','Zoro usa as 3 espadas dando 3 cortes simultâneos',50,25),
+('Ittoryu Iai: Shishi Sonson','Ferro',2,'Zoro usa uma espada só dando um corte selvagemente forte.',100,100),
+('Santoryuu Tatsumaki','Ferro',2,'Zoro cria um furacão rodando as suas 3 espadas.',50,25),
+('Santoryuu Onigiri','Ferro',2,'Zoro corta o alvo com 3 cortes rápidos',50,25),
+('Santoryuu Daisen Sekai','Ferro',2,'Zoro corta qualquer alvo com o corte mais forte.',50,25),
+('Santoryuu Onigiri','Ferro',2,'Zoro usa as 3 espadas dando 3 cortes simultâneos',50,25),
 
 -- Espadadas
-('Espadada especial de Ferro','Ferro', 1, 'Espadada Especial de Ferro', 50, 100),
+('Espadada especial de Ferro','Ferro', 1, 'Espadada Especial de Ferro', 50, 100);
 
 -- 
-('','', 1, 'dá um soco como um Gomu Gomu no Pistol, mas ele pode redirecionar seu soco à um número indeterminado de vezes, sem perder o impulso, mantendo a sua força tremenda.', 1000, 500),
-('','Mulher', 1, 'Nesta forma, ele se assemelha a uma bola com proporções exageradas: enquanto seus braços e pernas são ligeiramente pequenos em relação ao corpo, seu torso com Busoshoku Haki-revestido torna-se muito maior e completamente redondo, embora ainda há músculos nos braços e no peitoral.', 900, 300),
-('','Ferro', 1, 'Em vez de vapor, essa forma produz uma substância gasosa que aparece como uma mistura de vapor e fogo e, como suas outras contrapartes, também parece ser colocada sobre seus ombros como um lenço, enquanto sob esta forma. Seus punhos também se flexionam diferentemente, com os primeiros nós dos dedos sendo estendidos, semelhante ao punho de leopardo.', 950, 350);
+--('','', 1, 'dá um soco como um Gomu Gomu no Pistol, mas ele pode redirecionar seu soco à um número indeterminado de vezes, sem perder o impulso, mantendo a sua força tremenda.', 1000, 500),
+--('','Mulher', 1, 'Nesta forma, ele se assemelha a uma bola com proporções exageradas: enquanto seus braços e pernas são ligeiramente pequenos em relação ao corpo, seu torso com Busoshoku Haki-revestido torna-se muito maior e completamente redondo, embora ainda há músculos nos braços e no peitoral.', 900, 300),
+--('','Ferro', 1, 'Em vez de vapor, essa forma produz uma substância gasosa que aparece como uma mistura de vapor e fogo e, como suas outras contrapartes, também parece ser colocada sobre seus ombros como um lenço, enquanto sob esta forma. Seus punhos também se flexionam diferentemente, com os primeiros nós dos dedos sendo estendidos, semelhante ao punho de leopardo.', 950, 350);
 
 
-INSERT INTO inimigo (id_regiao,nome,ocupacao,grupo_ocupacao,berries,energia,fraqueza,experiencia,vida) VALUES 
-(1,'Marinheiro 1','Marinheiro','Marinha',150,100,'Akuma no mi',1,100),
-(1,'Marinheiro 2','Marinheiro','Marinha',250,100,'Akuma no mi',2,100),
-(1,'Marinheiro 3','Marinheiro','Marinha',500,100,'Raki',3,100),
-(1,'Marinheiro 4','Marinheiro','Marinha',1000,100,'Raki do rei',4,100),
-(1,'Akainu','Marinheiro','Almirante da Marinha',1000000,10000,'Kairoseki',10,10000),
-(1,'Alkiji','Marinheiro','Almirante da Marinha',900000,10000,'Kairoseki',10,10000),
-(1,'Kizaru','Marinheiro','Almirante da Marinha',1200000,10000,'Kairoseki',10,10000),
-(1,'Alvida','Pirata','Piratas da Alvida',1000,100,'Akuma no mi',1,100),
-(1,'Morgan','Marinheiro','Capitão da Marinha',3000,150,'Akuma no mi',1,100),
-(1,'Buggy','Pirata','Piratas do Buggy',1000,200,'Akuma no mi',2,150),
-(1,'Arlong','Pirata','Piratas do Arlong',50000,250,'Akuma no mi',3,250);
+INSERT INTO inimigo (id_personagem,id_regiao,nome,ocupacao,grupo_ocupacao,berries,energia,fraqueza,experiencia,vida) VALUES 
+(10,1,'Marinheiro 1','Marinheiro','Marinha',150,100,'Akuma no mi',1,100),
+(11,1,'Marinheiro 2','Marinheiro','Marinha',250,100,'Akuma no mi',2,100),
+(12,1,'Marinheiro 3','Marinheiro','Marinha',500,100,'Raki',3,100),
+(13,1,'Marinheiro 4','Marinheiro','Marinha',1000,100,'Raki do rei',4,100),
+(14,1,'Akainu','Marinheiro','Almirante da Marinha',1000000,10000,'Kairoseki',10,10000),
+(15,1,'Alkiji','Marinheiro','Almirante da Marinha',900000,10000,'Kairoseki',10,10000),
+(16,1,'Kizaru','Marinheiro','Almirante da Marinha',1200000,10000,'Kairoseki',10,10000),
+(17,1,'Alvida','Pirata','Piratas da Alvida',1000,100,'Akuma no mi',1,100),
+(18,1,'Morgan','Marinheiro','Capitão da Marinha',3000,150,'Akuma no mi',1,100),
+(19,1,'Buggy','Pirata','Piratas do Buggy',1000,200,'Akuma no mi',2,150),
+(20,1,'Arlong','Pirata','Piratas do Arlong',50000,250,'Akuma no mi',3,250);
 
 
 INSERT INTO personagem_nao_hostil (id_personagem, id_regiao,nome, ocupacao, grupo_ocupacao, is_vendedor, is_personagem_historia)
 VALUES
-(1,1,'Coby', 'Cidadao', 'Nenhum', false, true),
-(2,1,'vendedor', 'Cidadao', 'Comercializar itens basicos', true, false),
-(3,1,'Mãe da Rika', 'Cidadao', 'Dona de casa', false, true),
-(4,1,'Rika', 'Cidadao', 'Brincar', false, true),
-(5,1,'Marinheiro', 'Marinheiro', 'Patrulhar', false, false),
-(6,1,'Prefeito', 'Cidadao', 'Gerir um ilha', false, false),
-(7,1,'Comerciante', 'Cidadao', 'Vender e comprar itens de pessoas', true, false),
-(8,1,'Chuchu', 'Cidadao', 'Ser um cachorro', false, true);
+(21,1,'Coby', 'Cidadao', 'Marinha', false, true),
+(22,1,'vendedor', 'Cidadao', 'Cidadão', true, false),
+(23,1,'Mãe da Rika', 'Cidadao', 'Cidadão', false, true),
+(24,1,'Rika', 'Cidadao', 'Cidadão', false, true),
+(25,1,'Marinheiro', 'Marinheiro', 'Marinha', false, false),
+(26,1,'Prefeito', 'Cidadao', 'Cidadão', false, false),
+(27,1,'Comerciante', 'Cidadao', 'Cidadão', true, false),
+(28,1,'Chuchu', 'Cidadao', 'Cidadão', false, true);
 
 INSERT INTO inventario (id_personagem, id_item, qtd_item)
 VALUES 
