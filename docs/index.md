@@ -4,7 +4,6 @@
 
 Este repositório é destinado ao projeto desenvolvido na disciplina de Sistemas de Bancos de Dados 1 na Universidade de Brasília.
 
-
 ## Alunos
 
 | Nome                               | Matrícula  | 

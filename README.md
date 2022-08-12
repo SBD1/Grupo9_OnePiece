@@ -1,6 +1,6 @@
 # Grupo9-OnePiece
 
-<div align="center"><img src="images/one-piece-.jpg" height="230" width="auto"/></div>
+<div align="center"><img src="docs/images/one-piece.jpg" height="230" width="auto"/></div>
 
 
 ## Alunos
