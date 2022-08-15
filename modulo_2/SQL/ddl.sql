@@ -1,4 +1,11 @@
 begin;
+-- Jogador
+
+CREATE TABLE IF NOT EXISTS jogador (
+    nome VARCHAR(30) NOT NULL,
+    PRIMARY KEY(nome)
+);
+
 -- Persongens
 
 CREATE TYPE personagem_ocupacao AS ENUM (
@@ -179,15 +186,15 @@ CREATE TABLE IF NOT EXISTS item (
 );
 
 CREATE TABLE IF NOT EXISTS inventario (
-    id_personagem INTEGER NOT NULL,
+    id_jogador VARCHAR(30) NOT NULL,
     id_item INTEGER DEFAULT NULL,
     qtd_item INTEGER DEFAULT NULL,
 
-    CONSTRAINT fk_personagem FOREIGN KEY (id_personagem) 
-        REFERENCES personagem(id_personagem) ON DELETE RESTRICT,
+    CONSTRAINT fk_jogador FOREIGN KEY (id_jogador) 
+        REFERENCES jogador(nome) ON DELETE RESTRICT,
     CONSTRAINT fk_item FOREIGN KEY (id_item)
         REFERENCES item(id_item) ON DELETE RESTRICT,
-    CONSTRAINT pk_inventario PRIMARY KEY (id_personagem, id_item)
+    CONSTRAINT pk_inventario PRIMARY KEY (id_jogador, id_item)
 );
 
 -- Missão
@@ -200,19 +207,15 @@ CREATE TABLE IF NOT EXISTS missao (
     CHECK(qtd_experiencia >= 0),
     dificuldade INTEGER NOT NULL,
     CHECK(dificuldade >= 0),
-    id_personagem INTEGER NOT NULL,
+    id_nao_hostil INTEGER NOT NULL,
 
-    CONSTRAINT fk_personagem FOREIGN KEY (id_personagem)
+    CONSTRAINT fk_nao_hostil FOREIGN KEY (id_nao_hostil)
         REFERENCES personagem_nao_hostil(id_personagem) ON DELETE RESTRICT,
     PRIMARY KEY (id_missao)
 );
 
 CREATE TYPE objetivo_tipo AS ENUM (
     'PegarItem', 'DerrotarInimigo', 'FalarComNPC'
-);
-
-CREATE TYPE objetivo_status AS ENUM (
-    'Bloqueado', 'Liberado', 'Concluido'
 );
 
 CREATE TABLE IF NOT EXISTS objetivo (
@@ -224,7 +227,6 @@ CREATE TABLE IF NOT EXISTS objetivo (
     id_item INTEGER NULL,
     id_inimigo INTEGER NULL,
     id_nao_hostil INTEGER NULL,
-    status objetivo_status NOT NULL,
 
     PRIMARY KEY (id_missao, id_objetivo),
     CONSTRAINT fk_missao FOREIGN KEY (id_missao) 
@@ -235,6 +237,23 @@ CREATE TABLE IF NOT EXISTS objetivo (
         REFERENCES inimigo(id_personagem) ON DELETE RESTRICT,
     CONSTRAINT fk_nao_hostil FOREIGN KEY (id_nao_hostil)
         REFERENCES personagem_nao_hostil(id_personagem) ON DELETE RESTRICT
+);
+
+CREATE TYPE objetivo_status_enum AS ENUM (
+    'Bloqueado', 'Liberado', 'Concluido'
+);
+
+CREATE TABLE IF NOT EXISTS objetivo_status (
+    id_objetivo INTEGER NOT NULL,
+    id_missao INTEGER NOT NULL,
+    id_jogador VARCHAR(30) NOT NULL,
+    status objetivo_status_enum NOT NULL,
+
+    CONSTRAINT fk_objetivo FOREIGN KEY (id_missao, id_objetivo)
+        REFERENCES objetivo(id_missao, id_objetivo),
+    CONSTRAINT fk_jogador FOREIGN KEY (id_jogador)
+        REFERENCES jogador(nome),
+    PRIMARY KEY (id_objetivo, id_jogador)
 );
 
 commit;
