@@ -1,0 +1,43 @@
+site_name: One Piece
+
+repo_name: 'Grupo9_OnePiece'
+repo_url: 'https://github.com/SBD1/Grupo9_OnePiece'
+
+theme:
+  name: material
+  language: 'pt'
+  logo: 'images/one_piece_logo.ico'
+  favicon: 'images/one_piece_logo.ico'
+  palette:
+
+    # Palette toggle for light mode
+    - scheme: default
+      primary: light blue
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: blue
+      accent: orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: 'Montserrat'
+    code: 'sans-serif'
+
+nav:
+  - Início: index.md
+  - Apresentações: apresentacao.md
+  - Modelagem:
+      - Modelo Entidade Relacionamento: mer.md
+      - Diagrama Entidade Relacionamento: der.md
+      - Modelo Relacional: mr.md
+  - SQL:
+      - DDL: ddl.md
+      - DML: dml.md
+      - DQL: dql.md
+
