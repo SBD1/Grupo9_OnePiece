@@ -1,43 +1,71 @@
-from curses.ascii import isdigit
-from database import Database
+import sys
+from database import get_connection
 
 
 def main():
-    player = choose_player()
-    ...
+    save = choose_save()
+    print(save)
 
 
-def choose_player() -> str | None:
-    db = Database()
-    db.cursor.execute('SELECT nome FROM jogador;')
-    players = db.cursor.fetchall()
-    if not players:
-        return create_new_player()
+def get_saves() -> list[str]:
+    with get_connection() as db:
+        cursor = db.cursor()
+        cursor.execute('SELECT nome FROM jogador;')
+        return [save for save,  in cursor.fetchall()]
 
-    print('Selecione um jogador para carregar o jogo salvo.')
-    print(f'[-1] - Criar novo jogador.\n')
-    for i, (name,) in enumerate(players):
+
+def choose_save() -> str | None:
+    saves = get_saves()
+    if not saves:
+        print('Nenhum save encontrado. Indo para criação de saves')
+        return create_new_save()
+
+    print('Selecione um save para carregar o jogo salvo.')
+    for i, name in enumerate(saves):
         print(f'[{i}] - {name}.')
+    print(f'\n[{i+1}] - Criar novo save.')
+    print(f'[{i+2}] - Sair')
 
-    player = None
-    while not player:
-        value = input('Digite o jogador selecionado: ').strip()
-        if value in players:
-            player = value
+    save = None
+    while not save:
+        value = input('Digite o save selecionado: ').strip()
+        if value in saves:
+            save = value
         elif value.isdigit():
             value = int(value)
-            if value < len(players):
-                player = players[value]
-            elif value == -1:
-                return create_new_player()
+            if value < len(saves):
+                save = saves[value]
+            elif value == i+1:
+                return create_new_save()
+            elif value == i+2:
+                outro()
         else:
-            print('Jogador não encontrado.')
+            print('Save não encontrado.')
 
-    return player
+    return save
 
 
-def create_new_player() -> str:
-    ...
+def outro():
+    print('Obrigado por jogar')
+    sys.exit()
+
+
+def save_save(name: str) -> None:
+    with get_connection() as db:
+        with db:
+            cursor = db.cursor()
+            cursor.execute('INSERT INTO jogador (nome) VALUES (%s);', [name])
+
+
+def create_new_save() -> str:
+    print('Criação de save. Caso queira voltar, aperte enter sem digitar nenhum nome.')
+    save = None
+    while not save:
+        value = input('Digite seu nome: ').strip()
+        if not value:
+            return choose_save()
+        save_save(value)
+        return value
 
 
 if __name__ == '__main__':
