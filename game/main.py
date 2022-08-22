@@ -6,12 +6,18 @@ import ascii_art
 
 def main():
     save = intro()
-    player = choose_player(save)
-    print(f'Save e player escolhido [{save}, {player}]')
+    player = choose_player(save['nome'])
+    run_game(save, player)
+
+
+def run_game(save: dict, player: dict):
+    print(f'Rodando o jogo com save [{save["nome"]}]'
+          f' e player [{player["nome"]}]')
 
 
 def choose_player(save: str) -> list:
     players = get_players(save)
+    assert len(players) > 0, 'Está faltando a StoredProcedure para criar um jogador automaticamente'
     if len(players) == 1:
         return players[0]
     print(f'Selecione um personagem para jogar.')
@@ -114,7 +120,7 @@ def create_new_save() -> str:
         if not value:
             return choose_save()
         save_save(value)
-        return value
+        return {'nome': value}
 
 
 if __name__ == '__main__':
