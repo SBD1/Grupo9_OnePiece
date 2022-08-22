@@ -10,13 +10,14 @@ def main():
 
 def menu(player):
     nome_player = player["nome"]
-    regioes_to_go = regiao_player(player)
+    posicao_atual,regioes_to_go = regiao_player(player)
 
     invalid = True
 
     while True:
         print("##### One Piece ! 💀 - \U0001f480 ######\n\n")
         print(f"Jogador {nome_player} 🏴‍☠️\n"
+            f"Você está em {posicao_atual}\n"
             "[[Objetivo atual --------- ]]\n"
             "1 - NPC aqui ????\n"
             "1 - NPC aqui ????\n"
@@ -31,7 +32,7 @@ def menu(player):
             regiao = printa_regioes(nome_player,regioes_to_go)
             move_player(player,regiao)
         elif escolha == 'q':
-            return False
+            intro()
 
 def run_game(player: dict):
     print(f'Rodando o jogo com save [{player["nome_save"]}]'
@@ -185,7 +186,7 @@ def regiao_player(player):
     
 
     #print(regioes_to_go)
-    return regioes_to_go
+    return current,regioes_to_go
 
 def printa_regioes(nome,regioes_to_go):
     invalid = True 
