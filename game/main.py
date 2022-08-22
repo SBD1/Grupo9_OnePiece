@@ -6,14 +6,46 @@ import ascii_art
 
 def main():
     save = intro()
-    print('Save selecionado:', save)
+    player = choose_player(save)
+    print(f'Save e player escolhido [{save}, {player}]')
+
+
+def choose_player(save: str) -> list:
+    players = get_players(save)
+    if len(players) == 1:
+        return players[0]
+    print(f'Selecione um personagem para jogar.')
+    for i, player in enumerate(players):
+        print(f'[{i}] - {player["nome"]}')
+
+    while True:
+        value = input().strip()
+        if not value.isdigit():
+            print('Digite o número da opção desejada.')
+        else:
+            value = int(value)
+            if 0 <= value <= i:
+                return players[value]
+            else:
+                print('Opção inválida')
+
+
+def get_players(save: str) -> list[list]:
+    return select_to_dict('SELECT nome, id_personagem, nome_save FROM jogador WHERE nome_save = %s', save)
+
+
+def select_to_dict(query: str, *args):
+    import re
+
+    fields = tuple(field.strip() for field in re.findall(r'SELECT (.*) FROM', query)[0].split(','))
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(query, args or ...)
+        return [dict(zip(fields, values)) for values in cursor.fetchall()]
 
 
 def get_saves() -> list[str]:
-    with get_connection() as db:
-        cursor = db.cursor()
-        cursor.execute('SELECT nome FROM save;')
-        return [save for save, in cursor.fetchall()]
+    return select_to_dict('SELECT nome FROM save')
 
 
 def intro():
@@ -32,8 +64,7 @@ def intro():
         if 1 > value > 3:
             print('Digite um número válido [1, 2, 3].')
         else:
-            actions[value]()
-            break
+            return actions[value]()
 
 
 def choose_save() -> str | None:
@@ -41,8 +72,8 @@ def choose_save() -> str | None:
 
     print('Selecione um save para carregar o jogo salvo.')
     i = 0
-    for i, name in enumerate(saves):
-        print(f'[{i}] - {name}.')
+    for i, save in enumerate(saves):
+        print(f'[{i}] - {save["nome"]}.')
     print(f'\n[{i+1}] - Voltar')
 
     save = None
