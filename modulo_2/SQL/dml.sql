@@ -156,9 +156,12 @@ VALUES
 (27,1,'Comerciante', 'Cidadao', 'Cidadão', true, false),
 (28,1,'Chuchu', 'Cidadao', 'Cidadão', false, true);
 
+-- jogador
+
 INSERT INTO jogador VALUES
 ('jogador1',1,1,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',150,100,'Kairoseki',1,120,10),
-('jogador2',1,5,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',5000000,100000,'Kairoseki',10,1200000,10101010);
+('jogador2',1,5,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',5000000,100000,'Kairoseki',10,1200000,10101010),
+('jogador3',2,2,'Roronoa Zoro','Pirata','Piratas do Chapéu de Palha',100,100,'Cortar Ferro',1,100,10);
 
 
 INSERT INTO inventario (id_jogador_save,id_jogador_personagem, id_item, qtd_item)
