@@ -26,7 +26,7 @@ values
 -- Ilha Capitão Morgan
 (1,'Porto onde você pode viajar para outras cidades','Porto',2,NULL,NULL,4,1), -- 1
 (2,'Feira onde você pode comprar itens','Cidade',3,NULL,1,NULL,1), -- 2
-(3,'Taverna onde você encontra variedades da cachaça, mas o Luffy só toma leite','Cidade',NULL,3,2,NULL,1), -- 3
+(3,'Taverna onde você encontra variedades da cachaça, mas o Luffy só toma leite','Cidade',NULL,4,2,NULL,1), -- 3
 (4,'Base da Marinha, parece que Zoro se encontra lá, Converse com Rika.','Cidade',NULL,1,NULL,3,1),  -- 4
 --Ilha Buggy
 (5,'Porto de Orange Town','Porto',6,NULL,7,NULL,2), -- 5
