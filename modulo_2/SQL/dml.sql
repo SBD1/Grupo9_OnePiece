@@ -1,7 +1,7 @@
 begin;
 
-INSERT INTO jogador (nome) VALUES 
-('jogador1');
+INSERT INTO save (nome) VALUES 
+('jogador1','jogador2');
 
 INSERT INTO item (id_item,nome, descricao, preco, qtd_energia, qtd_vida, qtd_dano, is_equipavel)
 VALUES
@@ -183,5 +183,10 @@ INSERT INTO objetivo (id_missao, nome, descricao, tipo, id_item, id_inimigo, id_
 (4, '', 'Luffy derrota piratas do Capitão Buggy', 'DerrotarInimigo', NULL, NULL, NULL),
 (4, '', 'Nami engana Luffy e o entrega para Buggy', 'DerrotarInimigo', NULL, NULL, NULL),
 (4, '', 'Luffy enfrenta Richie', 'DerrotarInimigo', NULL, NULL, NULL);
+
+INSERT INTO jogador VALUES
+('jogador1',1,'Monkey D. Luffy',1,'Pirata','Piratas do Chapéu de Palha',150,100,'Kairoseki',1,120,10);
+('jogador2',1,'Monkey D. Luffy',5,'Pirata','Piratas do Chapéu de Palha',5000000,100000,'Kairoseki',10,1200000,10101010);
+
 
 commit;
