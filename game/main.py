@@ -1,5 +1,4 @@
 import sys
-
 from database import get_connection
 import ascii_art
 
@@ -7,13 +6,42 @@ import ascii_art
 def main():
     save = intro()
     player = choose_player(save['nome'])
-    run_game(save, player)
+    run_game(player)
 
+def menu(player):
+    nome_player = player["nome"]
+    regioes_to_go = regiao_player(player)
 
-def run_game(save: dict, player: dict):
-    print(f'Rodando o jogo com save [{save["nome"]}]'
+    invalid = True
+
+    while True:
+        print("##### One Piece ! 💀 - \U0001f480 ######\n\n")
+        print(f"Jogador {nome_player} 🏴‍☠️\n"
+            "[[Objetivo atual --------- ]]\n"
+            "1 - NPC aqui ????\n"
+            "1 - NPC aqui ????\n"
+            "1 - NPC aqui ????\n"
+            "1 - NPC aqui ????\n"
+            "M - Mover personagem\n"
+            "Q - Sair")
+
+        escolha = input("O que você deseja fazer ?").lower()
+        
+        if escolha == 'm':
+            regiao = printa_regioes(nome_player,regioes_to_go)
+            move_player(player,regiao)
+        elif escolha == 'q':
+            return False
+
+def run_game(player: dict):
+    print(f'Rodando o jogo com save [{player["nome_save"]}]'
           f' e player [{player["nome"]}]')
+    game_loop = True
 
+    while game_loop:
+        if menu(player) == False:
+            game_loop = False
+        
 
 def choose_player(save: str) -> list:
     players = get_players(save)
@@ -38,6 +66,7 @@ def choose_player(save: str) -> list:
 
 def get_players(save: str) -> list[list]:
     return select_to_dict('SELECT nome, id_personagem, nome_save FROM jogador WHERE nome_save = %s', save)
+
 
 
 def select_to_dict(query: str, *args):
@@ -122,6 +151,61 @@ def create_new_save() -> str:
         save_save(value)
         return {'nome': value}
 
+def move_player(player,escolha):
+    with get_connection() as db:
+        with db:
+            cursor = db.cursor()
+            cursor.execute('UPDATE jogador SET id_regiao = %s',[escolha])
+
+    #regiao_player(player)
+
+
+def regiao_player(player):
+    nome = player["nome"]
+    nome_save = player["nome_save"]
+    #print(player['nome'])
+    regiao = select_to_dict('SELECT id_regiao FROM jogador WHERE nome_save = %s and id_personagem = %s',nome_save,player["id_personagem"])
+    #print(regiao)
+
+    current = regiao[0]['id_regiao']
+
+
+    #print(f"{nome} está em {current}")
+
+    with get_connection() as db:
+        cursor = db.cursor()
+        cursor.execute('select id_regiao,descricao from regiao where id_regiao IN (' 
+                        '(SELECT norte from regiao where id_regiao = %s) UNION'
+                        '(SELECT sul from regiao where id_regiao = %s) UNION'
+                        '(SELECT leste from regiao where id_regiao = %s) UNION'
+                        '(SELECT oeste from regiao where id_regiao = %s))',[current]*4
+                    )
+
+        regioes_to_go = cursor.fetchall()
+    
+
+    #print(regioes_to_go)
+    return regioes_to_go
+
+def printa_regioes(nome,regioes_to_go):
+    invalid = True 
+    regioes_possiveis = [str(regiao_id) for regiao_id,descricao in regioes_to_go]
+
+    while invalid:
+        print(f"\n\n{nome} pode ir para :\n")
+        
+        for regiao_id,descricao in regioes_to_go:
+            print(f"{regiao_id} - {descricao}")
+
+        print('\n')
+        
+        escolha = input("Você deseja ir para : ")
+        if escolha not in regioes_possiveis:
+            print("Opção inválida.\n")
+        else:
+            invalid = False
+
+    return escolha
 
 if __name__ == '__main__':
     main()
