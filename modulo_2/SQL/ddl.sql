@@ -280,8 +280,8 @@ CREATE TYPE objetivo_status_enum AS ENUM (
 );
 
 CREATE TABLE IF NOT EXISTS objetivo_status (
-    id_objetivo INTEGER NOT NULL,
     id_missao INTEGER NOT NULL,
+    id_objetivo INTEGER NOT NULL,
     id_jogador_save VARCHAR(30) NOT NULL,
     id_jogador_personagem int not null,
     status objetivo_status_enum NOT NULL,
