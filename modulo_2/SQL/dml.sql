@@ -160,6 +160,7 @@ VALUES
 
 INSERT INTO jogador VALUES
 ('jogador1',1,1,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',150,100,'Kairoseki',1,120,10),
+('jogador1',2,2,'Roronoa Zoro','Pirata','Piratas do Chapéu de Palha',100,100,'Cortar Ferro',1,100,10),
 ('jogador2',1,5,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',5000000,100000,'Kairoseki',10,1200000,10101010),
 ('jogador3',2,2,'Roronoa Zoro','Pirata','Piratas do Chapéu de Palha',100,100,'Cortar Ferro',1,100,10);
 
