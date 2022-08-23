@@ -39,16 +39,34 @@ Para o pgAdmin4 abra seu navegador de preferência e vá até a URL abaixo. Quan
 ```
 localhost:8080
 
-cd game
-
-run command:
-
-python main.py
 ```
 
 Ou para abrir o postgres no terminal, vá para a raiz do projeto e rode o comando abaixo. Quando solicitado utilize a senha `postgres` :
 ```bash
 sudo docker-compose exec db psql -U postgres -W
+
+```
+
+### Para rodar o jogo Crie um database no seu postgresql com o nome "one_piece"
+
+#### Abrir o arquivo game/setup/setup.py e colocar o usuário de senha do seu postgresql em conexão com o localhost em `user"` e `password=`
+
+####  Se estiver com dúvidas leia a documentação:
+
+`https://www.postgresql.org/docs/8.0/sql-createuser.html`
+
+### Certifique-se de estar dentro da pasta game:
+
+```
+$ cd game
+$ python main.py
+```
+
+### ou
+
+```
+cd game
+$ python3 main.py
 ```
 
 ## Apresentações
