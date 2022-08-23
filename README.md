@@ -38,6 +38,12 @@ sudo docker-compose up
 Para o pgAdmin4 abra seu navegador de preferência e vá até a URL abaixo. Quando solicitado preencha o campo e-mail com `postgres@email.com` e o campo senho com `postgres`: 
 ```
 localhost:8080
+
+cd game
+
+run command:
+
+python main.py
 ```
 
 Ou para abrir o postgres no terminal, vá para a raiz do projeto e rode o comando abaixo. Quando solicitado utilize a senha `postgres` :
