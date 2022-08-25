@@ -156,11 +156,14 @@ def create_new_save() -> str:
     print('Criação de save. Caso queira voltar, aperte enter sem digitar nenhum nome.')
     save = None
     while not save:
-        value = input('Digite seu nome: ').strip()
-        if not value:
-            return choose_save()
-        save_save(value)
-        return {'nome': value}
+        try:
+            value = input('Digite seu nome: ').strip()
+            if not value:
+                return choose_save()
+            save_save(value)
+            return {'nome': value}
+        except Exception as error:
+            print('Nome com esse save já existe, por favor tente outro nome.')    
 
 def move_player(player,escolha):
     with get_connection() as db:
