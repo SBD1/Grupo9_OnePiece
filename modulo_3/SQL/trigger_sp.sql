@@ -1,33 +1,33 @@
--- Missão
+--Missão
 
-CREATE FUNCTION check_status_objetivo(id_missao INTEGER,id_objetivo INTEGER, id_jogador_save INTEGER,id_jogador_personagem INTEGER) RETURN trigger AS $check_status_objetivo$
-
+-- SP para verificar se a missão ja foi concluida e adicionar xp para personagem
+CREATE FUNCTION check_missao_cumprida(id_missao_ INTEGER, id_jogador_save_ INTEGER, id_jogador_personagem_ INTEGER) RETURN trigger AS $check_missao_cumprida$
+DECLARE
+    obj_count INTEGER  
+    obj_comp_count  INTEGER
+    xp_missao INTEGER
+    xp_perso INTEGER
 BEGIN
-    
+    SELECT COUNT(*) INTO obj_count FROM objetivo_status WHERE id_missao = id_missao_
+    AND id_jogador_save = id_jogador_save_
+    AND id_jogador_personagem = id_jogador_personagem_;
 
-    CASE (SELECT objetivo_status_enum FROM objetivo_status
-    WHERE id_missao = id_missao AND
-    WHERE id_objetivo = id_objetivo AND
-    WHERE id_jogador_save = id_jogador_save AND
-    WHERE id_jogador_personagem = id_jogador_personagem;)
-        WHEN 'Bloqueado' THEN RETURN 'Esse objetivo esta bloqueado no momento'
-        WHEN 'Concluido' THEN RETURN 'Esse objetivo já foi concluido'
-        ELSE RETURN 'Esse objetivo está liberado.'
-    END;
-END;
-$check_status_objetivo$ LANGUAGE plpgsql;
+    SELECT COUNT(*) INTO obj_comp_count FROM objetivo_status
+    WHERE objetivo_status_enum = 'Concluido'
+    AND id_jogador_save = id_jogador_save_
+    AND id_jogador_personagem = id_jogador_personagem_;
 
--- SP para verificar se a missão ja foi concluida
-CREATE FUNCTION check_missao_cumprida(id_missao INTEGER, id_jogador_save INTEGER, id_jogador_personagem INTEGER) RETURN trigger AS $check_missao_cumprida$
-BEGIN
-    SELECT objetivo_status_enum FROM objetivo_status
-    WHERE id_missao = id_missao AND
-    WHERE id_jogador_save = id_jogador_save AND
-    WHERE id_jogador_personagem = id_jogador_personagem;
+    SELECT qtd_experiencia INTO xp_missao FROM missao WHERE id_missao = id_missao_;
+    SELECT experiencia INTO xp_perso FROM personagem_principal WHERE id_jogador_personagem = id_jogador_personagem_;
 
-
+    IF obj_count = obj_comp_count THEN UPDATE personagem_principal SET experiencia = xp_perso + xp_missao WHERE id_personagem = id_jogador_personagem;
+    ELSE return 'Missao nao foi cumprida'
 
 END;
+$check_missao_cumprida$ LANGUAGE plpgsql;
+
+CREATE trigger check_missao_cumprida after delete on contrato 
+for each row execute procedure desativar_contrato();
 
 -- Item
 

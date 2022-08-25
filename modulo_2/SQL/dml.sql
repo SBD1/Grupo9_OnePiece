@@ -26,7 +26,7 @@ values
 -- Ilha Capitão Morgan
 (1,'Porto onde você pode viajar para outras cidades','Porto',2,NULL,NULL,4,1), -- 1
 (2,'Feira onde você pode comprar itens','Cidade',3,NULL,1,NULL,1), -- 2
-(3,'Taverna onde você encontra variedades da cachaça, mas o Luffy só toma leite','Cidade',NULL,3,2,NULL,1), -- 3
+(3,'Taverna onde você encontra variedades da cachaça, mas o Luffy só toma leite','Cidade',NULL,4,2,NULL,1), -- 3
 (4,'Base da Marinha, parece que Zoro se encontra lá, Converse com Rika.','Cidade',NULL,1,NULL,3,1),  -- 4
 --Ilha Buggy
 (5,'Porto de Orange Town','Porto',6,NULL,7,NULL,2), -- 5
@@ -156,9 +156,13 @@ VALUES
 (27,1,'Comerciante', 'Cidadao', 'Cidadão', true, false),
 (28,1,'Chuchu', 'Cidadao', 'Cidadão', false, true);
 
+-- jogador
+
 INSERT INTO jogador VALUES
 ('jogador1',1,1,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',150,100,'Kairoseki',1,120,10),
-('jogador2',1,5,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',5000000,100000,'Kairoseki',10,1200000,10101010);
+('jogador1',2,2,'Roronoa Zoro','Pirata','Piratas do Chapéu de Palha',100,100,'Cortar Ferro',1,100,10),
+('jogador2',1,5,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',5000000,100000,'Kairoseki',10,1200000,10101010),
+('jogador3',2,2,'Roronoa Zoro','Pirata','Piratas do Chapéu de Palha',100,100,'Cortar Ferro',1,100,10);
 
 
 INSERT INTO inventario (id_jogador_save,id_jogador_personagem, id_item, qtd_item)
@@ -201,3 +205,4 @@ INSERT INTO objetivo_status VALUES
 (2,3,'jogador2',1,'Liberado');
 
 commit;
+
