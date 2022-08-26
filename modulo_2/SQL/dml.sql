@@ -148,9 +148,9 @@ INSERT INTO inimigo (id_personagem,id_regiao,nome,ocupacao,grupo_ocupacao,berrie
 INSERT INTO personagem_nao_hostil (id_personagem, id_regiao,nome, ocupacao, grupo_ocupacao, is_vendedor, is_personagem_historia)
 VALUES
 (21,1,'Coby', 'Cidadao', 'Marinha', false, true),
-(22,1,'vendedor', 'Cidadao', 'Cidadão', true, false),
-(23,1,'Mãe da Rika', 'Cidadao', 'Cidadão', false, true),
-(24,1,'Rika', 'Cidadao', 'Cidadão', false, true),
+(22,2,'vendedor', 'Cidadao', 'Cidadão', true, false),
+(23,3,'Mãe da Rika', 'Cidadao', 'Cidadão', false, true),
+(24,3,'Rika', 'Cidadao', 'Cidadão', false, true),
 (25,1,'Marinheiro', 'Marinheiro', 'Marinha', false, false),
 (26,1,'Prefeito', 'Cidadao', 'Cidadão', false, false),
 (27,1,'Comerciante', 'Cidadao', 'Cidadão', true, false),
