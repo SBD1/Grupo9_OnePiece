@@ -140,18 +140,18 @@ INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, ene
 --('','Ferro', 1, 'Em vez de vapor, essa forma produz uma substância gasosa que aparece como uma mistura de vapor e fogo e, como suas outras contrapartes, também parece ser colocada sobre seus ombros como um lenço, enquanto sob esta forma. Seus punhos também se flexionam diferentemente, com os primeiros nós dos dedos sendo estendidos, semelhante ao punho de leopardo.', 950, 350);
 
 
-INSERT INTO inimigo (id_personagem,id_regiao,nome,ocupacao,grupo_ocupacao,berries,energia,energia_maxima,fraqueza,experiencia,vida,vida_maxima,respawn) VALUES 
-(10,1,'Marinheiro 1','Marinheiro','Marinha',150,100,100,'Akuma no mi',1,100,100,true),
-(11,1,'Marinheiro 2','Marinheiro','Marinha',250,100,100,'Akuma no mi',2,100,100,true),
-(12,1,'Marinheiro 3','Marinheiro','Marinha',500,100,100,'Raki',3,100,100,true),
-(13,1,'Marinheiro 4','Marinheiro','Marinha',1000,100,100,'Raki do rei',4,100,100,true),
-(14,1,'Akainu','Marinheiro','Almirante da Marinha',1000000,10000,10000,'Kairoseki',10,10000,10000,false),
-(15,1,'Alkiji','Marinheiro','Almirante da Marinha',900000,10000,10000,'Kairoseki',10,10000,10000,false),
-(16,1,'Kizaru','Marinheiro','Almirante da Marinha',1200000,10000,10000,'Kairoseki',10,10000,10000,false),
-(17,1,'Alvida','Pirata','Piratas da Alvida',1000,100,100,'Akuma no mi',1,100,100,false),
-(18,1,'Morgan','Marinheiro','Capitão da Marinha',3000,150,150,'Akuma no mi',1,100,100,false),
-(19,1,'Buggy','Pirata','Piratas do Buggy',1000,200,200,'Akuma no mi',2,150,150,false),
-(20,1,'Arlong','Pirata','Piratas do Arlong',50000,250,250,'Akuma no mi',3,250,250,false);
+INSERT INTO inimigo (id_personagem,id_regiao,nome,ocupacao,grupo_ocupacao,berries,energia,energia_maxima,fraqueza,experiencia,vida,vida_maxima,id_missao,id_objetivo) VALUES 
+(10,1,'Marinheiro 1','Marinheiro','Marinha',150,100,100,'Akuma no mi',1,0,100,null,null),
+(11,1,'Marinheiro 2','Marinheiro','Marinha',250,100,100,'Akuma no mi',2,0,100,null,null),
+(12,1,'Marinheiro 3','Marinheiro','Marinha',500,100,100,'Raki',3,0,100,null,null),
+(13,1,'Marinheiro 4','Marinheiro','Marinha',1000,100,100,'Raki do rei',4,0,100,null,null),
+(14,1,'Akainu','Marinheiro','Almirante da Marinha',1000000,10000,10000,'Kairoseki',10,0,10000,1,1),
+(15,1,'Alkiji','Marinheiro','Almirante da Marinha',900000,10000,10000,'Kairoseki',10,0,10000,1,1),
+(16,1,'Kizaru','Marinheiro','Almirante da Marinha',1200000,10000,10000,'Kairoseki',10,0,10000,1,1),
+(17,1,'Alvida','Pirata','Piratas da Alvida',1000,100,100,'Akuma no mi',1,0,100,1,1),
+(18,1,'Morgan','Marinheiro','Capitão da Marinha',3000,150,150,'Akuma no mi',1,0,100,1,1),
+(19,1,'Buggy','Pirata','Piratas do Buggy',1000,200,200,'Akuma no mi',2,0,150,1,1),
+(20,1,'Arlong','Pirata','Piratas do Arlong',50000,250,250,'Akuma no mi',3,0,250,1,1);
 
 
 INSERT INTO personagem_nao_hostil (id_personagem, id_regiao,nome, ocupacao, grupo_ocupacao, is_vendedor, is_personagem_historia)
@@ -250,9 +250,13 @@ INSERT INTO objetivo_status VALUES
 (1,1,'jogador1',1,'Liberado'),
 (2,3,'jogador2',1,'Liberado');
 
+-- Constraints para evitar dependências ciclicas.
 
 ALTER TABLE ilha ADD CONSTRAINT fk_ilha_missao FOREIGN KEY (id_missao)
     REFERENCES missao(id_missao) ON DELETE RESTRICT;
+
+ALTER TABLE inimigo ADD CONSTRAINT fk_objetivo FOREIGN KEY (id_missao, id_objetivo)
+        REFERENCES objetivo(id_missao, id_objetivo);
 
 commit;
 

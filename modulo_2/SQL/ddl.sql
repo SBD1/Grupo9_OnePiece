@@ -152,7 +152,8 @@ CREATE TABLE IF NOT EXISTS inimigo (
     CHECK(vida >= 0),
     vida_maxima INTEGER NOT NULL,
     CHECK(vida_maxima >= 0),
-    respawn BOOLEAN NOT NULL DEFAULT FALSE,
+    id_missao INTEGER DEFAULT NULL,
+    id_objetivo INTEGER DEFAULT NULL,
 
     CONSTRAINT fk_regiao FOREIGN KEY (id_regiao) 
         REFERENCES regiao(id_regiao) ON DELETE RESTRICT,
@@ -309,7 +310,7 @@ CREATE TABLE IF NOT EXISTS objetivo (
 );
 
 CREATE TYPE objetivo_status_enum AS ENUM (
-    'Bloqueado', 'Liberado', 'Concluido'
+    'Bloqueado', 'Liberado', 'Em andamento', 'Concluido'
 );
 
 CREATE TABLE IF NOT EXISTS objetivo_status (

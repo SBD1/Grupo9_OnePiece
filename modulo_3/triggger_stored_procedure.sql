@@ -124,17 +124,20 @@ $inimigo_morre$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION spawn_inimigo() RETURNS trigger AS $spawn_inimigo$
 BEGIN
     IF (NEW.id_regiao <> OLD.id_regiao) THEN
-        PERFORM * FROM inimigo WHERE id_regiao = NEW.id_regiao AND respawn = true;
-        IF FOUND THEN
-            UPDATE inimigo SET vida = vida_maxima, energia = energia_maxima WHERE id_regiao = NEW.id_regiao;
-        END IF;
+        -- Respawna inimigos de missões
+        UPDATE inimigo SET vida = vida_maxima, energia = energia_maxima 
+            WHERE id_regiao = NEW.id_regiao AND (id_missao, id_objetivo) IN (SELECT id_missao,id_objetivo FROM objetivo_status WHERE status='Em andamento' AND id_jogador_save = NEW.nome_save AND id_jogador_personagem = NEW.id_personagem);
+        -- Respawan inimigos comuns
+        UPDATE inimigo SET vida = vida_maxima, energia = energia_maxima 
+            WHERE id_regiao = NEW.id_regiao;
     END IF;
-    RETURN NULL;
+    RETURN NEW;
 END;
 $spawn_inimigo$ LANGUAGE plpgsql;
 
+DROP TRIGGER spawn_inimigo_trigger ON jogador;
 CREATE TRIGGER spawn_inimigo_trigger
-    AFTER UPDATE ON jogador
+    BEFORE UPDATE ON jogador
     FOR EACH ROW EXECUTE PROCEDURE spawn_inimigo();
 
     -- compra de itens  
