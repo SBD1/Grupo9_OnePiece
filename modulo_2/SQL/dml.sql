@@ -184,7 +184,7 @@ VALUES
 ('jogador1',1, 3, 2,6),
 ('jogador1',1, 4, 3,10),
 ('jogador1',1, 5, 2,23),
-('jogador2',1, 5, 25,22),
+('jogador2',1, 5, 25,22);
 
 -- Missões
 
@@ -193,7 +193,7 @@ INSERT INTO missao (id_missao, nome, descricao, qtd_experiencia, dificuldade, id
 (2,'O grande espadachim aparece', 'Luffy e Coby conhecem e libertam o Caçador de Piratas Roronoa Zoro, que foi preso pelo Capitão Morgan e seu filho Helmeppo', 10, 0, 21),
 (3,'Morgan VS Luffy', 'Luffy e o mais novo membro de sua tripulação, Roronoa Zoro, lutam contra o Capitão Morgan', 10, 0, 21),
 (4,'Palhaço-Pirata, Capitão Buggy', 'Luffy e Zoro se deparam o Capitão Buggy', 10, 0, 21),
-(5,'Mohji, o domador VS Luffy', 'Luffy consegue se libertar da jaula em que estava preso e luta contra Mohji e Richie', 10, 0, 21);      
+(5,'Mohji, o domador VS Luffy', 'Luffy consegue se libertar da jaula em que estava preso e luta contra Mohji e Richie', 10, 0, 21);
 
 INSERT INTO objetivo (id_missao,id_objetivo, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil) VALUES 
 (1,1, '', 'Luffy derrota piratas do bando da Alvida', 'DerrotarInimigo', NULL, NULL, NULL),
@@ -212,5 +212,9 @@ INSERT INTO objetivo (id_missao,id_objetivo, nome, descricao, tipo, id_item, id_
 INSERT INTO objetivo_status VALUES
 (1,1,'jogador1',1,'Liberado'),
 (2,3,'jogador2',1,'Liberado');
+
+
+ALTER TABLE ilha ADD CONSTRAINT fk_ilha_missao FOREIGN KEY (id_missao)
+    REFERENCES missao(id_missao) ON DELETE RESTRICT;
 
 commit;

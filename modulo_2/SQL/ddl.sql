@@ -31,9 +31,6 @@ CREATE TABLE IF NOT EXISTS ilha (
     descricao TEXT NOT NULL DEFAULT '',
     id_missao int not null,
 
-    CONSTRAINT fk_ilha_missao FOREIGN KEY (id_missao)
-        REFERENCES missao(id_missao) ON DELETE RESTRICT,
-
     PRIMARY KEY (id_ilha)
 );
 
@@ -247,10 +244,10 @@ CREATE TABLE IF NOT EXISTS inventario_jogador (
     CONSTRAINT fk_item FOREIGN KEY (id_item)
         REFERENCES item(id_item) ON DELETE RESTRICT,
 
-    CONSTRAINT pk_inventario PRIMARY KEY (id_jogador_save,id_jogador_personagem, id_item)
+    PRIMARY KEY (id_jogador_save,id_jogador_personagem, id_item)
 );
 
-CREATE TABLE IF NOT EXISTS inventario_personagem(
+CREATE TABLE IF NOT EXISTS inventario_personagem (
     id_jogador_save VARCHAR(30) NOT NULL,    
     id_jogador_personagem int not null,
     id_personagem int not null,
@@ -261,8 +258,8 @@ CREATE TABLE IF NOT EXISTS inventario_personagem(
         REFERENCES jogador(nome_save,id_personagem) ON DELETE RESTRICT,
     CONSTRAINT fk_item FOREIGN KEY (id_item)
         REFERENCES item(id_item) ON DELETE RESTRICT,
-    
-    CONSTRAINT pk_inventario PRIMARY KEY (id_jogador_save,id_jogador_personagem,id_personagem,id_item)
+
+    PRIMARY KEY (id_jogador_save,id_jogador_personagem,id_personagem,id_item)
 );
 
 
