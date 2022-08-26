@@ -76,11 +76,11 @@ INSERT INTO personagem VALUES
 
 
 
-INSERT INTO personagem_principal (id_personagem, nome,id_regiao,ocupacao,grupo_ocupacao,berries,energia,fraqueza,experiencia,vida,capacidade_de_itens) VALUES 
-(1,'Monkey D. Luffy',1,'Pirata','Piratas do Chapéu de Palha',150,100,'Kairoseki',1,120,10),
-(2,'Roronoa Zoro',2,'Pirata','Piratas do Chapéu de Palha',100,100,'Cortar Ferro',1,100,10),
-(3,'Sanji',3,'Pirata','Piratas do Chapéu de Palha',1000,100,'',1,100,15),
-(4,'Nami',1,'Pirata','Piratas do Chapéu de Palha',1000000,75,'Tritões',1,100,8);
+INSERT INTO personagem_principal (id_personagem, nome,id_regiao,ocupacao,grupo_ocupacao,berries,energia,energia_maxima,fraqueza,experiencia,vida,vida_maxima,capacidade_de_itens) VALUES 
+(1,'Monkey D. Luffy',1,'Pirata','Piratas do Chapéu de Palha',150,100,100,'Kairoseki',1,120,120,10),
+(2,'Roronoa Zoro',2,'Pirata','Piratas do Chapéu de Palha',100,100,100,'Cortar Ferro',1,100,100,10),
+(3,'Sanji',3,'Pirata','Piratas do Chapéu de Palha',1000,100,100,'',1,100,100,15),
+(4,'Nami',1,'Pirata','Piratas do Chapéu de Palha',1000000,75,75,'Tritões',1,100,100,8);
 
 INSERT INTO barco (id_barco,id_regiao,nome, ocupacao, grupo_ocupacao, capacidade_de_itens) VALUES 
 (5,1,'Thousand Sunny', 'Pirata', 'Piratas do Chapéu de Palha', 400),
@@ -131,18 +131,18 @@ INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, ene
 --('','Ferro', 1, 'Em vez de vapor, essa forma produz uma substância gasosa que aparece como uma mistura de vapor e fogo e, como suas outras contrapartes, também parece ser colocada sobre seus ombros como um lenço, enquanto sob esta forma. Seus punhos também se flexionam diferentemente, com os primeiros nós dos dedos sendo estendidos, semelhante ao punho de leopardo.', 950, 350);
 
 
-INSERT INTO inimigo (id_personagem,id_regiao,nome,ocupacao,grupo_ocupacao,berries,energia,fraqueza,experiencia,vida) VALUES 
-(10,1,'Marinheiro 1','Marinheiro','Marinha',150,100,'Akuma no mi',1,100),
-(11,1,'Marinheiro 2','Marinheiro','Marinha',250,100,'Akuma no mi',2,100),
-(12,1,'Marinheiro 3','Marinheiro','Marinha',500,100,'Raki',3,100),
-(13,1,'Marinheiro 4','Marinheiro','Marinha',1000,100,'Raki do rei',4,100),
-(14,1,'Akainu','Marinheiro','Almirante da Marinha',1000000,10000,'Kairoseki',10,10000),
-(15,1,'Alkiji','Marinheiro','Almirante da Marinha',900000,10000,'Kairoseki',10,10000),
-(16,1,'Kizaru','Marinheiro','Almirante da Marinha',1200000,10000,'Kairoseki',10,10000),
-(17,1,'Alvida','Pirata','Piratas da Alvida',1000,100,'Akuma no mi',1,100),
-(18,1,'Morgan','Marinheiro','Capitão da Marinha',3000,150,'Akuma no mi',1,100),
-(19,1,'Buggy','Pirata','Piratas do Buggy',1000,200,'Akuma no mi',2,150),
-(20,1,'Arlong','Pirata','Piratas do Arlong',50000,250,'Akuma no mi',3,250);
+INSERT INTO inimigo (id_personagem,id_regiao,nome,ocupacao,grupo_ocupacao,berries,energia,energia_maxima,fraqueza,experiencia,vida,vida_maxima,respawn) VALUES 
+(10,1,'Marinheiro 1','Marinheiro','Marinha',150,100,100,'Akuma no mi',1,100,100,true),
+(11,1,'Marinheiro 2','Marinheiro','Marinha',250,100,100,'Akuma no mi',2,100,100,true),
+(12,1,'Marinheiro 3','Marinheiro','Marinha',500,100,100,'Raki',3,100,100,true),
+(13,1,'Marinheiro 4','Marinheiro','Marinha',1000,100,100,'Raki do rei',4,100,100,true),
+(14,1,'Akainu','Marinheiro','Almirante da Marinha',1000000,10000,10000,'Kairoseki',10,10000,10000,false),
+(15,1,'Alkiji','Marinheiro','Almirante da Marinha',900000,10000,10000,'Kairoseki',10,10000,10000,false),
+(16,1,'Kizaru','Marinheiro','Almirante da Marinha',1200000,10000,10000,'Kairoseki',10,10000,10000,false),
+(17,1,'Alvida','Pirata','Piratas da Alvida',1000,100,100,'Akuma no mi',1,100,100,false),
+(18,1,'Morgan','Marinheiro','Capitão da Marinha',3000,150,150,'Akuma no mi',1,100,100,false),
+(19,1,'Buggy','Pirata','Piratas do Buggy',1000,200,200,'Akuma no mi',2,150,150,false),
+(20,1,'Arlong','Pirata','Piratas do Arlong',50000,250,250,'Akuma no mi',3,250,250,false);
 
 
 INSERT INTO personagem_nao_hostil (id_personagem, id_regiao,nome, ocupacao, grupo_ocupacao, is_vendedor, is_personagem_historia)
@@ -159,10 +159,10 @@ VALUES
 -- jogador
 
 INSERT INTO jogador VALUES
-('jogador1',1,1,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',150,100,'Kairoseki',1,120,10),
-('jogador1',2,2,'Roronoa Zoro','Pirata','Piratas do Chapéu de Palha',100,100,'Cortar Ferro',1,100,10),
-('jogador2',1,5,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',5000000,100000,'Kairoseki',10,1200000,10101010),
-('jogador3',2,2,'Roronoa Zoro','Pirata','Piratas do Chapéu de Palha',100,100,'Cortar Ferro',1,100,10);
+('jogador1',1,1,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',150,100,100,'Kairoseki',1,120,120,10),
+('jogador1',2,2,'Roronoa Zoro','Pirata','Piratas do Chapéu de Palha',100,100,100,'Cortar Ferro',1,100,100,10),
+('jogador2',1,5,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',5000000,100000,100000,'Kairoseki',10,1200000,1200000,10101010),
+('jogador3',2,2,'Roronoa Zoro','Pirata','Piratas do Chapéu de Palha',100,100,100,'Cortar Ferro',1,100,100,10);
 
 
 INSERT INTO inventario (id_jogador_save,id_jogador_personagem, id_item, qtd_item)
