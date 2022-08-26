@@ -17,6 +17,7 @@ BEGIN
             UPDATE inimigo SET vida = vida_maxima, energia = energia_maxima WHERE id_regiao = NEW.id_regiao;
         END IF;
     END IF;
+    RETURN NULL;
 END;
 $spawn_inimigo$ LANGUAGE plpgsql;
 
