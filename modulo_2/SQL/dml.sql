@@ -165,10 +165,10 @@ INSERT INTO jogador VALUES
 ('jogador3',2,2,'Roronoa Zoro','Pirata','Piratas do Chapéu de Palha',100,100,100,'Cortar Ferro',1,100,100,10);
 
 
-INSERT INTO inventario (id_jogador_save,id_jogador_personagem, id_item, qtd_item)
+INSERT INTO inventario_jogador (id_jogador_save,id_jogador_personagem, id_item, qtd_item)
 VALUES 
 ('jogador1',1, 1, 1),
-('jogador1',1,2, 3),
+('jogador1',1, 2, 3),
 ('jogador1',1, 3, 2),
 ('jogador1',1, 4, 3),
 ('jogador1',1, 5, 2),
@@ -176,6 +176,15 @@ VALUES
 ('jogador2',1, 4, 25),
 ('jogador2',1, 3, 25),
 ('jogador2',1, 2, 25);
+
+INSERT INTO inventario_personagem (id_jogador_save,id_jogador_personagem,id_item, qtd_item,id_personagem)
+VALUES 
+('jogador1',1, 1, 1,5),
+('jogador1',1, 2, 3,8),
+('jogador1',1, 3, 2,6),
+('jogador1',1, 4, 3,10),
+('jogador1',1, 5, 2,23),
+('jogador2',1, 5, 25,22),
 
 -- Missões
 

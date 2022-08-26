@@ -62,15 +62,6 @@ END;
 
 $compra2$ LANGUAGE plpgsql;
 
--- quando 
-
-
-
-    -- Quando conclui missão, libera ilha
-        -- conclui objetivo, marca ilha liberada
-
---call compra2(50,'jogador1',1);
-
 
 CREATE or replace FUNCTION  check_missao() RETURNs trigger AS $check_missao$
 DECLARE
@@ -102,9 +93,6 @@ BEGIN
         --RAISE EXCEPTION 'Olá mundo % % %',xp_missao,1000000000000000,10000000000000;
         return new;
     END IF;
-
-
-
     return new;
 
 
