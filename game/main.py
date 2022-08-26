@@ -8,31 +8,51 @@ def main():
     player = choose_player(save['nome'])
     run_game(player)
 
+def checa_personagem_regiao(posicao_jogador):
+
+    inimigos_regiao = select_to_dict('SELECT id_regiao,nome,ocupacao FROM inimigo where id_regiao = %s and vida > 0',posicao_jogador)
+    npcs_regiao = select_to_dict('SELECT id_regiao,nome,ocupacao FROM personagem_nao_hostil where id_regiao = %s ',posicao_jogador)
+    i=0
+    for npc in npcs_regiao:
+        print(f"{i} - {npc['nome']} é um {npc['ocupacao']} e está na mesma região que você.")
+        i+=1
+    print('\n\n')
+    for npc in range(len(npcs_regiao)):
+        print(f"{npc} - Falar com {npcs_regiao[npc]['nome']}")
+
+    return npcs_regiao
+
 def menu(player):
     nome_player = player["nome"]
-    posicao_atual,regioes_to_go = regiao_player(player)
 
     invalid = True
 
     while True:
+        posicao_atual,regioes_to_go = regiao_player(player)
+
         print("##### One Piece ! 💀 - \U0001f480 ######\n\n")
         print(f"Jogador {nome_player} 🏴‍☠️\n"
             f"Você está em {posicao_atual}\n"
-            "[[Objetivo atual --------- ]]\n"
-            "1 - NPC aqui ????\n"
-            "1 - NPC aqui ????\n"
-            "1 - NPC aqui ????\n"
-            "1 - NPC aqui ????\n"
-            "M - Mover personagem\n"
-            "Q - Sair")
+            "[[Objetivo atual --------- ]]\n")
 
-        escolha = input("O que você deseja fazer ?").lower()
+        npcs_regiao = checa_personagem_regiao(posicao_atual)   
+        print("Falar com NPC ?\n\n")
+
+
+        print(
+            "M - Mover personagem\n"
+            "Q - Sair"
+        )
+            
+        escolha = input("O que você deseja fazer ?\n\n> ").lower()
         
         if escolha == 'm':
             regiao = printa_regioes(nome_player,regioes_to_go)
             move_player(player,regiao)
         elif escolha == 'q':
-            intro()
+            main()
+        elif escolha == 'l':
+            print(checa_personagem_regiao(posicao_atual))
 
 def run_game(player: dict):
     print(f'Rodando o jogo com save [{player["nome_save"]}]'
@@ -56,7 +76,7 @@ def choose_player(save: str) -> list:
     while True:
         value = input().strip()
         if not value.isdigit():
-            print('Digite o número da opção desejada.')
+            print('Digite o número da opção desejada.\n\n> ')
         else:
             value = int(value)
             if 0 <= value <= i:
@@ -85,30 +105,29 @@ def get_saves() -> list[str]:
 
 
 def intro():
-    actions = {1: choose_save,
-               2: create_new_save,
-               3: outro}
+    actions = {'1': choose_save,
+               '2': create_new_save,
+               'q': outro}
 
-    print('=======================================================================')       
-    print(r"""
+    op = r"""
    ___             ____  _               
   / _ \ _ __   ___|  _ \(_) ___  ___ ___ 
  | | | | '_ \ / _ \ |_) | |/ _ \/ __/ _ \
  | |_| | | | |  __/  __/| |  __/ (_|  __/
   \___/|_| |_|\___|_|   |_|\___|\___\___|
-    """)
-    print('=======================================================================')          
+    """
+
+    print('='*150)
+    for s in op.split('\n'):
+        print(f'{s:^150}')
+    print('='*150)          
     print('[1] - Usar um save existente.')
     print('[2] - Criar um novo save.')
-    print('[3] - Sair.')
+    print('[q] - Sair.')
     while True:
-        value = input('Digite o número da sua opção: ').strip()
-        if not value.isdigit():
-            print('Opção inválida. A opção deve ser um numero.')
-            continue
-        value = int(value)
-        if 1 > value > 3:
-            print('Digite um número válido [1, 2, 3].')
+        value = input('Digite o número da sua opção: \n\n> ').strip()
+        if value not in actions:
+            print('Digite um número válido [1, 2, q].')
         else:
             return actions[value]()
 
@@ -124,7 +143,7 @@ def choose_save() -> str | None:
 
     save = None
     while not save:
-        value = input('Digite a opção escolhida: ').strip()
+        value = input('Digite a opção escolhida: \n\n> ').strip()
         if value in saves:
             save = value
         elif value.isdigit():
@@ -169,7 +188,7 @@ def move_player(player,escolha):
     with get_connection() as db:
         with db:
             cursor = db.cursor()
-            cursor.execute('UPDATE jogador SET id_regiao = %s',[escolha])
+            cursor.execute('UPDATE jogador SET id_regiao = %s',escolha)
 
     #regiao_player(player)
 
@@ -184,7 +203,7 @@ def regiao_player(player):
     current = regiao[0]['id_regiao']
 
 
-    #print(f"{nome} está em {current}")
+    print(f"{nome} está em {current}")
 
     with get_connection() as db:
         cursor = db.cursor()
@@ -220,6 +239,8 @@ def printa_regioes(nome,regioes_to_go):
             invalid = False
 
     return escolha
+
+
 
 if __name__ == '__main__':
     main()
