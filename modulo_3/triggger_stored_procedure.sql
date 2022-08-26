@@ -25,12 +25,6 @@ CREATE TRIGGER spawn_inimigo_trigger
     FOR EACH ROW EXECUTE PROCEDURE spawn_inimigo();
 
     -- compra de itens
--- CREATE OR REPLACE FUNCTION compra_item(id_jogador_save VARCHAR(30), id_jogador_personagem INT, id_item INT, qtd_item INT DEFAULT 1)
---     RETURNS trigger AS $compra_item$
--- BEGIN
---     SELECT 
--- END;
--- $compra_item$ LANGUAGE plpgsql;
 
 -- Nicolas 
     -- Atualiza nível consequentemente atualiza poder especial
