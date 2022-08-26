@@ -14,12 +14,12 @@ VALUES
 (5,'laminada', 'aumenta o dano do personagem quando equipado', 15, 60, 10, 15, TRUE),
 (6,'rapidez', 'aumenta o dano do personagem quando equipado', 8, 90, 5, 12, TRUE);
 
-INSERT INTO ilha (id_ilha,nome,descricao) VALUES 
-(1,'Ilha do Capitão Morgan','Ilha com uma base da Marinha, comandada pelo Capitão Morgan. Um marinheiro temido tanto pela população quanto pela marinha.Zoro aparece capturado nessa ilha'),
-(2,'Orange Town','Ilha tomada pelo Buggy, cujo prefeito se chama Boodle'),
-(3,'Vila Syrup','Vila da ilhas Geecko, onde Usopp, um grande Guerreiro do mar com mais de 8 mil seguidores, vive'),
-(4,'Baratie','Restaurante Marítmo comandado pelo chefe Zeff. Zeff tem um filho chamado Sanji, um cozinheiro romântico que ama mulheres.'),
-(5,'Ilhas Conami','Arquipélogo de Ilhas onde Nami nasceu. Era um arquipélogo quieto, até Arlong e seus piratas chegarem.');
+INSERT INTO ilha (id_ilha,id_missao,nome,descricao) VALUES 
+(1,1,'Ilha do Capitão Morgan','Ilha com uma base da Marinha, comandada pelo Capitão Morgan. Um marinheiro temido tanto pela população quanto pela marinha.Zoro aparece capturado nessa ilha'),
+(2,2,'Orange Town','Ilha tomada pelo Buggy, cujo prefeito se chama Boodle'),
+(3,3,'Vila Syrup','Vila da ilhas Geecko, onde Usopp, um grande Guerreiro do mar com mais de 8 mil seguidores, vive'),
+(4,4,'Baratie','Restaurante Marítmo comandado pelo chefe Zeff. Zeff tem um filho chamado Sanji, um cozinheiro romântico que ama mulheres.'),
+(5,5,'Ilhas Conami','Arquipélogo de Ilhas onde Nami nasceu. Era um arquipélogo quieto, até Arlong e seus piratas chegarem.');
 
 insert into regiao (id_regiao,descricao,tipo,norte,sul,leste,oeste,id_ilha)
 values 
@@ -187,7 +187,7 @@ INSERT INTO missao (id_missao, nome, descricao, qtd_experiencia, dificuldade, id
 (5,'Mohji, o domador VS Luffy', 'Luffy consegue se libertar da jaula em que estava preso e luta contra Mohji e Richie', 10, 0, 21);      
 
 INSERT INTO objetivo (id_missao,id_objetivo, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil) VALUES 
-(1,1,'', 'Luffy derrota piratas do bando da Alvida', 'DerrotarInimigo', NULL, NULL, NULL),
+(1,1, '', 'Luffy derrota piratas do bando da Alvida', 'DerrotarInimigo', NULL, NULL, NULL),
 (1,2, '', 'Luffy da o golpe final e manda Alvida pelos ares', 'DerrotarInimigo', NULL, NULL, NULL),
 (2,1, '', 'Luffy derrota os marinheiros que estavam guardando as espadas de Roronoa Zoro', 'DerrotarInimigo', NULL, NULL, NULL),
 (2,2, '', 'Luffy pega as espadas de Roronoa Zoro, que tinham sido confiscadas pela marinha', 'PegarItem', NULL, NULL, NULL),
@@ -196,7 +196,7 @@ INSERT INTO objetivo (id_missao,id_objetivo, nome, descricao, tipo, id_item, id_
 (3,2, '', 'Luffy e Zoro vencem o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL),
 (3,3, '', 'Coby se dispede de Luffy para seguir sua ambição de se tornar um marinheiro.', 'FalarComNPC', NULL, NULL, NULL),
 (4,1, '', 'Luffy derrota piratas do Capitão Buggy', 'DerrotarInimigo', NULL, NULL, NULL),
-(4,2    , '', 'Nami engana Luffy e o entrega para Buggy', 'DerrotarInimigo', NULL, NULL, NULL),
+(4,2, '', 'Nami engana Luffy e o entrega para Buggy', 'DerrotarInimigo', NULL, NULL, NULL),
 (4,3, '', 'Luffy enfrenta Richie', 'DerrotarInimigo', NULL, NULL, NULL);
 
 
