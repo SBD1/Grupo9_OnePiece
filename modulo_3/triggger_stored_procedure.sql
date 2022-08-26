@@ -118,45 +118,4 @@ drop trigger rihana on objetivo_status;
 CREATE trigger rihana after UPDATE on objetivo_status
 for each ROW EXECUTE PROCEDURE check_missao();
 
-update objetivo_status set status = 'Liberado' where id_missao = 1 and id_objetivo = 1;
-
-select * from objetivo_status ;
-
-
-
-
-update objetivo_status set status = 'Liberado' where id_missao = 1 and id_objetivo = 1;
-select * from objetivo_status ;
-
-update objetivo_status set status = 'Liberado' where id_missao = 1 and id_objetivo = 2;
-select * from objetivo_status ;
-
-update objetivo_status set status = 'Concluido' where id_missao = 1 and id_objetivo = 1;
-select * from objetivo_status ;
-
-update objetivo_status set status = 'Concluido' where id_missao = 1 and id_objetivo = 2;
-
-select * from objetivo_status ;
-
-
-select * from personagem_principal where id_personagem = 1;
-
-
-/*'''
-
-
-CREATE or replace FUNCTION  check_missao() RETURNs trigger AS $check_missao$
-BEGIN
-
-    RAISE EXCEPTION 'Olá mundo % % %',1,1,1;
-    
-END;
-$check_missao$ LANGUAGE plpgsql;
-drop trigger oioioioii
-
-CREATE trigger oioioioii after UPDATE on objetivo
-for each ROW EXECUTE PROCEDURE check_missao();
-'''
-
-*/
 
