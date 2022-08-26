@@ -11,16 +11,31 @@ def main():
 def checa_personagem_regiao(posicao_jogador):
 
     inimigos_regiao = select_to_dict('SELECT id_regiao,nome,ocupacao FROM inimigo where id_regiao = %s and vida > 0',posicao_jogador)
-    npcs_regiao = select_to_dict('SELECT id_regiao,nome,ocupacao FROM personagem_nao_hostil where id_regiao = %s ',posicao_jogador)
+    npcs_regiao = select_to_dict('SELECT id_personagem,id_regiao,nome,ocupacao,is_vendedor,is_personagem_historia FROM personagem_nao_hostil where id_regiao = %s ',posicao_jogador)
     i=0
     for npc in npcs_regiao:
         print(f"{i} - {npc['nome']} é um {npc['ocupacao']} e está na mesma região que você.")
         i+=1
-    print('\n\n')
+    print('\n')
     for npc in range(len(npcs_regiao)):
         print(f"{npc} - Falar com {npcs_regiao[npc]['nome']}")
 
     return npcs_regiao
+
+def fala_com_npc(npc_num,npcs_dict,player):
+    npc_num = int(npc_num)
+    print(f"Olá sou {npcs_dict[npc_num]['nome']}\n")
+
+    if(npcs_dict[npc_num]['is_vendedor']):
+        print("Quer comprar ? ")
+        
+        print("Aqui está meu inventário :")
+        #print(f'id : {player["id_personagem"]} \nnome: {player["nome_save"]}')
+        inventario_npc = select_to_dict("SELECT id_item,qtd_item from inventario_personagem where id_jogador_save = %s and id_jogador_personagem = %s and id_personagem = %s",player["nome_save"],player["id_personagem"],npcs_dict[npc_num]['id_personagem'])
+        #print(inventario_npc)
+        for item in inventario_npc:
+            print(f"id_item : {item['id_item']}   {item['qtd_item']}x")
+
 
 def menu(player):
     nome_player = player["nome"]
@@ -35,12 +50,10 @@ def menu(player):
             f"Você está em {posicao_atual}\n"
             "[[Objetivo atual --------- ]]\n")
 
-        npcs_regiao = checa_personagem_regiao(posicao_atual)   
-        print("Falar com NPC ?\n\n")
-
+        npcs_regiao = checa_personagem_regiao(posicao_atual)  
 
         print(
-            "M - Mover personagem\n"
+            "\n\nM - Mover personagem\n"
             "Q - Sair"
         )
             
@@ -51,8 +64,9 @@ def menu(player):
             move_player(player,regiao)
         elif escolha == 'q':
             main()
-        elif escolha == 'l':
-            print(checa_personagem_regiao(posicao_atual))
+        elif 0 <= int(escolha) <= len(npcs_regiao):
+            print("-------Falando com NPC-------------\n\n")
+            fala_com_npc(escolha,npcs_regiao,player)
 
 def run_game(player: dict):
     print(f'Rodando o jogo com save [{player["nome_save"]}]'
@@ -93,7 +107,7 @@ def get_players(save: str) -> list[list]:
 def select_to_dict(query: str, *args):
     import re
 
-    fields = tuple(field.strip() for field in re.findall(r'SELECT (.*) FROM', query)[0].split(','))
+    fields = tuple(field.strip().lstrip('(').rstrip(')') for field in re.findall(r'SELECT (.*) FROM', query, re.IGNORECASE)[0].split(','))
     with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(query, args or ...)
