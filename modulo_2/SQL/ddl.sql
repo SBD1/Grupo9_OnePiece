@@ -259,7 +259,8 @@ CREATE TABLE IF NOT EXISTS inventario_personagem (
     CONSTRAINT fk_item FOREIGN KEY (id_item)
         REFERENCES item(id_item) ON DELETE RESTRICT,
 
-    PRIMARY KEY (id_jogador_save,id_jogador_personagem,id_personagem,id_item)
+    PRIMARY KEY (id_jogador_save,id_jogador_personagem
+    ,id_personagem,id_item)
 );
 
 

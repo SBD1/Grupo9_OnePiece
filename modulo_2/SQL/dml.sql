@@ -7,12 +7,21 @@ INSERT INTO save (nome) VALUES
 
 INSERT INTO item (id_item,nome, descricao, preco, qtd_energia, qtd_vida, qtd_dano, is_equipavel)
 VALUES
-(1,'bergamota', 'Recupera vida', 10, 0, 20, NULL, FALSE),
-(2,'melancia', 'Recupera vida', 10, 20, 0, NULL, FALSE),
-(3,'guarana', 'Recupera vida', 30, 10, 10, NULL, FALSE),
-(4,'abacaxi', 'Recupera vida', 50, 20, 20, NULL, FALSE),
-(5,'laminada', 'aumenta o dano do personagem quando equipado', 15, 60, 10, 15, TRUE),
-(6,'rapidez', 'aumenta o dano do personagem quando equipado', 8, 90, 5, 12, TRUE);
+(1,'Bergamota', 'Recupera vida', 10, 0, 20, NULL, FALSE),
+(2,'Melancia', 'Recupera vida', 10, 20, 0, NULL, FALSE),
+(3,'Guarana', 'Recupera vida', 30, 10, 10, NULL, FALSE),
+(4,'Abacaxi', 'Recupera vida', 50, 20, 20, NULL, FALSE),
+(5,'Carne', 'Recupera vida', 50, 20, 20, NULL, FALSE),
+(6,'Comida Especial', 'Recupera vida', 50, 20, 20, NULL, FALSE),
+(7,'Carne Especial', 'Recupera vida', 50, 20, 20, NULL, FALSE),
+(8,'Cachaça', 'Recupera vida', 50, 20, 20, NULL, FALSE),
+(9,'Leite', 'Recupera vida', 50, 20, 20, NULL, FALSE),
+(10,'Algodão doce', 'Recupera vida', 50, 20, 20, NULL, FALSE),
+(11,'Hamburguer', 'Recupera vida', 50, 20, 20, NULL, FALSE),
+(12,'Onigiri', 'Recupera vida', 50, 20, 20, NULL, FALSE),
+(13,'Sakê', 'Recupera vida', 50, 20, 20, NULL, FALSE),
+(14,'laminada', 'aumenta o dano do personagem quando equipado', 15, 60, 10, 15, TRUE),
+(15,'rapidez', 'aumenta o dano do personagem quando equipado', 8, 90, 5, 12, TRUE);
 
 INSERT INTO ilha (id_ilha,id_missao,nome,descricao) VALUES 
 (1,1,'Ilha do Capitão Morgan','Ilha com uma base da Marinha, comandada pelo Capitão Morgan. Um marinheiro temido tanto pela população quanto pela marinha.Zoro aparece capturado nessa ilha'),
@@ -167,11 +176,12 @@ INSERT INTO jogador VALUES
 
 INSERT INTO inventario_jogador (id_jogador_save,id_jogador_personagem, id_item, qtd_item)
 VALUES 
-('jogador1',1, 1, 1),
-('jogador1',1, 2, 3),
+('jogador1',1, 5, 10),
+('jogador1',1, 6, 5),
 ('jogador1',1, 3, 2),
 ('jogador1',1, 4, 3),
-('jogador1',1, 5, 2),
+
+
 ('jogador2',1, 5, 25),
 ('jogador2',1, 4, 25),
 ('jogador2',1, 3, 25),
@@ -179,12 +189,39 @@ VALUES
 
 INSERT INTO inventario_personagem (id_jogador_save,id_jogador_personagem,id_item, qtd_item,id_personagem)
 VALUES 
-('jogador1',1, 1, 1,5),
+--            iditem | qnditem
+('jogador1',1,   1,       1       ,5),
 ('jogador1',1, 2, 3,8),
 ('jogador1',1, 3, 2,6),
 ('jogador1',1, 4, 3,10),
 ('jogador1',1, 5, 2,23),
-('jogador2',1, 5, 25,22);
+
+('jogador2',1, 5, 25,22),
+
+('jogador1',1, 5, 10,22),
+('jogador1',1, 6, 10,22),
+('jogador1',1, 7, 10,22),
+('jogador1',1, 8, 10,22),
+('jogador1',1, 9, 10,22),
+('jogador1',1, 10, 10,22),
+('jogador1',1, 11, 10,22),
+('jogador1',1, 12, 10,22),
+('jogador1',1, 13, 10,22),
+('jogador1',1, 14, 10,22),
+
+
+('jogador2',1, 5, 25,27),
+
+('jogador1',1, 6, 10,27),
+('jogador1',1, 7, 10,27),
+('jogador1',1, 8, 10,27),
+('jogador1',1, 9, 10,27),
+('jogador1',1, 10, 10,27),
+('jogador1',1, 11, 10,27),
+('jogador1',1, 12, 10,27),
+('jogador1',1, 13, 10,27),
+('jogador1',1, 14, 10,27),
+('jogador1',1, 5, 2,27);
 
 -- Missões
 

@@ -33,8 +33,26 @@ def fala_com_npc(npc_num,npcs_dict,player):
         #print(f'id : {player["id_personagem"]} \nnome: {player["nome_save"]}')
         inventario_npc = select_to_dict("SELECT id_item,qtd_item from inventario_personagem where id_jogador_save = %s and id_jogador_personagem = %s and id_personagem = %s",player["nome_save"],player["id_personagem"],npcs_dict[npc_num]['id_personagem'])
         #print(inventario_npc)
+
+        id_itens = [item['id_item'] for item in inventario_npc]
+
+        with get_connection() as db:
+                with db:
+                    cursor = db.cursor()
+                    sql = "SELECT nome from item where id_item in (%s)"
+                    data = [str(item) for item in id_itens]
+                    cursor.execute(sql,data)
+
+                nomes = cursor.fetchall()
+                
+        print(id_itens)
+        print(nomes)
+
         for item in inventario_npc:
             print(f"id_item : {item['id_item']}   {item['qtd_item']}x")
+
+        escolha = input("Você deseja comprar algo :\n1-Sim\n2-Não\n\n>")
+
 
 
 def menu(player):
