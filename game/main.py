@@ -39,18 +39,20 @@ def fala_com_npc(npc_num,npcs_dict,player):
         with get_connection() as db:
                 with db:
                     cursor = db.cursor()
-                    sql = "SELECT nome from item where id_item in (%s)"
-                    data = [str(item) for item in id_itens]
+                    sql = "SELECT nome from item where id_item in %s"
+                    data = tuple([str(item) for item in id_itens])
+                    data = (data,)
                     cursor.execute(sql,data)
 
                 nomes = cursor.fetchall()
                 
         print(id_itens)
         print(nomes)
-
+        i = 0
         for item in inventario_npc:
-            print(f"id_item : {item['id_item']}   {item['qtd_item']}x")
 
+            print(f"Item : {nomes[i]}   {item['qtd_item']}x")
+            i+=1
         escolha = input("Você deseja comprar algo :\n1-Sim\n2-Não\n\n>")
 
 
