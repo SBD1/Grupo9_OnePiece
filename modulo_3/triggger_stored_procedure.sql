@@ -1,6 +1,18 @@
-
 --Vitor
-    -- Cria jogador, Cria um personagem principal pro Jogador #cria instancia de Inimigo,principal,não-hostil 
+    -- Cria jogador, Cria um personagem principal pro Jogador
+CREATE OR REPLACE FUNCTION create_save_jogador() RETURNS TRIGGER as $create_save_jogador$
+DECLARE
+save_player VARCHAR(30);
+
+BEGIN
+    SELECT nome into save_player from save
+    WHERE nome = NEW.nome;
+    
+    INSERT INTO jogador VALUES(save_player,1,1,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',150,100,100,'Kairoseki',1,100,120,10);
+    RETURN NEW;
+END;
+$create_save_jogador$ LANGUAGE plpgsql;
+
     -- objetivo cumprido pra liberar o próximo - tabela
 
 -- Bernardo
