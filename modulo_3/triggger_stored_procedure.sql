@@ -12,6 +12,10 @@ BEGIN
 END;
 $check_personagem$ LANGUAGE plpgsql;
 
+CREATE TRIGGER check_personagem
+BEFORE UPDATE OR INSERT ON inimigo
+FOR EACH ROW EXECUTE PROCEDURE check_personagem();
+
 
 
 
