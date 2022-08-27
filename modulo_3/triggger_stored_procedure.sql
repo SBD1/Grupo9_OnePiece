@@ -1,3 +1,20 @@
+--- TRIGGERS PARA MANTER AS REGRAS DE GENERALIZAÇÃO E ESPECIALIZAÇÃO
+
+CREATE OR REPLACE FUNCTION check_personagem() RETURNS trigger as $check_personagem$
+BEGIN
+
+    PERFORM * FROM personagem_principal WHERE id_personagem = NEW.id_personagem;
+    IF FOUND THEN 
+			RAISE EXCEPTION 'Este personagem já se encontra na tabela personagem principal';
+    END IF;
+    RETURN NEW;            
+
+END;
+$check_personagem$ LANGUAGE plpgsql;
+
+
+
+
 --Vitor
     -- Cria jogador, Cria um personagem principal pro Jogador
 CREATE OR REPLACE FUNCTION create_save_jogador() RETURNS TRIGGER as $create_save_jogador$
