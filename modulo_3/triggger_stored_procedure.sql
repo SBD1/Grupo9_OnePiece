@@ -64,7 +64,7 @@ END;
 $create_save_jogador$ LANGUAGE plpgsql;
 
 CREATE TRIGGER create_save_jogador
-AFTER UPDATE OR INSERT ON save
+AFTER INSERT ON save
 FOR EACH ROW EXECUTE PROCEDURE create_save_jogador();
 
     -- objetivo cumprido pra liberar o próximo - tabela
