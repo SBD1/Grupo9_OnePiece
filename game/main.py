@@ -46,12 +46,13 @@ def fala_com_npc(npc_num,npcs_dict,player):
 
                 nomes = cursor.fetchall()
                 
-        print(id_itens)
-        print(nomes)
+        #print(id_itens)
+        nomes = [name[0] for name in nomes]
+        #print(nomes)
         i = 0
         for item in inventario_npc:
 
-            print(f"Item : {nomes[i]}   {item['qtd_item']}x")
+            print(f"Item : {str(nomes[i])}   {item['qtd_item']}x")
             i+=1
         escolha = input("Você deseja comprar algo :\n1-Sim\n2-Não\n\n>")
 
