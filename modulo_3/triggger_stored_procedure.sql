@@ -1,5 +1,20 @@
 --- TRIGGERS PARA MANTER AS REGRAS DE GENERALIZAÇÃO E ESPECIALIZAÇÃO
 
+CREATE OR REPLACE FUNCTION check_personagem_nao_hostil() RETURNS TRIGGER AS $check_personagem_nao_hostil$
+BEGIN
+    PERFORM * FROM personagem_principal WHERE id_personagem = NEW.id_personagem;
+    IF FOUND THEN 
+			RAISE EXCEPTION 'Este personagem já se encontra na tabela personagem principal';
+    END IF;
+    RETURN NEW;
+
+END;
+$check_personagem_nao_hostil$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_personagem_nao_hostil
+BEFORE UPDATE OR INSERT ON personagem_nao_hostil
+FOR EACH ROW EXECUTE PROCEDURE check_personagem_nao_hostil();
+
 CREATE OR REPLACE FUNCTION check_personagem() RETURNS trigger as $check_personagem$
 BEGIN
 
