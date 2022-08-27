@@ -16,7 +16,21 @@ CREATE TRIGGER check_personagem
 BEFORE UPDATE OR INSERT ON inimigo
 FOR EACH ROW EXECUTE PROCEDURE check_personagem();
 
+CREATE OR REPLACE FUNCTION check_barco() RETURNS trigger as $check_barco$
+BEGIN
 
+    PERFORM * FROM personagem_principal WHERE id_personagem = NEW.id_barco;
+    IF FOUND THEN 
+			RAISE EXCEPTION 'Este personagem já se encontra na tabela personagem principal';
+    END IF;
+    RETURN NEW;            
+
+END;
+$check_barco$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_barco
+BEFORE UPDATE OR INSERT on barco
+FOR EACH ROW EXECUTE PROCEDURE check_barco();
 
 
 --Vitor
