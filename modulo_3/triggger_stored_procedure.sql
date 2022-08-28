@@ -70,8 +70,7 @@ FOR EACH ROW EXECUTE PROCEDURE create_save_jogador();
     -- objetivo cumprido pra liberar o próximo - tabela
 
 -- Bernardo
-    -- check missão cumprida pra liberar outra missão
-
+    -- trigger para missão cumprida
 CREATE FUNCTION check_missao_cumprida() RETURN trigger AS $check_missao_cumprida$
 DECLARE
     obj_count INTEGER,  
@@ -99,6 +98,26 @@ END;
 CREATE trigger check_missao_cumprida AFTER UPDATE ON objetivo_status
 for each ROW EXECUTE PROCEDURE check_missao_cumprida();
 
+    -- Procedure para quando o jogador mata um inimigo
+CREATE OR REPLACE PROCEDURE inimigo_morre(id_jogador_param INTEGER, id_inimigo_param INTEGER, nome_save_param VARCHAR(30) ) AS $inimigo_morre$
+DECLARE
+
+vida_inimigo INTEGER;
+experiencia_jogador INTEGER;
+exeperiencia_inimigo INTEGER;
+
+BEGIN
+ 
+    SELECT vida INTO vida_inimigo FROM inimigo WHERE id_personagem = OLD.id_personagem; -- pega a vida do inimigo
+    SELECT experiencia INTO experiencia_jogador FROM jogador WHERE id_jogador = id_jogador_param; -- pega a experiencia do jogador
+    SELECT experiencia INTO exeperiencia_inimigo FROM inimigo WHERE id_inimigo = id_inimigo_param; -- pega a experiencia do inimigo
+    
+    IF vida_inimigo <= 0 THEN UPDATE jogador SET experiencia = experiencia_jogador + exeperiencia_inimigo
+    WHERE  id_personagem = id_jogador_param
+    AND nome_save = nome_save_param;
+    END IF;
+END;
+$inimigo_morre$ LANGUAGE plpgsql;
 
 -- Thalisson
     -- respawn e spawn dos inimigos em determinada região qnd tu entra lá.
