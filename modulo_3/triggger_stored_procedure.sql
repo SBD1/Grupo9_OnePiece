@@ -179,17 +179,19 @@ END;
 $compra2$ LANGUAGE plpgsql;
 
 
-CREATE or replace FUNCTION  check_missao() RETURNs trigger AS $check_missao$
+CREATE or replace FUNCTION check_missao() RETURNs trigger AS $check_missao$
 DECLARE
     obj_count INTEGER;
     obj_comp_count  INTEGER;
     xp_missao INTEGER;
     xp_perso INTEGER;
-BEGIN   
-    SELECT COUNT(*) INTO obj_count FROM objetivo_status 
-    WHERE id_missao = OLD.id_missao
-    AND id_jogador_save = OLD.id_jogador_save
-    AND id_jogador_personagem = OLD.id_jogador_personagem;
+BEGIN
+    IF OLD.status = NEW.status THEN
+        RETURN NEW;
+    END IF;
+
+    SELECT COUNT(*) INTO obj_count FROM objetivo 
+    WHERE id_missao = OLD.id_missao;
 
     SELECT COUNT(*) INTO obj_comp_count FROM objetivo_status
     WHERE status = 'Concluido'
@@ -197,23 +199,15 @@ BEGIN
     and id_missao = OLD.id_missao
     AND id_jogador_personagem = OLD.id_jogador_personagem;
 
-    --return obj_comp_count;
+    IF obj_count <> obj_comp_count THEN
+        RETURN NEW;
+    END IF;
 
     SELECT qtd_experiencia INTO xp_missao FROM missao WHERE id_missao = OLD.id_missao;
 
-    --RAISE EXCEPTION 'Olá mundo % % %',xp_missao,obj_count,obj_comp_count;
-
-
-    IF obj_count = obj_comp_count THEN 
-        UPDATE personagem_principal SET experiencia = experiencia + xp_missao WHERE id_personagem = old.id_jogador_personagem ;
-        --RAISE EXCEPTION 'Olá mundo % % %',xp_missao,1000000000000000,10000000000000;
-        return new;
-    END IF;
+    UPDATE jogador SET experiencia = experiencia + xp_missao WHERE id_personagem = old.id_jogador_personagem AND nome_save = old.id_jogador_save;
     return new;
-
-
 END;
-
 $check_missao$ LANGUAGE plpgsql;
 
 drop trigger rihana on objetivo_status;
