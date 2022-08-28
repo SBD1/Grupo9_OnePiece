@@ -1,6 +1,72 @@
+--- TRIGGERS PARA MANTER AS REGRAS DE GENERALIZAÇÃO E ESPECIALIZAÇÃO
+
+CREATE OR REPLACE FUNCTION check_personagem_nao_hostil() RETURNS TRIGGER AS $check_personagem_nao_hostil$
+BEGIN
+    PERFORM * FROM personagem_principal WHERE id_personagem = NEW.id_personagem;
+    IF FOUND THEN 
+			RAISE EXCEPTION 'Este personagem já se encontra na tabela personagem principal';
+    END IF;
+    RETURN NEW;
+
+END;
+$check_personagem_nao_hostil$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_personagem_nao_hostil
+BEFORE UPDATE OR INSERT ON personagem_nao_hostil
+FOR EACH ROW EXECUTE PROCEDURE check_personagem_nao_hostil();
+
+CREATE OR REPLACE FUNCTION check_personagem() RETURNS trigger as $check_personagem$
+BEGIN
+
+    PERFORM * FROM personagem_principal WHERE id_personagem = NEW.id_personagem;
+    IF FOUND THEN 
+			RAISE EXCEPTION 'Este personagem já se encontra na tabela personagem principal';
+    END IF;
+    RETURN NEW;            
+
+END;
+$check_personagem$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_personagem
+BEFORE UPDATE OR INSERT ON inimigo
+FOR EACH ROW EXECUTE PROCEDURE check_personagem();
+
+CREATE OR REPLACE FUNCTION check_barco() RETURNS trigger as $check_barco$
+BEGIN
+
+    PERFORM * FROM personagem_principal WHERE id_personagem = NEW.id_barco;
+    IF FOUND THEN 
+			RAISE EXCEPTION 'Este personagem já se encontra na tabela personagem principal';
+    END IF;
+    RETURN NEW;            
+
+END;
+$check_barco$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_barco
+BEFORE UPDATE OR INSERT on barco
+FOR EACH ROW EXECUTE PROCEDURE check_barco();
+
 
 --Vitor
-    -- Cria jogador, Cria um personagem principal pro Jogador #cria instancia de Inimigo,principal,não-hostil 
+    -- Cria jogador, Cria um personagem principal pro Jogador
+CREATE OR REPLACE FUNCTION create_save_jogador() RETURNS TRIGGER as $create_save_jogador$
+DECLARE
+save_player VARCHAR(30);
+
+BEGIN
+    SELECT nome into save_player from save
+    WHERE nome = NEW.nome;
+    
+    INSERT INTO jogador VALUES(save_player,1,1,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',150,100,100,'Kairoseki',1,100,120,10);
+    RETURN NEW;
+END;
+$create_save_jogador$ LANGUAGE plpgsql;
+
+CREATE TRIGGER create_save_jogador
+AFTER INSERT ON save
+FOR EACH ROW EXECUTE PROCEDURE create_save_jogador();
+
     -- objetivo cumprido pra liberar o próximo - tabela
 
 -- Bernardo
