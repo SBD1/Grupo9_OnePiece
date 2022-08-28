@@ -319,7 +319,7 @@ CREATE TABLE IF NOT EXISTS objetivo_status (
     status objetivo_status_enum NOT NULL,
 
     CONSTRAINT fk_objetivo FOREIGN KEY (id_missao, id_objetivo)
-        REFERENCES objetivo(id_mobjetivo statusissao, id_objetivo),
+        REFERENCES objetivo(id_missao, id_objetivo),
     CONSTRAINT fk_jogador FOREIGN KEY (id_jogador_save,id_jogador_personagem)
         REFERENCES jogador(nome_save,id_personagem),
 
@@ -327,3 +327,4 @@ CREATE TABLE IF NOT EXISTS objetivo_status (
 );
 
 commit;
+

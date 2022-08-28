@@ -30,7 +30,6 @@ BEGIN
 END;
 
 
-
 CREATE trigger check_missao_cumprida AFTER UPDATE ON objetivo_status
 for each ROW EXECUTE PROCEDURE check_missao_cumprida();
 
@@ -53,7 +52,7 @@ CREATE TRIGGER spawn_inimigo_trigger
     AFTER UPDATE ON jogador
     FOR EACH ROW EXECUTE PROCEDURE spawn_inimigo();
 
-    -- compra de itens
+    -- compra de itens  
 
 -- Nicolas 
     -- Atualiza nível consequentemente atualiza poder especial
