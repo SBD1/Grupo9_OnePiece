@@ -54,16 +54,16 @@ def fala_com_npc(npc_num,npcs_dict,player):
 
             print(f"Item : {str(nomes[i])}   {item['qtd_item']}x")
             i+=1
-        escolha = input("Você deseja comprar algo :\n1-Sim\n2-Não\n\n>")
+        escolha = input("\n\nVocê deseja comprar algo :\n1-Sim\n2-Não\n3-Voltar\n\n>")
 
 
 
 def menu(player):
-    nome_player = player["nome"]
 
     invalid = True
 
     while True:
+        nome_player = player["nome"]
         posicao_atual,regioes_to_go = regiao_player(player)
 
         print("##### One Piece ! 💀 - \U0001f480 ######\n\n")
@@ -220,10 +220,16 @@ def create_new_save() -> str:
             print('Nome com esse save já existe, por favor tente outro nome.')    
 
 def move_player(player,escolha):
+
+    jogador = player['nome_save']
+    personagem = player['id_personagem']
+
+    print(jogador,personagem)
+
     with get_connection() as db:
         with db:
             cursor = db.cursor()
-            cursor.execute('UPDATE jogador SET id_regiao = %s',escolha)
+            cursor.execute('UPDATE jogador SET id_regiao = %s where nome_save = %s and id_personagem = %s',[escolha,jogador,personagem])
 
     #regiao_player(player)
 
