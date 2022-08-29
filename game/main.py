@@ -90,7 +90,7 @@ def fala_com_npc(npc_num,npcs_dict,player):
                 compra(player,id_itens)
 
     else:
-        print("Sou personagem de missão !!! Tá faltando me configurar ainda.\nGomu Gomu noooo Rocket !! -@#$#%%$#@!#!@#$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")
+        print("Sou personagem de missão !!! Tá faltando me configurar ainda.\nGomu Gomu noooo Rocket !! -@#$#%%$#@!#")
         nada = input("Aperte enter")
 
 def inventario(player):
