@@ -1,4 +1,4 @@
-CREATE OR REPLACE procedure compra2(id_item_param INTEGER, qtd_item_param INTEGER, nome_jog VARCHAR(30),persona INTEGER)
+CREATE OR REPLACE procedure compra2(id_item_param INTEGER, qtd_item_param INTEGER, nome_jog VARCHAR(30),persona INTEGER,seller INTEGER)
 AS $compra2$
 declare 
     berry INTEGER;
@@ -36,6 +36,13 @@ BEGIN
     --                                 preço da compra
     UPDATE jogador SET berries = berries - preco_compra WHERE nome_save = nome_jog and id_personagem = persona;
     
+    -- diminui o item do inventario do personagem vendedor
+    update inventario_personagem SET qtd_item = qtd_item - qtd_item_param 
+            where id_jogador_save = nome_jog
+            and id_jogador_personagem = persona
+            and id_item = id_item_param
+            and id_personagem = seller;
+            
 END;    
 
 $compra2$ LANGUAGE plpgsql;
