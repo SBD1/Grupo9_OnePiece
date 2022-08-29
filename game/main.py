@@ -26,9 +26,11 @@ def compra(player,id_itens,npc_num):
 
     print(f'Estou comprando de {npc_num}')
     item_id = input("Digite o número do item que deseja comprar :\n>")
-    #print(id_itens)
+    # falta verificar se a escolha foi válida
 
     qtd_item = input("Quantidade :\n>")
+    # falta verificar se a qntd é válida de acordo com o que o cara tem no inventário
+
     with get_connection() as db:
         with db:
             cursor = db.cursor()
@@ -45,8 +47,14 @@ def fala_com_npc(npc_num,npcs_dict,player):
     npc_id = npcs_dict[npc_num]['id_personagem']
     if(npcs_dict[npc_num]['is_vendedor']):
         print("Quer comprar ? ")
+
+        # acha berries do cara
+        berries_dict = select_to_dict('select berries from jogador WHERE nome_save = %s and id_personagem = %s',player['nome_save'],player["id_personagem"])
+        #print(berries_dict)
+        berries = berries_dict[0]["berries"]
+        print(f'Você tem ฿ {berries}\n')
         
-        print("Aqui está meu inventário :")
+        print("Aqui está meu inventário :\n")
         #print(f'id : {player["id_personagem"]} \nnome: {player["nome_save"]}')
         inventario_npc = select_to_dict("SELECT id_item,qtd_item from inventario_personagem where id_jogador_save = %s and id_jogador_personagem = %s and id_personagem = %s",player["nome_save"],player["id_personagem"],npcs_dict[npc_num]['id_personagem'])
         #print(inventario_npc)
@@ -66,12 +74,6 @@ def fala_com_npc(npc_num,npcs_dict,player):
         #print(id_itens)
         nomes = [name[0] for name in nomes]
         #print(nomes)
-
-        # acha berries do cara
-        berries_dict = select_to_dict('select berries from jogador WHERE nome_save = %s and id_personagem = %s',player['nome_save'],player["id_personagem"])
-        #print(berries_dict)
-        berries = berries_dict[0]["berries"]
-        print(f'Você tem ฿ {berries}')
         i = 0
         for item in inventario_npc:
 
@@ -91,6 +93,32 @@ def fala_com_npc(npc_num,npcs_dict,player):
         print("Sou personagem de missão !!! Tá faltando me configurar ainda.\nGomu Gomu noooo Rocket !! -@#$#%%$#@!#!@#$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")
         nada = input("Aperte enter")
 
+def inventario(player):
+    print("Aqui está seu inventário :\n")
+    inventario_jogador = select_to_dict("SELECT id_item,qtd_item from inventario_jogador where id_jogador_save = %s and id_jogador_personagem = %s",player["nome_save"],player["id_personagem"])
+    #print(inventario_jogador)
+
+    id_itens = [item['id_item'] for item in inventario_jogador]
+
+    with get_connection() as db:
+            with db:
+                cursor = db.cursor()
+                sql = "SELECT nome from item where id_item in %s"
+                data = tuple([str(item) for item in id_itens])
+                data = (data,)
+                cursor.execute(sql,data)
+
+            nomes = cursor.fetchall()
+
+    nomes = [name[0] for name in nomes]
+    i = 0
+    for item in inventario_jogador:
+        print(f"{id_itens[i]} : {str(nomes[i])}   {item['qtd_item']}x")
+        i+=1
+
+    escolha = input("\nO que deseja fazer ?\nSó aperte enter por enquanto. . .")
+
+
 def menu(player):
 
     invalid = True
@@ -108,6 +136,7 @@ def menu(player):
 
         print(
             "\n\nM - Mover personagem\n"
+            "I - Ver Inventário\n"
             "Q - Sair"
         )
             
@@ -118,9 +147,14 @@ def menu(player):
             move_player(player,regiao)
         elif escolha == 'q':
             main()
+
+        elif escolha == 'i':
+            inventario(player)
+
         elif 0 <= int(escolha) <= len(npcs_regiao):
             print("-------Falando com NPC-------------\n\n")
             fala_com_npc(escolha,npcs_regiao,player)
+
 
 def run_game(player: dict):
     print(f'Rodando o jogo com save [{player["nome_save"]}]'
