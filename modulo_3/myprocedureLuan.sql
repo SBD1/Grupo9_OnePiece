@@ -42,7 +42,25 @@ BEGIN
             and id_jogador_personagem = persona
             and id_item = id_item_param
             and id_personagem = seller;
-            
+
 END;    
 
 $compra2$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE procedure libera_ilha(ilha_id INTEGER)
+AS $libera_ilha$
+declare 
+    missao integer;
+
+BEGIN
+
+    select id_missao into missao from ilha 
+    where id_ilha = ilha_id;
+
+    update missao_status set status = 'Concluida' where id_missao = missao;
+
+END;    
+
+$libera_ilha$ LANGUAGE plpgsql;
+

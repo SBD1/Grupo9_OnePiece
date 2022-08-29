@@ -23,7 +23,6 @@ def checa_personagem_regiao(posicao_jogador):
     return npcs_regiao
 
 def compra(player,id_itens,npc_num):
-
     print(f'Estou comprando de {npc_num}')
     item_id = input("Digite o número do item que deseja comprar :\n>")
     # falta verificar se a escolha foi válida
@@ -90,7 +89,7 @@ def fala_com_npc(npc_num,npcs_dict,player):
                 compra(player,id_itens)
 
     else:
-        print("Sou personagem de missão !!! Tá faltando me configurar ainda.\nGomu Gomu noooo Rocket !! -@#$#%%$#@!#")
+        print("Sou personagem de missão !!! Tá faltando me configurar ainda.\nGomu Gomu noooo Rocket !! -@#")
         nada = input("Aperte enter")
 
 def inventario(player):
@@ -154,6 +153,8 @@ def menu(player):
         elif 0 <= int(escolha) <= len(npcs_regiao):
             print("-------Falando com NPC-------------\n\n")
             fala_com_npc(escolha,npcs_regiao,player)
+        else:
+            print("Opção inválida")
 
 
 def run_game(player: dict):

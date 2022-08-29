@@ -328,5 +328,19 @@ CREATE TABLE IF NOT EXISTS objetivo_status (
     PRIMARY KEY (id_objetivo,id_missao, id_jogador_save,id_jogador_personagem)
 );
 
+CREATE TYPE status_missao AS ENUM (
+    'Concluida','Nao_concluida'
+);
+
+CREATE TABLE missao_status(
+    id_missao INTEGER NOT NULL,
+    status status_missao NOT NULL,
+
+
+    PRIMARY KEY(id_missao),
+    CONSTRAINT fk_missao FOREIGN KEY (id_missao) 
+        REFERENCES missao(id_missao) ON DELETE RESTRICT
+);
+
 commit;
 

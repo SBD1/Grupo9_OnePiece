@@ -153,7 +153,6 @@ INSERT INTO inimigo (id_personagem,id_regiao,nome,ocupacao,grupo_ocupacao,berrie
 (19,1,'Buggy','Pirata','Piratas do Buggy',1000,200,200,'Akuma no mi',2,0,150,1,1),
 (20,1,'Arlong','Pirata','Piratas do Arlong',50000,250,250,'Akuma no mi',3,0,250,1,1);
 
-
 INSERT INTO personagem_nao_hostil (id_personagem, id_regiao,nome, ocupacao, grupo_ocupacao, is_vendedor, is_personagem_historia)
 VALUES
 (21,1,'Coby', 'Cidadao', 'Marinha', false, true),
@@ -250,6 +249,13 @@ INSERT INTO objetivo_status VALUES
 (1,1,'jogador1',1,'Liberado'),
 (2,3,'jogador2',1,'Liberado');
 
+INSERT INTO missao_status VALUES 
+(1,'Nao_concluida'),
+(2,'Nao_concluida'),
+(3,'Nao_concluida'),
+(4,'Nao_concluida'),
+(5,'Nao_concluida');
+
 -- Constraints para evitar dependências ciclicas.
 
 ALTER TABLE ilha ADD CONSTRAINT fk_ilha_missao FOREIGN KEY (id_missao)
@@ -259,4 +265,6 @@ ALTER TABLE inimigo ADD CONSTRAINT fk_objetivo FOREIGN KEY (id_missao, id_objeti
         REFERENCES objetivo(id_missao, id_objetivo);
 
 commit;
+
+
 
