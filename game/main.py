@@ -22,10 +22,27 @@ def checa_personagem_regiao(posicao_jogador):
 
     return npcs_regiao
 
+def compra(player,id_itens,npc_num):
+
+    print(f'Estou comprando de {npc_num}')
+    item_id = input("Digite o número do item que deseja comprar :\n>")
+    #print(id_itens)
+
+    qtd_item = input("Quantidade :\n>")
+    with get_connection() as db:
+        with db:
+            cursor = db.cursor()
+            sql = "CALL compra2(%s,%s,%s,%s,%s)"
+            data = (item_id,qtd_item,player['nome_save'],player['id_personagem'],npc_num)
+            cursor.execute(sql,data)
+
+    print("Compra realizada !!")
+
+
 def fala_com_npc(npc_num,npcs_dict,player):
     npc_num = int(npc_num)
     print(f"Olá sou {npcs_dict[npc_num]['nome']}\n")
-
+    npc_id = npcs_dict[npc_num]['id_personagem']
     if(npcs_dict[npc_num]['is_vendedor']):
         print("Quer comprar ? ")
         
@@ -58,25 +75,20 @@ def fala_com_npc(npc_num,npcs_dict,player):
         i = 0
         for item in inventario_npc:
 
-            print(f"Item : {str(nomes[i])}   {item['qtd_item']}x")
+            print(f"{id_itens[i]} : {str(nomes[i])}   {item['qtd_item']}x")
             i+=1
 
-        escolha = input("\n\nVocê deseja comprar algo :\n1-Sim\n2-Não\n3-Voltar\n\n>")
+        escolha = input("\n\nVocê deseja comprar algo :\n1-Sim\n2-Não\n3-Voltar\n>")
         if int(escolha) == 1:
-            item_id = input("Digite o número do item que deseja comprar :\n>")
-            qtd_item = print("Quantidade :\n>")
-            with get_connection() as db:
-                with db:
-                    cursor = db.cursor()
-                    sql = "CALL compra2(%s,%s,%s,%s)"
-                    data = (item_id,qtd_item,player['nome_save'],player['id_personagem'])
-                    cursor.execute(sql,data)
-                    cursor.commit()
-
-            print("Comprado !!")
+            compra(player,id_itens,npc_id)
+            escolha2 = input("\n\nVocê deseja comprar algo a mais:\n1-Sim\n2-Não\n>")
+            
+            while int(escolha2) == 1:
+                escolha2 = input("\n\nVocê deseja comprar algo a mais:\n1-Sim\n2-Não\n>")
+                compra(player,id_itens)
 
     else:
-        print("Sou personagem de missão !!! Tá faltando me configurar ainda.\nGomu Gomu noooo Rocket !! -@#$#%%$#@!#!@#$")
+        print("Sou personagem de missão !!! Tá faltando me configurar ainda.\nGomu Gomu noooo Rocket !! -@#$#%%$#@!#!@#$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")
         nada = input("Aperte enter")
 
 def menu(player):
