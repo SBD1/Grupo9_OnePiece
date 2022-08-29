@@ -75,6 +75,10 @@ def fala_com_npc(npc_num,npcs_dict,player):
 
             print("Comprado !!")
 
+    else:
+        print("Sou personagem de missão !!! Tá faltando me configurar ainda.\nGomu Gomu noooo Rocket !! -@#$#%%$#@!#!@#$")
+        nada = input("Aperte enter")
+
 def menu(player):
 
     invalid = True
