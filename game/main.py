@@ -45,18 +45,35 @@ def fala_com_npc(npc_num,npcs_dict,player):
                     cursor.execute(sql,data)
 
                 nomes = cursor.fetchall()
-                
+
         #print(id_itens)
         nomes = [name[0] for name in nomes]
         #print(nomes)
+
+        # acha berries do cara
+        berries_dict = select_to_dict('select berries from jogador WHERE nome_save = %s and id_personagem = %s',player['nome_save'],player["id_personagem"])
+        #print(berries_dict)
+        berries = berries_dict[0]["berries"]
+        print(f'Você tem ฿ {berries}')
         i = 0
         for item in inventario_npc:
 
             print(f"Item : {str(nomes[i])}   {item['qtd_item']}x")
             i+=1
+
         escolha = input("\n\nVocê deseja comprar algo :\n1-Sim\n2-Não\n3-Voltar\n\n>")
+        if int(escolha) == 1:
+            item_id = input("Digite o número do item que deseja comprar :\n>")
+            qtd_item = print("Quantidade :\n>")
+            with get_connection() as db:
+                with db:
+                    cursor = db.cursor()
+                    sql = "CALL compra2(%s,%s,%s,%s)"
+                    data = (item_id,qtd_item,player['nome_save'],player['id_personagem'])
+                    cursor.execute(sql,data)
+                    cursor.commit()
 
-
+            print("Comprado !!")
 
 def menu(player):
 
