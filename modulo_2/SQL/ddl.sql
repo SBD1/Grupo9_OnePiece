@@ -248,8 +248,19 @@ CREATE TABLE IF NOT EXISTS inventario_jogador (
     PRIMARY KEY (id_jogador_save,id_jogador_personagem, id_item)
 );
 
-CREATE TABLE IF NOT EXISTS inventario_personagem (
-    id_jogador_save VARCHAR(30) NOT NULL,    
+CREATE TABLE IF NOT EXISTS inventario_personagem_default (
+    id_personagem int not null,
+    id_item INTEGER DEFAULT NULL,
+    qtd_item INTEGER DEFAULT NULL,
+
+    CONSTRAINT fk_item FOREIGN KEY (id_item)
+        REFERENCES item(id_item) ON DELETE RESTRICT,
+
+    PRIMARY KEY (id_personagem,id_item)
+);
+
+CREATE TABLE IF NOT EXISTS inventario_personagem_instancia (
+    id_jogador_save VARCHAR(30) NOT NULL,
     id_jogador_personagem int not null,
     id_personagem int not null,
     id_item INTEGER DEFAULT NULL,
@@ -260,8 +271,7 @@ CREATE TABLE IF NOT EXISTS inventario_personagem (
     CONSTRAINT fk_item FOREIGN KEY (id_item)
         REFERENCES item(id_item) ON DELETE RESTRICT,
 
-    PRIMARY KEY (id_jogador_save,id_jogador_personagem
-    ,id_personagem,id_item)
+    PRIMARY KEY (id_jogador_save,id_jogador_personagem,id_personagem,id_item)
 );
 
 
