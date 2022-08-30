@@ -7,21 +7,12 @@ INSERT INTO save (nome) VALUES
 
 INSERT INTO item (id_item,nome, descricao, preco, qtd_energia, qtd_vida, qtd_dano, is_equipavel)
 VALUES
-(1,'Bergamota', 'Recupera vida', 10, 0, 20, NULL, FALSE),
-(2,'Melancia', 'Recupera vida', 10, 20, 0, NULL, FALSE),
-(3,'Guarana', 'Recupera vida', 30, 10, 10, NULL, FALSE),
-(4,'Abacaxi', 'Recupera vida', 50, 20, 20, NULL, FALSE),
-(5,'Carne', 'Recupera vida', 50, 20, 20, NULL, FALSE),
-(6,'Comida Especial', 'Recupera vida', 50, 20, 20, NULL, FALSE),
-(7,'Carne Especial', 'Recupera vida', 50, 20, 20, NULL, FALSE),
-(8,'Cachaça', 'Recupera vida', 50, 20, 20, NULL, FALSE),
-(9,'Leite', 'Recupera vida', 50, 20, 20, NULL, FALSE),
-(10,'Algodão doce', 'Recupera vida', 50, 20, 20, NULL, FALSE),
-(11,'Hamburguer', 'Recupera vida', 50, 20, 20, NULL, FALSE),
-(12,'Onigiri', 'Recupera vida', 50, 20, 20, NULL, FALSE),
-(13,'Sakê', 'Recupera vida', 50, 20, 20, NULL, FALSE),
-(14,'laminada', 'aumenta o dano do personagem quando equipado', 15, 60, 10, 15, TRUE),
-(15,'rapidez', 'aumenta o dano do personagem quando equipado', 8, 90, 5, 12, TRUE);
+(1,'bergamota', 'Recupera vida', 10, 0, 20, NULL, FALSE),
+(2,'melancia', 'Recupera vida', 10, 20, 0, NULL, FALSE),
+(3,'guarana', 'Recupera vida', 30, 10, 10, NULL, FALSE),
+(4,'abacaxi', 'Recupera vida', 50, 20, 20, NULL, FALSE),
+(5,'laminada', 'aumenta o dano do personagem quando equipado', 15, 60, 10, 15, TRUE),
+(6,'rapidez', 'aumenta o dano do personagem quando equipado', 8, 90, 5, 12, TRUE);
 
 INSERT INTO ilha (id_ilha,id_missao,nome,descricao) VALUES 
 (1,1,'Ilha do Capitão Morgan','Ilha com uma base da Marinha, comandada pelo Capitão Morgan. Um marinheiro temido tanto pela população quanto pela marinha.Zoro aparece capturado nessa ilha'),
@@ -140,18 +131,18 @@ INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, ene
 --('','Ferro', 1, 'Em vez de vapor, essa forma produz uma substância gasosa que aparece como uma mistura de vapor e fogo e, como suas outras contrapartes, também parece ser colocada sobre seus ombros como um lenço, enquanto sob esta forma. Seus punhos também se flexionam diferentemente, com os primeiros nós dos dedos sendo estendidos, semelhante ao punho de leopardo.', 950, 350);
 
 
-INSERT INTO inimigo (id_personagem,id_regiao,nome,ocupacao,grupo_ocupacao,berries,energia,energia_maxima,fraqueza,experiencia,vida,vida_maxima,id_missao,id_objetivo) VALUES 
-(10,1,'Marinheiro 1','Marinheiro','Marinha',150,100,100,'Akuma no mi',1,0,100,null,null),
-(11,1,'Marinheiro 2','Marinheiro','Marinha',250,100,100,'Akuma no mi',2,0,100,null,null),
-(12,1,'Marinheiro 3','Marinheiro','Marinha',500,100,100,'Raki',3,0,100,null,null),
-(13,1,'Marinheiro 4','Marinheiro','Marinha',1000,100,100,'Raki do rei',4,0,100,null,null),
-(14,1,'Akainu','Marinheiro','Almirante da Marinha',1000000,10000,10000,'Kairoseki',10,0,10000,1,1),
-(15,1,'Alkiji','Marinheiro','Almirante da Marinha',900000,10000,10000,'Kairoseki',10,0,10000,1,1),
-(16,1,'Kizaru','Marinheiro','Almirante da Marinha',1200000,10000,10000,'Kairoseki',10,0,10000,1,1),
-(17,1,'Alvida','Pirata','Piratas da Alvida',1000,100,100,'Akuma no mi',1,0,100,1,1),
-(18,1,'Morgan','Marinheiro','Capitão da Marinha',3000,150,150,'Akuma no mi',1,0,100,1,1),
-(19,1,'Buggy','Pirata','Piratas do Buggy',1000,200,200,'Akuma no mi',2,0,150,1,1),
-(20,1,'Arlong','Pirata','Piratas do Arlong',50000,250,250,'Akuma no mi',3,0,250,1,1);
+INSERT INTO inimigo (id_personagem,id_regiao,nome,ocupacao,grupo_ocupacao,berries,energia,energia_maxima,fraqueza,experiencia,vida,vida_maxima,respawn) VALUES 
+(10,1,'Marinheiro 1','Marinheiro','Marinha',150,100,100,'Akuma no mi',1,100,100,true),
+(11,1,'Marinheiro 2','Marinheiro','Marinha',250,100,100,'Akuma no mi',2,100,100,true),
+(12,1,'Marinheiro 3','Marinheiro','Marinha',500,100,100,'Raki',3,100,100,true),
+(13,1,'Marinheiro 4','Marinheiro','Marinha',1000,100,100,'Raki do rei',4,100,100,true),
+(14,1,'Akainu','Marinheiro','Almirante da Marinha',1000000,10000,10000,'Kairoseki',10,10000,10000,false),
+(15,1,'Alkiji','Marinheiro','Almirante da Marinha',900000,10000,10000,'Kairoseki',10,10000,10000,false),
+(16,1,'Kizaru','Marinheiro','Almirante da Marinha',1200000,10000,10000,'Kairoseki',10,10000,10000,false),
+(17,1,'Alvida','Pirata','Piratas da Alvida',1000,100,100,'Akuma no mi',1,100,100,false),
+(18,1,'Morgan','Marinheiro','Capitão da Marinha',3000,150,150,'Akuma no mi',1,100,100,false),
+(19,1,'Buggy','Pirata','Piratas do Buggy',1000,200,200,'Akuma no mi',2,150,150,false),
+(20,1,'Arlong','Pirata','Piratas do Arlong',50000,250,250,'Akuma no mi',3,250,250,false);
 
 
 INSERT INTO personagem_nao_hostil (id_personagem, id_regiao,nome, ocupacao, grupo_ocupacao, is_vendedor, is_personagem_historia)
@@ -176,12 +167,11 @@ INSERT INTO jogador VALUES
 
 INSERT INTO inventario_jogador (id_jogador_save,id_jogador_personagem, id_item, qtd_item)
 VALUES 
-('jogador1',1, 5, 10),
-('jogador1',1, 6, 5),
+('jogador1',1, 1, 1),
+('jogador1',1, 2, 3),
 ('jogador1',1, 3, 2),
 ('jogador1',1, 4, 3),
-
-
+('jogador1',1, 5, 2),
 ('jogador2',1, 5, 25),
 ('jogador2',1, 4, 25),
 ('jogador2',1, 3, 25),
@@ -189,39 +179,12 @@ VALUES
 
 INSERT INTO inventario_personagem (id_jogador_save,id_jogador_personagem,id_item, qtd_item,id_personagem)
 VALUES 
---            iditem | qnditem
-('jogador1',1,   1,       1       ,5),
+('jogador1',1, 1, 1,5),
 ('jogador1',1, 2, 3,8),
 ('jogador1',1, 3, 2,6),
 ('jogador1',1, 4, 3,10),
 ('jogador1',1, 5, 2,23),
-
-('jogador2',1, 5, 25,22),
-
-('jogador1',1, 5, 10,22),
-('jogador1',1, 6, 10,22),
-('jogador1',1, 7, 10,22),
-('jogador1',1, 8, 10,22),
-('jogador1',1, 9, 10,22),
-('jogador1',1, 10, 10,22),
-('jogador1',1, 11, 10,22),
-('jogador1',1, 12, 10,22),
-('jogador1',1, 13, 10,22),
-('jogador1',1, 14, 10,22),
-
-
-('jogador2',1, 5, 25,27),
-
-('jogador1',1, 6, 10,27),
-('jogador1',1, 7, 10,27),
-('jogador1',1, 8, 10,27),
-('jogador1',1, 9, 10,27),
-('jogador1',1, 10, 10,27),
-('jogador1',1, 11, 10,27),
-('jogador1',1, 12, 10,27),
-('jogador1',1, 13, 10,27),
-('jogador1',1, 14, 10,27),
-('jogador1',1, 5, 2,27);
+('jogador2',1, 5, 25,22);
 
 -- Missões
 
@@ -250,13 +213,8 @@ INSERT INTO objetivo_status VALUES
 (1,1,'jogador1',1,'Liberado'),
 (2,3,'jogador2',1,'Liberado');
 
--- Constraints para evitar dependências ciclicas.
 
 ALTER TABLE ilha ADD CONSTRAINT fk_ilha_missao FOREIGN KEY (id_missao)
     REFERENCES missao(id_missao) ON DELETE RESTRICT;
 
-ALTER TABLE inimigo ADD CONSTRAINT fk_objetivo FOREIGN KEY (id_missao, id_objetivo)
-        REFERENCES objetivo(id_missao, id_objetivo);
-
 commit;
-

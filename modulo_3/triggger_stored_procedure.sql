@@ -142,9 +142,83 @@ CREATE TRIGGER spawn_inimigo_trigger
 
     -- compra de itens  
 
--- Nicolas 
+-- Nicolas (Tenho que revisar)
     -- Atualiza nível consequentemente atualiza poder especial
+CREATE OR REPLACE FUNCTION level_up() 
+RETURNS trigger
+AS $level_up$
+
+DECLARE
+    xp_atual INTEGER;
+
+BEGIN
+    SELECT experiencia INTO xp_atual FROM personagem_principal WHERE id_personagem = NEW.id_personagem;
+
+    IF(xp_atual >= 20) THEN
+
+        PERFORM * FROM poder_especial WHERE nome = 'Gomu Gomu no Pistol';
+        IF NOT FOUND THEN 
+            INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, energia) VALUES
+            ('Gomu Gomu no Pistol','Akuma no mi',1,'Soco pistola do Luffy',80,50);
+        END IF;
+
+    END IF;
+    IF(xp_atual >= 40) THEN
+        PERFORM * FROM poder_especial WHERE nome = 'Gomu Gomu no Gatling Gun';
+        IF NOT FOUND THEN 
+            INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, energia) VALUES
+            ('Gomu Gomu no Gatling Gun','Akuma no mi',1,'Metralhadora de Soco pistola do Luffy',140,100);    
+        END IF;
+    END IF;
+    IF(xp_atual >= 100) THEN
+        PERFORM * FROM poder_especial WHERE nome = 'Gomu Gomu no Axe';
+        IF NOT FOUND THEN 
+            INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, energia) VALUES
+            ('Gomu Gomu no Axe','Akuma no mi',1,'Luffy estica o pé lá no alto e desce de uma vez dando uma pézada da peste.',160,80);    
+        END IF;
+    END IF;
+    IF(xp_atual >= 200 ) THEN
+        PERFORM * FROM poder_especial WHERE nome = 'Gomu Gomu no Rocket';
+        IF NOT FOUND THEN 
+            INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, energia) VALUES
+            ('Gomu Gomu no Rocket','Akuma no mi',1,'Luffy se lança para atingir o alvo.',50,25);    
+        END IF;
+    END IF;
+    return new;
+END;
+
+$level_up$ LANGUAGE plpgsql;
+
+CREATE trigger level_up AFTER UPDATE ON personagem_principal
+FOR EACH ROW EXECUTE PROCEDURE level_up();
+
     -- Inventário lotado, não pode receber item.
+CREATE OR REPLACE FUNCTION check_inventario() 
+RETURNS trigger
+AS $check_inventario$
+
+DECLARE
+    itens_total INTEGER;
+    max_itens INTEGER;
+    new_itens INTEGER;
+
+BEGIN
+    -- pega o total de itens que o personagem carrega e sua capacidade maxiam
+    SELECT SUM(qtd_item) INTO itens_total FROM inventario_personagem WHERE id_personagem = NEW.id_personagem;
+    SELECT capacidade_de_itens INTO max_itens FROM personagem_principal WHERE id_personagem = NEW.id_personagem;
+    
+    -- verifica se o novo total de itens cabe no inventario 
+    IF( itens_total > max_itens ) THEN
+        RAISE EXCEPTION 'Inventário Cheio!';
+    END IF;
+    return new;
+END;
+
+$check_inventario$ LANGUAGE plpgsql;
+
+CREATE trigger check_inventario AFTER UPDATE ON inventario_personagem
+FOR EACH ROW EXECUTE PROCEDURE check_inventario();
+    
 
 -- check_missao Vasco
     -- compra um item tem que diminuir o dinheiro
@@ -215,5 +289,11 @@ drop trigger rihana on objetivo_status;
 
 CREATE trigger rihana after UPDATE on objetivo_status
 for each ROW EXECUTE PROCEDURE check_missao();
+
+
+
+
+
+
 
 
