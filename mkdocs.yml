@@ -40,4 +40,8 @@ nav:
       - DDL: ddl.md
       - DML: dml.md
       - DQL: dql.md
+  - Triggers and Stored procedures:
+      - Triggers and procedures: triggerandprocedures.md
+      
+
 
