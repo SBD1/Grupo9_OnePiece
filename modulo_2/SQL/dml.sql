@@ -92,28 +92,28 @@ INSERT INTO barco (id_barco,id_regiao,nome, ocupacao, grupo_ocupacao, capacidade
 -- poderia criar um tipo para poder especial e a fraqueza seria um tipo
 INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, energia) VALUES 
 -- Fraqueza de todos os usuários de akuma no mi.
-('Pistola de Kairoseki','Kairoseki', 1, 'Pistola com tiro de Kairoseki', 25, 10),
-('Fuzil de Kairoseki','Kairoseki',1,'Fuzil forte com tiro de Kairoseki',100,50),
-('Canhão de Kairoseki','Kairoseki',1,'Canhão de tiro de Kairoseki',200,100),
-('Balde de Água do Mar','Água do Mar',1,'Um balde de água do mar para atingir  usuários de Akuma no Mi.',50,10),
+('Pistola de Kairoseki','Kairoseki', 6, 'Pistola com tiro de Kairoseki', 25, 10),
+('Fuzil de Kairoseki','Kairoseki',6,'Fuzil forte com tiro de Kairoseki',100,50),
+('Canhão de Kairoseki','Kairoseki',6,'Canhão de tiro de Kairoseki',200,100),
+('Balde de Água do Mar','Água do Mar',6,'Um balde de água do mar para atingir  usuários de Akuma no Mi.',50,10),
 
 -- Fraqueza do Sanji, mas não só dele especificamente
-('Mulher Feia','Mulher', 1, 'Mulher feia que impede que Sanji a ataque', 100, 0),
-('Mulher Bonita','Mulher', 1, 'Mullher bonita que além de impedir que Sanji a ataque, tira sua energia', 150, 0),
+('Mulher Feia','Mulher', 3, 'Mulher feia que impede que Sanji a ataque', 100, 0),
+('Mulher Bonita','Mulher', 3, 'Mullher bonita que além de impedir que Sanji a ataque, tira sua energia', 150, 0),
 
 -- Poderes especiais de espadachins que não cortam ferro.
 -- ('Espadada especial de Ferro','Ferro', 1, 'Espadada Especial de Ferro', 50, 100),
 
 -- Poderes especiais relacionadas a tritões
-('Lança de água','Tritões', 1, 'Lança de água do mar lançada pelo tritão.', 200, 100),
-('Mizu shot.','Tritões', 1, 'Tiro disparado pelo tritão de água', 80, 50),
-('Mizu Rain Shot.','Tritões', 1, 'Rajada de tiro disparado pelo tritão de água', 150, 100),
+('Lança de água','Tritões', 5, 'Lança de água do mar lançada pelo tritão.', 200, 100),
+('Mizu shot.','Tritões', 5, 'Tiro disparado pelo tritão de água', 80, 50),
+('Mizu Rain Shot.','Tritões', 5, 'Rajada de tiro disparado pelo tritão de água', 150, 100),
 
 -- Poderes especiais Luffy
-('Gomu Gomu no Pistol','Akuma no mi',1,'Soco pistola do Luffy',80,50),
-('Gomu Gomu no Gatling Gun','Akuma no mi',1,'Metralhadora de Soco pistola do Luffy',140,100),
-('Gomu Gomu no Axe','Akuma no mi',1,'Luffy estica o pé lá no alto e desce de uma vez dando uma pézada da peste.',160,80),
-('Gomu Gomu no Rocket','Akuma no mi',1,'Luffy se lança para atingir o alvo.',50,25),
+-- ('Gomu Gomu no Pistol','Akuma no mi',1,'Soco pistola do Luffy',80,50),
+-- ('Gomu Gomu no Gatling Gun','Akuma no mi',1,'Metralhadora de Soco pistola do Luffy',140,100),
+-- ('Gomu Gomu no Axe','Akuma no mi',1,'Luffy estica o pé lá no alto e desce de uma vez dando uma pézada da peste.',160,80),
+-- ('Gomu Gomu no Rocket','Akuma no mi',1,'Luffy se lança para atingir o alvo.',50,25),
 
 -- Poderes especiais do Zoro
 ('Ittoryu Iai: Shishi Sonson','Ferro',2,'Zoro usa uma espada só dando um corte selvagemente forte.',100,100),
@@ -123,7 +123,7 @@ INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, ene
 -- ('Santoryuu Onigiri','Ferro',2,'Zoro usa as 3 espadas dando 3 cortes simultâneos',50,25),
 
 -- Espadadas
-('Espadada especial de Ferro','Ferro', 1, 'Espadada Especial de Ferro', 50, 100);
+('Espadada especial de Ferro','Ferro', 4, 'Espadada Especial de Ferro', 50, 100);
 
 -- 
 --('','', 1, 'dá um soco como um Gomu Gomu no Pistol, mas ele pode redirecionar seu soco à um número indeterminado de vezes, sem perder o impulso, mantendo a sua força tremenda.', 1000, 500),
@@ -179,10 +179,10 @@ VALUES
 
 INSERT INTO inventario_personagem (id_jogador_save,id_jogador_personagem,id_item, qtd_item,id_personagem)
 VALUES 
-('jogador1',1, 1, 1,5),
-('jogador1',1, 2, 3,8),
-('jogador1',1, 3, 2,6),
-('jogador1',1, 4, 3,10),
+('jogador1',1, 1, 1,1),
+('jogador1',1, 2, 3,2),
+('jogador1',1, 3, 2,3),
+('jogador1',1, 4, 3,4),
 ('jogador1',1, 5, 2,23),
 ('jogador2',1, 5, 25,22);
 
