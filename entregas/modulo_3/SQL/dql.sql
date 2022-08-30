@@ -1,21 +1,32 @@
+-- save
+
+select * from save;
+
+-- jogador
+
+select * from jogador;
+
+-- selecionar inventário do jogador 2
+select * from inventario where 
+id_jogador_personagem = 1 and id_jogador_save = 'jogador2';
+
+-- selecionar região onde jogador1 está
+select id_regiao from jogador where nome_save = 'jogador1';
 -- Poder especial
-SELECT nome, id_personagem_principal, descricao, dano, energia
+SELECT nome, descricao, dano, energia
 FROM poder_especial;
 
 SELECT nome, descricao 
 FROM poder_especial 
 WHERE dano > 900 AND energia >= 300;
 
-SELECT * FROM poder_especial WHERE nome='Tankman';
+SELECT * FROM poder_especial WHERE nome='Pistola de Kairoseki';
 
 -- Objetivo
-SELECT * FROM objetivo WHERE is_active = true;
 
-SELECT * FROM objetivo WHERE id_missao = %d;
+SELECT * FROM objetivo WHERE id_missao = 2 AND id_objetivo = 2;
 
-SELECT * FROM objetivo WHERE is_completed = true;
-
-SELECT * FROM objetivo WHERE id_missao = %d AND id_objetivo = %d;
+SELECT * FROM objetivo_status where status = 'Liberado';
 
 -- Missao
 SELECT * FROM missao WHERE id_missao = %d;
@@ -24,16 +35,21 @@ SELECT qtd_experiencia
 FROM missao 
 WHERE id_missao = 1;
 
-UPDATE personagem_principal 
+select * from jogador where nome_save = 'jogador1';
+
+
+UPDATE jogador 
 SET experiencia = experiencia + 10 
-WHERE id_personagem = 1;
+WHERE id_personagem = 1 and nome_save = 'jogador1';
+
+select * from jogador where nome_save = 'jogador1';
 
 -- Inventario
 
-SELECT inventario.id_personagem, item.nome,item.descricao, item.preco, item.qtd_energia, item.qtd_vida,item.qtd_dano, personagem_principal.nome
+SELECT inventario.id_jogador_personagem, item.nome,item.descricao, item.preco, item.qtd_energia, item.qtd_vida,item.qtd_dano, personagem_principal.nome
 from inventario 
 INNER JOIN item on inventario.id_item = item.id_item
-JOIN personagem_principal on inventario.id_personagem = personagem_principal.id_personagem;
+JOIN personagem_principal on inventario.id_jogador_personagem = personagem_principal.id_personagem;
 
 -- Barco
 
@@ -43,8 +59,8 @@ FROM barco;
 SELECT * FROM barco WHERE nome='Moby Dick';
 
 -- Item
-SELECT * FROM item WHERE is_equipavel= 'TRUE';
-SELECT * FROM item where is_equipavel = 'FALSE';
+SELECT * FROM item WHERE is_equipavel= true;
+SELECT * FROM item where is_equipavel = FALSE;
 
 SELECT nome, descricao, preco, qtd_energia, qtd_vida FROM item where nome = 'bergamota';
 SELECT nome, descricao, preco, qtd_energia, qtd_vida FROM item where nome = 'melancia';
@@ -55,10 +71,9 @@ SELECT nome, descricao, preco, qtd_energia, qtd_vida, qtd_dano FROM item where n
 SELECT nome, descricao, preco, qtd_energia, qtd_vida, qtd_dano FROM item where nome = 'rapidez';
 
 -- Personagem não hostil
-
 SELECT nome, ocupacao, grupo_ocupacao, is_vendedor
 FROM personagem_nao_hostil 
-WHERE id_personagem=%d
+WHERE id_personagem=1;
 
 -- Personagem principal
 
