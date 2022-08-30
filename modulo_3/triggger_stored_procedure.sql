@@ -1,3 +1,5 @@
+BEGIN;
+
 --- TRIGGERS PARA MANTER AS REGRAS DE GENERALIZAÇÃO E ESPECIALIZAÇÃO
 
 CREATE OR REPLACE FUNCTION check_personagem_nao_hostil() RETURNS TRIGGER AS $check_personagem_nao_hostil$
@@ -51,14 +53,16 @@ FOR EACH ROW EXECUTE PROCEDURE check_barco();
 --Vitor
     -- Cria jogador, Cria um personagem principal pro Jogador
 CREATE OR REPLACE FUNCTION create_save_jogador() RETURNS TRIGGER as $create_save_jogador$
-DECLARE
-save_player VARCHAR(30);
-
 BEGIN
-    SELECT nome into save_player from save
-    WHERE nome = NEW.nome;
-    
-    INSERT INTO jogador VALUES(save_player,1,1,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',150,100,100,'Kairoseki',1,100,120,10);
+    -- Cria o primeiro jogador para o novo save
+    INSERT INTO jogador (nome_save, id_personagem, id_regiao, nome, ocupacao, grupo_ocupacao, berries, energia, energia_maxima, fraqueza, experiencia, vida, vida_maxima, capacidade_de_itens) 
+        SELECT NEW.nome, 1, id_regiao, nome, ocupacao, grupo_ocupacao, berries, energia, energia_maxima, fraqueza, experiencia, vida, vida_maxima, capacidade_de_itens 
+            FROM personagem_principal WHERE id_personagem = 1;
+
+    -- Popula o inventario dos NPCs para o novo save baseado nos valores default
+    INSERT INTO inventario_personagem (id_jogador_save, id_jogador_personagem, id_personagem, id_item, qtd_item)
+        SELECT NEW.nome, 1, id_personagem, id_item, qtd_item FROM inventario_personagem_default;
+
     RETURN NEW;
 END;
 $create_save_jogador$ LANGUAGE plpgsql;
@@ -71,12 +75,12 @@ FOR EACH ROW EXECUTE PROCEDURE create_save_jogador();
 
 -- Bernardo
     -- trigger para missão cumprida
-CREATE FUNCTION check_missao_cumprida() RETURN trigger AS $check_missao_cumprida$
+CREATE FUNCTION check_missao_cumprida() RETURNS trigger AS $check_missao_cumprida$
 DECLARE
-    obj_count INTEGER,  
-    obj_comc_count  INTEGER,
-    xp_missao INTEGER,
-    xp_perso INTEGER
+    obj_count INTEGER;
+    obj_comc_count INTEGER;
+    xp_missao INTEGER;
+    xp_perso INTEGER;
 BEGIN
     SELECT COUNT(*) INTO obj_count FROM objetivo_status WHERE NEW.id_missao = OLD.id_missao
     AND NEW.id_jogador_save = OLD.id_jogador_save
@@ -84,7 +88,7 @@ BEGIN
 
     SELECT COUNT(*) INTO obj_comc_count FROM objetivo_status
     WHERE NEW.objetivo_status_enum = 'Concluido'
-    AND NEW.id_jogador_save = OLD.id_jogador_save
+    AND NEW.id_jogador_save = OLD.id_jogador_save;
 
     SELECT qtd_experiencia INTO xp_missao FROM missao WHERE NEW.id_missao = OLD.id_missao;
     SELECT experiencia INTO xp_perso FROM personagem_principal WHERE NEW.id_jogador_personagem = OLD.id_jogador_personagem;
@@ -93,7 +97,7 @@ BEGIN
     END IF;
     
 END;
-
+$check_missao_cumprida$ LANGUAGE plpgsql;
 
 CREATE trigger check_missao_cumprida AFTER UPDATE ON objetivo_status
 for each ROW EXECUTE PROCEDURE check_missao_cumprida();
@@ -135,7 +139,6 @@ BEGIN
 END;
 $spawn_inimigo$ LANGUAGE plpgsql;
 
-DROP TRIGGER spawn_inimigo_trigger ON jogador;
 CREATE TRIGGER spawn_inimigo_trigger
     BEFORE UPDATE ON jogador
     FOR EACH ROW EXECUTE PROCEDURE spawn_inimigo();
@@ -210,10 +213,9 @@ BEGIN
 END;
 $check_missao$ LANGUAGE plpgsql;
 
-drop trigger rihana on objetivo_status;
-
 
 CREATE trigger rihana after UPDATE on objetivo_status
 for each ROW EXECUTE PROCEDURE check_missao();
 
 
+COMMIT;

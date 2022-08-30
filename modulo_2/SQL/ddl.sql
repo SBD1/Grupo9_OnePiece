@@ -259,7 +259,7 @@ CREATE TABLE IF NOT EXISTS inventario_personagem_default (
     PRIMARY KEY (id_personagem,id_item)
 );
 
-CREATE TABLE IF NOT EXISTS inventario_personagem_instancia (
+CREATE TABLE IF NOT EXISTS inventario_personagem (
     id_jogador_save VARCHAR(30) NOT NULL,
     id_jogador_personagem int not null,
     id_personagem int not null,
