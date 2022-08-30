@@ -43,7 +43,7 @@ BEGIN
             and id_item = id_item_param
             and id_personagem = seller;
 
-END;    
+END;
 
 $compra2$ LANGUAGE plpgsql;
 
