@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS jogador (
         REFERENCES regiao(id_regiao) ON DELETE RESTRICT,
 
     CONSTRAINT fk_personagem FOREIGN KEY (id_personagem) 
-        REFERENCES personagem(id_personagem) ON DELETE RESTRICT,
+        REFERENCES personagem_principal(id_personagem) ON DELETE RESTRICT,
 
     CONSTRAINT fk_save FOREIGN KEY (nome_save) 
         REFERENCES save(nome) ON DELETE RESTRICT,
