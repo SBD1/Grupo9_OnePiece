@@ -1,5 +1,10 @@
 begin;
 
+INSERT INTO save (nome) VALUES 
+('jogador1'),
+('jogador2'),
+('jogador3');
+
 INSERT INTO item (id_item,nome, descricao, preco, qtd_energia, qtd_vida, qtd_dano, is_equipavel)
 VALUES
 (1,'Bergamota', 'Recupera vida', 10, 0, 20, NULL, FALSE),
@@ -48,8 +53,6 @@ values
 (15,'Deck','Porto',NULL,11,NULL,NULL,3), -- 15
 (16,'Barco','Porto',NULL,11,NULL,NULL,3); -- 15
 
-INSERT INTO save (nome) VALUES
-('jogador1');
 
 INSERT INTO personagem VALUES
 (1,'P'),
@@ -80,8 +83,6 @@ INSERT INTO personagem VALUES
 (26,'N'),
 (27,'N'),
 (28,'N');
-
-
 
 INSERT INTO personagem_principal (id_personagem, nome,id_regiao,ocupacao,grupo_ocupacao,berries,energia,energia_maxima,fraqueza,experiencia,vida,vida_maxima,capacidade_de_itens) VALUES
 (1,'Monkey D. Luffy',1,'Pirata','Piratas do Chapéu de Palha',150,100,100,'Kairoseki',1,120,120,10),
@@ -163,6 +164,12 @@ VALUES
 (28,1,'Chuchu', 'Cidadao', 'Cidadão', false, true);
 
 
+INSERT INTO jogador VALUES
+('jogador1',1,1,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',150,100,100,'Kairoseki',1,120,120,10),
+('jogador1',2,2,'Roronoa Zoro','Pirata','Piratas do Chapéu de Palha',100,100,100,'Cortar Ferro',1,100,100,10),
+('jogador2',1,5,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',5000000,100000,100000,'Kairoseki',10,1200000,1200000,10101010),
+('jogador3',2,2,'Roronoa Zoro','Pirata','Piratas do Chapéu de Palha',100,100,100,'Cortar Ferro',1,100,100,10);
+
 
 INSERT INTO inventario_jogador (id_jogador_save,id_jogador_personagem, id_item, qtd_item)
 VALUES
@@ -177,13 +184,41 @@ VALUES
 ('jogador2',1, 2, 25);
 
 INSERT INTO inventario_personagem (id_jogador_save,id_jogador_personagem,id_item, qtd_item,id_personagem)
-VALUES
-('jogador1',1, 1, 1,5),
+VALUES 
+--            iditem | qnditem
+('jogador1',1,   1,       1       ,5),
 ('jogador1',1, 2, 3,8),
 ('jogador1',1, 3, 2,6),
 ('jogador1',1, 4, 3,10),
 ('jogador1',1, 5, 2,23),
-('jogador2',1, 5, 25,22);
+
+('jogador2',1, 5, 25,22),
+
+('jogador1',1, 5, 10,22),
+('jogador1',1, 6, 10,22),
+('jogador1',1, 7, 10,22),
+('jogador1',1, 8, 10,22),
+('jogador1',1, 9, 10,22),
+('jogador1',1, 10, 10,22),
+('jogador1',1, 11, 10,22),
+('jogador1',1, 12, 10,22),
+('jogador1',1, 13, 10,22),
+('jogador1',1, 14, 10,22),
+
+
+('jogador2',1, 5, 25,27),
+
+('jogador1',1, 6, 10,27),
+('jogador1',1, 7, 10,27),
+('jogador1',1, 8, 10,27),
+('jogador1',1, 9, 10,27),
+('jogador1',1, 10, 10,27),
+('jogador1',1, 11, 10,27),
+('jogador1',1, 12, 10,27),
+('jogador1',1, 13, 10,27),
+('jogador1',1, 14, 10,27),
+('jogador1',1, 5, 2,27);
+
 
 
 INSERT INTO inventario_personagem_default (id_item, qtd_item,id_personagem)
@@ -257,9 +292,6 @@ INSERT INTO missao_status VALUES
 (2,'Nao_concluida'),
 (3,'Nao_concluida'),
 (4,'Nao_concluida'),
-(5,'Nao_concluida'),
-
-
-
+(5,'Nao_concluida');
 
 commit;
