@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS regiao (
     id_ilha INTEGER,
 
     CONSTRAINT pk_regiao PRIMARY KEY (id_regiao),
-    CONSTRAINT fk_regiao_norte FOREIGN KEY (norte) 
+    CONSTRAINT fk_regiao_norte FOREIGN KEY (norte)
         REFERENCES regiao(id_regiao) ON DELETE RESTRICT,
     CONSTRAINT fk_regiao_sul FOREIGN KEY (sul)
         REFERENCES regiao(id_regiao) ON DELETE RESTRICT,
@@ -89,9 +89,9 @@ CREATE TABLE IF NOT EXISTS personagem_principal (
     capacidade_de_itens INTEGER NOT NULL,
     CHECK(capacidade_de_itens > 0),
 
-    CONSTRAINT fk_regiao FOREIGN KEY (id_regiao) 
+    CONSTRAINT fk_regiao FOREIGN KEY (id_regiao)
         REFERENCES regiao(id_regiao) ON DELETE RESTRICT,
-    CONSTRAINT fk_personagem FOREIGN KEY (id_personagem) 
+    CONSTRAINT fk_personagem FOREIGN KEY (id_personagem)
         REFERENCES personagem(id_personagem) ON DELETE RESTRICT,
     PRIMARY KEY (id_personagem)
 );
@@ -120,15 +120,15 @@ CREATE TABLE IF NOT EXISTS jogador (
     capacidade_de_itens INTEGER NOT NULL,
     CHECK(capacidade_de_itens > 0),
 
-    CONSTRAINT fk_regiao FOREIGN KEY (id_regiao) 
+    CONSTRAINT fk_regiao FOREIGN KEY (id_regiao)
         REFERENCES regiao(id_regiao) ON DELETE RESTRICT,
 
-    CONSTRAINT fk_personagem FOREIGN KEY (id_personagem) 
+    CONSTRAINT fk_personagem FOREIGN KEY (id_personagem)
         REFERENCES personagem(id_personagem) ON DELETE RESTRICT,
 
-    CONSTRAINT fk_save FOREIGN KEY (nome_save) 
+    CONSTRAINT fk_save FOREIGN KEY (nome_save)
         REFERENCES save(nome) ON DELETE RESTRICT,
-    
+
     PRIMARY KEY (nome_save, id_personagem)
 );
 
@@ -155,9 +155,9 @@ CREATE TABLE IF NOT EXISTS inimigo (
     id_missao INTEGER DEFAULT NULL,
     id_objetivo INTEGER DEFAULT NULL,
 
-    CONSTRAINT fk_regiao FOREIGN KEY (id_regiao) 
+    CONSTRAINT fk_regiao FOREIGN KEY (id_regiao)
         REFERENCES regiao(id_regiao) ON DELETE RESTRICT,
-    CONSTRAINT fk_personagem FOREIGN KEY (id_personagem) 
+    CONSTRAINT fk_personagem FOREIGN KEY (id_personagem)
         REFERENCES personagem(id_personagem) ON DELETE RESTRICT,
     PRIMARY KEY (id_personagem)
 );
@@ -172,9 +172,9 @@ CREATE TABLE IF NOT EXISTS personagem_nao_hostil (
     is_personagem_historia BOOLEAN NOT NULL DEFAULT FALSE,
     id_missao INTEGER DEFAULT NULL,
 
-    CONSTRAINT fk_regiao FOREIGN KEY (id_regiao) 
+    CONSTRAINT fk_regiao FOREIGN KEY (id_regiao)
         REFERENCES regiao(id_regiao) ON DELETE RESTRICT,
-    CONSTRAINT fk_personagem FOREIGN KEY (id_personagem) 
+    CONSTRAINT fk_personagem FOREIGN KEY (id_personagem)
         REFERENCES personagem(id_personagem) ON DELETE RESTRICT,
     PRIMARY KEY (id_personagem)
 );
@@ -188,9 +188,9 @@ CREATE TABLE IF NOT EXISTS barco (
     capacidade_de_itens INTEGER NOT NULL DEFAULT 0,
     CHECK(capacidade_de_itens >= 0),
 
-    CONSTRAINT fk_regiao FOREIGN KEY (id_regiao) 
+    CONSTRAINT fk_regiao FOREIGN KEY (id_regiao)
         REFERENCES regiao(id_regiao) ON DELETE RESTRICT,
-    CONSTRAINT fk_personagem FOREIGN KEY (id_barco) 
+    CONSTRAINT fk_personagem FOREIGN KEY (id_barco)
         REFERENCES personagem(id_personagem) ON DELETE RESTRICT,
     PRIMARY KEY (id_barco)
 );
@@ -210,7 +210,7 @@ CREATE TABLE IF NOT EXISTS poder_especial (
     energia INTEGER NOT NULL,
     CHECK(energia >= 0),
     PRIMARY KEY (nome, id_personagem),
-    CONSTRAINT fk_personagem FOREIGN KEY (id_personagem) 
+    CONSTRAINT fk_personagem FOREIGN KEY (id_personagem)
         REFERENCES personagem(id_personagem) ON DELETE RESTRICT
 );
 
@@ -240,7 +240,7 @@ CREATE TABLE IF NOT EXISTS inventario_jogador (
     id_item INTEGER DEFAULT NULL,
     qtd_item INTEGER DEFAULT NULL,
 
-    CONSTRAINT fk_jogador FOREIGN KEY (id_jogador_save,id_jogador_personagem) 
+    CONSTRAINT fk_jogador FOREIGN KEY (id_jogador_save,id_jogador_personagem)
         REFERENCES jogador(nome_save,id_personagem) ON DELETE RESTRICT,
     CONSTRAINT fk_item FOREIGN KEY (id_item)
         REFERENCES item(id_item) ON DELETE RESTRICT,
@@ -249,13 +249,13 @@ CREATE TABLE IF NOT EXISTS inventario_jogador (
 );
 
 CREATE TABLE IF NOT EXISTS inventario_personagem (
-    id_jogador_save VARCHAR(30) NOT NULL,    
+    id_jogador_save VARCHAR(30) NOT NULL,
     id_jogador_personagem int not null,
     id_personagem int not null,
     id_item INTEGER DEFAULT NULL,
     qtd_item INTEGER DEFAULT NULL,
 
-    CONSTRAINT fk_jogador FOREIGN KEY (id_jogador_save,id_jogador_personagem) 
+    CONSTRAINT fk_jogador FOREIGN KEY (id_jogador_save,id_jogador_personagem)
         REFERENCES jogador(nome_save,id_personagem) ON DELETE RESTRICT,
     CONSTRAINT fk_item FOREIGN KEY (id_item)
         REFERENCES item(id_item) ON DELETE RESTRICT,
@@ -264,6 +264,17 @@ CREATE TABLE IF NOT EXISTS inventario_personagem (
     ,id_personagem,id_item)
 );
 
+
+CREATE TABLE IF NOT EXISTS inventario_personagem_default (
+    id_personagem int not null,
+    id_item INTEGER DEFAULT NULL,
+    qtd_item INTEGER DEFAULT NULL,
+
+    CONSTRAINT fk_item FOREIGN KEY (id_item)
+        REFERENCES item(id_item) ON DELETE RESTRICT,
+
+    PRIMARY KEY (id_personagem,id_item)
+);
 
 
 -- Missão
@@ -299,7 +310,7 @@ CREATE TABLE IF NOT EXISTS objetivo (
     id_nao_hostil INTEGER NULL,
 
     PRIMARY KEY (id_missao, id_objetivo),
-    CONSTRAINT fk_missao FOREIGN KEY (id_missao) 
+    CONSTRAINT fk_missao FOREIGN KEY (id_missao)
         REFERENCES missao(id_missao) ON DELETE RESTRICT,
     CONSTRAINT fk_item FOREIGN KEY (id_item)
         REFERENCES item(id_item) ON DELETE RESTRICT,
@@ -326,6 +337,20 @@ CREATE TABLE IF NOT EXISTS objetivo_status (
         REFERENCES jogador(nome_save,id_personagem),
 
     PRIMARY KEY (id_objetivo,id_missao, id_jogador_save,id_jogador_personagem)
+);
+
+CREATE TYPE status_missao AS ENUM (
+    'Concluida','Nao_concluida'
+);
+
+CREATE TABLE missao_status(
+    id_missao INTEGER NOT NULL,
+    status status_missao NOT NULL,
+
+
+    PRIMARY KEY(id_missao),
+    CONSTRAINT fk_missao FOREIGN KEY (id_missao)
+        REFERENCES missao(id_missao) ON DELETE RESTRICT
 );
 
 commit;

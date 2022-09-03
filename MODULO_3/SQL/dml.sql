@@ -1,6 +1,6 @@
 begin;
 
-INSERT INTO save (nome) VALUES 
+INSERT INTO save (nome) VALUES
 ('jogador1'),
 ('jogador2'),
 ('jogador3');
@@ -14,7 +14,7 @@ VALUES
 (5,'laminada', 'aumenta o dano do personagem quando equipado', 15, 60, 10, 15, TRUE),
 (6,'rapidez', 'aumenta o dano do personagem quando equipado', 8, 90, 5, 12, TRUE);
 
-INSERT INTO ilha (id_ilha,id_missao,nome,descricao) VALUES 
+INSERT INTO ilha (id_ilha,id_missao,nome,descricao) VALUES
 (1,1,'Ilha do Capitão Morgan','Ilha com uma base da Marinha, comandada pelo Capitão Morgan. Um marinheiro temido tanto pela população quanto pela marinha.Zoro aparece capturado nessa ilha'),
 (2,2,'Orange Town','Ilha tomada pelo Buggy, cujo prefeito se chama Boodle'),
 (3,3,'Vila Syrup','Vila da ilhas Geecko, onde Usopp, um grande Guerreiro do mar com mais de 8 mil seguidores, vive'),
@@ -22,7 +22,7 @@ INSERT INTO ilha (id_ilha,id_missao,nome,descricao) VALUES
 (5,5,'Ilhas Conami','Arquipélogo de Ilhas onde Nami nasceu. Era um arquipélogo quieto, até Arlong e seus piratas chegarem.');
 
 insert into regiao (id_regiao,descricao,tipo,norte,sul,leste,oeste,id_ilha)
-values 
+values
 -- Ilha Capitão Morgan
 (1,'Porto onde você pode viajar para outras cidades','Porto',2,NULL,NULL,4,1), -- 1
 (2,'Feira onde você pode comprar itens','Cidade',3,NULL,1,NULL,1), -- 2
@@ -44,7 +44,7 @@ values
 (15,'Deck','Porto',NULL,11,NULL,NULL,3), -- 15
 (16,'Barco','Porto',NULL,11,NULL,NULL,3); -- 15
 
-INSERT INTO personagem VALUES 
+INSERT INTO personagem VALUES
 (1,'P'),
 (2,'P'),
 (3,'P'),
@@ -76,13 +76,13 @@ INSERT INTO personagem VALUES
 
 
 
-INSERT INTO personagem_principal (id_personagem, nome,id_regiao,ocupacao,grupo_ocupacao,berries,energia,energia_maxima,fraqueza,experiencia,vida,vida_maxima,capacidade_de_itens) VALUES 
+INSERT INTO personagem_principal (id_personagem, nome,id_regiao,ocupacao,grupo_ocupacao,berries,energia,energia_maxima,fraqueza,experiencia,vida,vida_maxima,capacidade_de_itens) VALUES
 (1,'Monkey D. Luffy',1,'Pirata','Piratas do Chapéu de Palha',150,100,100,'Kairoseki',1,120,120,10),
 (2,'Roronoa Zoro',2,'Pirata','Piratas do Chapéu de Palha',100,100,100,'Cortar Ferro',1,100,100,10),
 (3,'Sanji',3,'Pirata','Piratas do Chapéu de Palha',1000,100,100,'',1,100,100,15),
 (4,'Nami',1,'Pirata','Piratas do Chapéu de Palha',1000000,75,75,'Tritões',1,100,100,8);
 
-INSERT INTO barco (id_barco,id_regiao,nome, ocupacao, grupo_ocupacao, capacidade_de_itens) VALUES 
+INSERT INTO barco (id_barco,id_regiao,nome, ocupacao, grupo_ocupacao, capacidade_de_itens) VALUES
 (5,1,'Thousand Sunny', 'Pirata', 'Piratas do Chapéu de Palha', 400),
 (6,1,'Miss Love Duck', 'Pirata', 'Piratas do Bon Chan', 250),
 (7,1,'Moby Dick', 'Pirata', 'Piratas do Barba Branca', 1000),
@@ -90,7 +90,7 @@ INSERT INTO barco (id_barco,id_regiao,nome, ocupacao, grupo_ocupacao, capacidade
 (9,1,'Oro Jackson', 'Pirata', 'Piratas do Roger', 1000);
 
 -- poderia criar um tipo para poder especial e a fraqueza seria um tipo
-INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, energia) VALUES 
+INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, energia) VALUES
 -- Fraqueza de todos os usuários de akuma no mi.
 ('Pistola de Kairoseki','Kairoseki', 1, 'Pistola com tiro de Kairoseki', 25, 10),
 ('Fuzil de Kairoseki','Kairoseki',1,'Fuzil forte com tiro de Kairoseki',100,50),
@@ -125,13 +125,13 @@ INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, ene
 -- Espadadas
 ('Espadada especial de Ferro','Ferro', 1, 'Espadada Especial de Ferro', 50, 100);
 
--- 
+--
 --('','', 1, 'dá um soco como um Gomu Gomu no Pistol, mas ele pode redirecionar seu soco à um número indeterminado de vezes, sem perder o impulso, mantendo a sua força tremenda.', 1000, 500),
 --('','Mulher', 1, 'Nesta forma, ele se assemelha a uma bola com proporções exageradas: enquanto seus braços e pernas são ligeiramente pequenos em relação ao corpo, seu torso com Busoshoku Haki-revestido torna-se muito maior e completamente redondo, embora ainda há músculos nos braços e no peitoral.', 900, 300),
 --('','Ferro', 1, 'Em vez de vapor, essa forma produz uma substância gasosa que aparece como uma mistura de vapor e fogo e, como suas outras contrapartes, também parece ser colocada sobre seus ombros como um lenço, enquanto sob esta forma. Seus punhos também se flexionam diferentemente, com os primeiros nós dos dedos sendo estendidos, semelhante ao punho de leopardo.', 950, 350);
 
 
-INSERT INTO inimigo (id_personagem,id_regiao,nome,ocupacao,grupo_ocupacao,berries,energia,energia_maxima,fraqueza,experiencia,vida,vida_maxima,respawn) VALUES 
+INSERT INTO inimigo (id_personagem,id_regiao,nome,ocupacao,grupo_ocupacao,berries,energia,energia_maxima,fraqueza,experiencia,vida,vida_maxima,respawn) VALUES
 (10,1,'Marinheiro 1','Marinheiro','Marinha',150,100,100,'Akuma no mi',1,100,100,true),
 (11,1,'Marinheiro 2','Marinheiro','Marinha',250,100,100,'Akuma no mi',2,100,100,true),
 (12,1,'Marinheiro 3','Marinheiro','Marinha',500,100,100,'Raki',3,100,100,true),
@@ -166,7 +166,7 @@ INSERT INTO jogador VALUES
 
 
 INSERT INTO inventario_jogador (id_jogador_save,id_jogador_personagem, id_item, qtd_item)
-VALUES 
+VALUES
 ('jogador1',1, 1, 1),
 ('jogador1',1, 2, 3),
 ('jogador1',1, 3, 2),
@@ -178,7 +178,7 @@ VALUES
 ('jogador2',1, 2, 25);
 
 INSERT INTO inventario_personagem (id_jogador_save,id_jogador_personagem,id_item, qtd_item,id_personagem)
-VALUES 
+VALUES
 ('jogador1',1, 1, 1,5),
 ('jogador1',1, 2, 3,8),
 ('jogador1',1, 3, 2,6),
@@ -188,14 +188,47 @@ VALUES
 
 -- Missões
 
-INSERT INTO missao (id_missao, nome, descricao, qtd_experiencia, dificuldade, id_nao_hostil) VALUES 
+INSERT INTO inventario_personagem_default (id_item, qtd_item,id_personagem)
+VALUES
+--            iditem | qnditem
+(  1,       1       ,5),
+(2, 3,8),
+(3, 2,6),
+(4, 3,10),
+(5, 2,23),
+
+
+(5, 10,22),
+(6, 10,22),
+(7, 10,22),
+(8, 10,22),
+(9, 10,22),
+(10, 10,22),
+(11, 10,22),
+(12, 10,22),
+(13, 10,22),
+(14, 10,22),
+
+
+(6, 10,27),
+(7, 10,27),
+(8, 10,27),
+(9, 10,27),
+(10, 10,27),
+(11, 10,27),
+(12, 10,27),
+(13, 10,27),
+(14, 10,27),
+(5, 2,27);
+
+INSERT INTO missao (id_missao, nome, descricao, qtd_experiencia, dificuldade, id_nao_hostil) VALUES
 (1,'Começo da jornada', 'Luffy derrota Alvida e segue sua viagem junto de Coby pra formar uma tripulação', 10, 0, 21),
 (2,'O grande espadachim aparece', 'Luffy e Coby conhecem e libertam o Caçador de Piratas Roronoa Zoro, que foi preso pelo Capitão Morgan e seu filho Helmeppo', 10, 0, 21),
 (3,'Morgan VS Luffy', 'Luffy e o mais novo membro de sua tripulação, Roronoa Zoro, lutam contra o Capitão Morgan', 10, 0, 21),
 (4,'Palhaço-Pirata, Capitão Buggy', 'Luffy e Zoro se deparam o Capitão Buggy', 10, 0, 21),
 (5,'Mohji, o domador VS Luffy', 'Luffy consegue se libertar da jaula em que estava preso e luta contra Mohji e Richie', 10, 0, 21);
 
-INSERT INTO objetivo (id_missao,id_objetivo, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil) VALUES 
+INSERT INTO objetivo (id_missao,id_objetivo, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil) VALUES
 (1,1, '', 'Luffy derrota piratas do bando da Alvida', 'DerrotarInimigo', NULL, NULL, NULL),
 (1,2, '', 'Luffy da o golpe final e manda Alvida pelos ares', 'DerrotarInimigo', NULL, NULL, NULL),
 (2,1, '', 'Luffy derrota os marinheiros que estavam guardando as espadas de Roronoa Zoro', 'DerrotarInimigo', NULL, NULL, NULL),
