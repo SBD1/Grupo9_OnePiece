@@ -53,7 +53,7 @@ def fala_com_npc(npc_num,npcs_dict,player):
         #print(berries_dict)
         berries = berries_dict[0]["berries"]
         print(f'Você tem ฿ {berries}\n')
-        
+
         print("Aqui está meu inventário :\n")
         #print(f'id : {player["id_personagem"]} \nnome: {player["nome_save"]}')
         inventario_npc = select_to_dict("SELECT id_item,qtd_item from inventario_personagem where id_jogador_save = %s and id_jogador_personagem = %s and id_personagem = %s",player["nome_save"],player["id_personagem"],npcs_dict[npc_num]['id_personagem'])
@@ -84,7 +84,7 @@ def fala_com_npc(npc_num,npcs_dict,player):
         if int(escolha) == 1:
             compra(player,id_itens,npc_id)
             escolha2 = input("\n\nVocê deseja comprar algo a mais:\n1-Sim\n2-Não\n>")
-            
+
             while int(escolha2) == 1:
                 escolha2 = input("\n\nVocê deseja comprar algo a mais:\n1-Sim\n2-Não\n>")
                 compra(player,id_itens)
@@ -132,16 +132,16 @@ def menu(player):
             f"Você está em {posicao_atual}\n"
             "[[Objetivo atual --------- ]]\n")
 
-        npcs_regiao = checa_personagem_regiao(posicao_atual)  
+        npcs_regiao = checa_personagem_regiao(posicao_atual)
 
         print(
             "\n\nM - Mover personagem\n"
             "I - Ver Inventário\n"
             "Q - Sair"
         )
-            
+
         escolha = input("O que você deseja fazer ?\n\n> ").lower()
-        
+
         if escolha == 'm':
             regiao = printa_regioes(nome_player,regioes_to_go)
             move_player(player,regiao)
@@ -154,6 +154,8 @@ def menu(player):
         elif 0 <= int(escolha) <= len(npcs_regiao):
             print("-------Falando com NPC-------------\n\n")
             fala_com_npc(escolha,npcs_regiao,player)
+        else:
+            print("Opção inválida")
 
 
 def run_game(player: dict):
@@ -164,7 +166,7 @@ def run_game(player: dict):
     while game_loop:
         if menu(player) == False:
             game_loop = False
-        
+
 
 def choose_player(save: str) -> list:
     players = get_players(save)
@@ -212,8 +214,8 @@ def intro():
                'q': outro}
 
     op = r"""
-   ___             ____  _               
-  / _ \ _ __   ___|  _ \(_) ___  ___ ___ 
+   ___             ____  _
+  / _ \ _ __   ___|  _ \(_) ___  ___ ___
  | | | | '_ \ / _ \ |_) | |/ _ \/ __/ _ \
  | |_| | | | |  __/  __/| |  __/ (_|  __/
   \___/|_| |_|\___|_|   |_|\___|\___\___|
@@ -222,7 +224,7 @@ def intro():
     print('='*150)
     for s in op.split('\n'):
         print(f'{s:^150}')
-    print('='*150)          
+    print('='*150)
     print('[1] - Usar um save existente.')
     print('[2] - Criar um novo save.')
     print('[q] - Sair.')
@@ -284,7 +286,7 @@ def create_new_save() -> str:
             save_save(value)
             return {'nome': value}
         except Exception as error:
-            print('Nome com esse save já existe, por favor tente outro nome.')    
+            print('Nome com esse save já existe, por favor tente outro nome.')
 
 def move_player(player,escolha):
 
@@ -315,7 +317,7 @@ def regiao_player(player):
 
     with get_connection() as db:
         cursor = db.cursor()
-        cursor.execute('select id_regiao,descricao from regiao where id_regiao IN (' 
+        cursor.execute('select id_regiao,descricao from regiao where id_regiao IN ('
                         '(SELECT norte from regiao where id_regiao = %s) UNION'
                         '(SELECT sul from regiao where id_regiao = %s) UNION'
                         '(SELECT leste from regiao where id_regiao = %s) UNION'
@@ -323,23 +325,23 @@ def regiao_player(player):
                     )
 
         regioes_to_go = cursor.fetchall()
-    
+
 
     #print(regioes_to_go)
     return current,regioes_to_go
 
 def printa_regioes(nome,regioes_to_go):
-    invalid = True 
+    invalid = True
     regioes_possiveis = [str(regiao_id) for regiao_id,descricao in regioes_to_go]
 
     while invalid:
         print(f"\n\n{nome} pode ir para :\n")
-        
+
         for regiao_id,descricao in regioes_to_go:
             print(f"{regiao_id} - {descricao}")
 
         print('\n')
-        
+
         escolha = input("Você deseja ir para : ")
         if escolha not in regioes_possiveis:
             print("Opção inválida.\n")

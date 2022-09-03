@@ -48,6 +48,9 @@ values
 (15,'Deck','Porto',NULL,11,NULL,NULL,3), -- 15
 (16,'Barco','Porto',NULL,11,NULL,NULL,3); -- 15
 
+INSERT INTO save (nome) VALUES
+('jogador1');
+
 INSERT INTO personagem VALUES
 (1,'P'),
 (2,'P'),
@@ -238,8 +241,7 @@ INSERT INTO objetivo (id_missao,id_objetivo, nome, descricao, tipo, id_item, id_
 (4,2, '', 'Nami engana Luffy e o entrega para Buggy', 'DerrotarInimigo', NULL, NULL, NULL),
 (4,3, '', 'Luffy enfrenta Richie', 'DerrotarInimigo', NULL, NULL, NULL);
 
-INSERT INTO save (nome) VALUES
-('jogador1');
+
 
 -- Constraints para evitar dependências ciclicas.
 
@@ -248,5 +250,16 @@ ALTER TABLE ilha ADD CONSTRAINT fk_ilha_missao FOREIGN KEY (id_missao)
 
 ALTER TABLE inimigo ADD CONSTRAINT fk_objetivo FOREIGN KEY (id_missao, id_objetivo)
         REFERENCES objetivo(id_missao, id_objetivo);
+
+
+INSERT INTO missao_status VALUES
+(1,'Nao_concluida'),
+(2,'Nao_concluida'),
+(3,'Nao_concluida'),
+(4,'Nao_concluida'),
+(5,'Nao_concluida'),
+
+
+
 
 commit;

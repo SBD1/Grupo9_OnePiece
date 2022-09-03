@@ -317,7 +317,21 @@ drop trigger rihana on objetivo_status;
 CREATE trigger rihana after UPDATE on objetivo_status
 for each ROW EXECUTE PROCEDURE check_missao();
 
+CREATE OR REPLACE procedure libera_ilha(ilha_id INTEGER)
+AS $libera_ilha$
+declare
+    missao integer;
 
+BEGIN
+
+    select id_missao into missao from ilha
+    where id_ilha = ilha_id;
+
+    update missao_status set status = 'Concluida' where id_missao = missao;
+
+END;
+
+$libera_ilha$ LANGUAGE plpgsql;
 
 
 
