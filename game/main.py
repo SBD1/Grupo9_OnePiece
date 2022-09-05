@@ -8,6 +8,17 @@ def main():
     player = choose_player(save['nome'])
     run_game(player)
 
+def checa_inimigo_regiao(posicao_jogador):
+    inimigos_regiao = select_to_dict('SELECT id_regiao,nome,ocupacao FROM inimigo where id_regiao = %s and vida > 0',posicao_jogador)
+    i=0
+    for inimigo in inimigos_regiao:
+        print(f"{i} - {inimigo['nome']} é um {inimigo['ocupacao']} e está na mesma região que você.")
+        i+=1
+    
+    print("A luta vai começar . . .\n\n")
+    
+
+
 def checa_personagem_regiao(posicao_jogador):
 
     inimigos_regiao = select_to_dict('SELECT id_regiao,nome,ocupacao FROM inimigo where id_regiao = %s and vida > 0',posicao_jogador)
@@ -40,7 +51,6 @@ def compra(player,id_itens,npc_num):
 
     print("Compra realizada !!")
 
-
 def fala_com_npc(npc_num,npcs_dict,player):
     npc_num = int(npc_num)
     print(f"Olá sou {npcs_dict[npc_num]['nome']}\n")
@@ -64,20 +74,22 @@ def fala_com_npc(npc_num,npcs_dict,player):
         with get_connection() as db:
                 with db:
                     cursor = db.cursor()
-                    sql = "SELECT nome from item where id_item in %s"
+                    sql = "SELECT nome,preco,qtd_energia,qtd_vida from item where id_item in %s"
                     data = tuple([str(item) for item in id_itens])
                     data = (data,)
                     cursor.execute(sql,data)
 
-                nomes = cursor.fetchall()
+                itens = cursor.fetchall()
 
-        #print(id_itens)
-        nomes = [name[0] for name in nomes]
+        nomes = [item[0] for item in itens]
+        precos = [item[1] for item in itens]
+        energias = [item[2] for item in itens]
+        vidas = [item[3] for item in itens]
+
         #print(nomes)
         i = 0
         for item in inventario_npc:
-
-            print(f"{id_itens[i]} : {str(nomes[i])}   {item['qtd_item']}x")
+            print(f"{id_itens[i]} : {str(nomes[i])}\nPreço ฿{str(precos[i])}  Quantidade : {item['qtd_item']}x \nGanha {str(vidas[i])} de vida | Ganha {str(energias[i])} de energia\n")
             i+=1
 
         escolha = input("\n\nVocê deseja comprar algo :\n1-Sim\n2-Não\n3-Voltar\n>")
@@ -103,17 +115,22 @@ def inventario(player):
     with get_connection() as db:
             with db:
                 cursor = db.cursor()
-                sql = "SELECT nome from item where id_item in %s"
+                sql = "SELECT nome,preco,qtd_vida,qtd_energia from item where id_item in %s"
                 data = tuple([str(item) for item in id_itens])
                 data = (data,)
                 cursor.execute(sql,data)
 
-            nomes = cursor.fetchall()
+            itens = cursor.fetchall()
 
-    nomes = [name[0] for name in nomes]
+    nomes = [item[0] for item in itens]
+    vidas = [item[2] for item in itens]
+    energias = [item[3] for item in itens]
+    precos = [item[1] for item in itens]
+
+    
     i = 0
     for item in inventario_jogador:
-        print(f"{id_itens[i]} : {str(nomes[i])}   {item['qtd_item']}x")
+        print(f"{id_itens[i]} : {str(nomes[i])}\nVale ฿{str(precos[i])} Quantidade : {item['qtd_item']}x \nGanha {str(vidas[i])} de vida | Ganha {str(energias[i])} de energia\n")
         i+=1
 
     escolha = input("\nO que deseja fazer ?\nSó aperte enter por enquanto. . .")
@@ -133,7 +150,7 @@ def menu(player):
             "[[Objetivo atual --------- ]]\n")
 
         npcs_regiao = checa_personagem_regiao(posicao_atual)
-
+        inimigos_regiao = checa_inimigo_regiao(posicao_atual)
         print(
             "\n\nM - Mover personagem\n"
             "I - Ver Inventário\n"
