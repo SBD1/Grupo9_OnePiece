@@ -16,6 +16,7 @@ def checa_inimigo_regiao(posicao_jogador):
         i+=1
     
     print("A luta vai começar . . .\n\n")
+
     
 
 
@@ -55,6 +56,8 @@ def fala_com_npc(npc_num,npcs_dict,player):
     npc_num = int(npc_num)
     print(f"Olá sou {npcs_dict[npc_num]['nome']}\n")
     npc_id = npcs_dict[npc_num]['id_personagem']
+
+    # compra
     if(npcs_dict[npc_num]['is_vendedor']):
         print("Quer comprar ? ")
 
@@ -110,27 +113,40 @@ def inventario(player):
     inventario_jogador = select_to_dict("SELECT id_item,qtd_item from inventario_jogador where id_jogador_save = %s and id_jogador_personagem = %s",player["nome_save"],player["id_personagem"])
     #print(inventario_jogador)
 
+    if not inventario_jogador:
+        print("Inventário está vazio !")
+        return
+
     id_itens = [item['id_item'] for item in inventario_jogador]
+
+    dth = {x['id_item'] : x['qtd_item'] for x in inventario_jogador}
+
 
     with get_connection() as db:
             with db:
                 cursor = db.cursor()
-                sql = "SELECT nome,preco,qtd_vida,qtd_energia from item where id_item in %s"
+                sql = "SELECT id_item,nome,qtd_vida,qtd_energia,preco from item where id_item in %s"
                 data = tuple([str(item) for item in id_itens])
                 data = (data,)
                 cursor.execute(sql,data)
 
             itens = cursor.fetchall()
 
-    nomes = [item[0] for item in itens]
+    nomes = [item[1] for item in itens]
     vidas = [item[2] for item in itens]
     energias = [item[3] for item in itens]
-    precos = [item[1] for item in itens]
+    precos = [item[4] for item in itens]
 
-    
+    header = ['Id_item','Nome','Vida','Energia','Preço','Quantidade']
+
+    mat = [header, ['---'] * len(header), *[[*it,dth.get(it[0],0)]for it in itens]]
+
+    for row in mat:
+        print('|' + '|'.join(str(r).center(20) for r in row) + '|')
+
     i = 0
     for item in inventario_jogador:
-        print(f"{id_itens[i]} : {str(nomes[i])}\nVale ฿{str(precos[i])} Quantidade : {item['qtd_item']}x \nGanha {str(vidas[i])} de vida | Ganha {str(energias[i])} de energia\n")
+        print(f"{id_itens[i]} : {str(nomes[i])}\n\tQuantidade : {item['qtd_item']}x\n\tVida : {str(vidas[i])}\n\tEnergia : {str(energias[i])}\n\tPreço ฿ {str(precos[i])},00\n\n")
         i+=1
 
     escolha = input("\nO que deseja fazer ?\nSó aperte enter por enquanto. . .")
@@ -208,8 +224,6 @@ def choose_player(save: str) -> list:
 
 def get_players(save: str) -> list[list]:
     return select_to_dict('SELECT nome, id_personagem, nome_save FROM jogador WHERE nome_save = %s', save)
-
-
 
 def select_to_dict(query: str, *args):
     import re
