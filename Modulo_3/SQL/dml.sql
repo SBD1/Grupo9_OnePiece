@@ -77,7 +77,8 @@ INSERT INTO personagem VALUES
 (25,'N'),
 (26,'N'),
 (27,'N'),
-(28,'N');
+(28,'N'),
+(29,'I');
 
 INSERT INTO personagem_principal (id_personagem, nome,id_regiao,ocupacao,grupo_ocupacao,berries,energia,energia_maxima,fraqueza,experiencia,vida,vida_maxima,capacidade_de_itens) VALUES
 (1,'Monkey D. Luffy',1,'Pirata','Piratas do Chapéu de Palha',150,100,100,'Kairoseki',1,120,120,10),
@@ -134,18 +135,19 @@ INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, ene
 --('','Ferro', 1, 'Em vez de vapor, essa forma produz uma substância gasosa que aparece como uma mistura de vapor e fogo e, como suas outras contrapartes, também parece ser colocada sobre seus ombros como um lenço, enquanto sob esta forma. Seus punhos também se flexionam diferentemente, com os primeiros nós dos dedos sendo estendidos, semelhante ao punho de leopardo.', 950, 350);
 
 
-INSERT INTO inimigo (id_personagem,id_regiao,nome,ocupacao,grupo_ocupacao,berries,energia,energia_maxima,fraqueza,experiencia,vida,vida_maxima,id_missao,id_objetivo) VALUES
-(10,1,'Marinheiro 1','Marinheiro','Marinha',150,100,100,'Akuma no mi',1,0,100,null,null),
-(11,1,'Marinheiro 2','Marinheiro','Marinha',250,100,100,'Akuma no mi',2,0,100,null,null),
-(12,1,'Marinheiro 3','Marinheiro','Marinha',500,100,100,'Raki',3,0,100,null,null),
-(13,1,'Marinheiro 4','Marinheiro','Marinha',1000,100,100,'Raki do rei',4,0,100,null,null),
-(14,1,'Akainu','Marinheiro','Almirante da Marinha',1000000,10000,10000,'Kairoseki',10,0,10000,1,1),
-(15,1,'Alkiji','Marinheiro','Almirante da Marinha',900000,10000,10000,'Kairoseki',10,0,10000,1,1),
-(16,1,'Kizaru','Marinheiro','Almirante da Marinha',1200000,10000,10000,'Kairoseki',10,0,10000,1,1),
-(17,1,'Alvida','Pirata','Piratas da Alvida',1000,100,100,'Akuma no mi',1,0,100,1,1),
-(18,1,'Morgan','Marinheiro','Capitão da Marinha',3000,150,150,'Akuma no mi',1,0,100,1,1),
-(19,1,'Buggy','Pirata','Piratas do Buggy',1000,200,200,'Akuma no mi',2,0,150,1,1),
-(20,1,'Arlong','Pirata','Piratas do Arlong',50000,250,250,'Akuma no mi',3,0,250,1,1);
+INSERT INTO inimigo (id_personagem,id_regiao,nome,ocupacao,grupo_ocupacao,berries,energia,energia_maxima,fraqueza,experiencia,vida,vida_maxima) VALUES
+(10,1,'Marinheiro 1','Marinheiro','Marinha',150,100,100,'Akuma no mi',1,0,100),
+(11,1,'Marinheiro 2','Marinheiro','Marinha',250,100,100,'Akuma no mi',2,0,100),
+(12,1,'Marinheiro 3','Marinheiro','Marinha',500,100,100,'Raki',3,0,100),
+(13,1,'Marinheiro 4','Marinheiro','Marinha',1000,100,100,'Raki do rei',4,0,100),
+(14,1,'Akainu','Marinheiro','Almirante da Marinha',1000000,10000,10000,'Kairoseki',10,0,10000),
+(15,1,'Alkiji','Marinheiro','Almirante da Marinha',900000,10000,10000,'Kairoseki',10,0,10000),
+(16,1,'Kizaru','Marinheiro','Almirante da Marinha',1200000,10000,10000,'Kairoseki',10,0,10000),
+(17,1,'Alvida','Pirata','Piratas da Alvida',1000,100,100,'Akuma no mi',1,0,100),
+(29,1,'Piratas da Alvida','Pirata','Piratas da Alvida',100,100,100,'Akuma no mi',1,0,100),
+(18,1,'Morgan','Marinheiro','Capitão da Marinha',3000,150,150,'Akuma no mi',1,0,100),
+(19,1,'Buggy','Pirata','Piratas do Buggy',1000,200,200,'Akuma no mi',2,0,150),
+(20,1,'Arlong','Pirata','Piratas do Arlong',50000,250,250,'Akuma no mi',3,0,250);
 
 INSERT INTO personagem_nao_hostil (id_personagem, id_regiao,nome, ocupacao, grupo_ocupacao, is_vendedor, is_personagem_historia)
 VALUES
@@ -202,7 +204,7 @@ INSERT INTO missao (id_missao, nome, descricao, qtd_experiencia, dificuldade, id
 (5,'Mohji, o domador VS Luffy', 'Luffy consegue se libertar da jaula em que estava preso e luta contra Mohji e Richie', 10, 0, 21);
 
 INSERT INTO objetivo (id_missao,id_objetivo, descricao, tipo, id_item, id_inimigo, id_nao_hostil) VALUES
-(1, 1, 'Derrote os piratas do bando da Alvida', 'DerrotarInimigo', NULL, NULL, NULL),
+(1, 1, 'Derrote os piratas do bando da Alvida', 'DerrotarInimigo', NULL, 29, NULL),
 (1, 2, 'Derrote com a Alvida', 'DerrotarInimigo', NULL, NULL, NULL),
 (2, 1, 'Derrote os marinheiros que estão de guarda nas espadas de Roronoa Zoro', 'DerrotarInimigo', NULL, NULL, NULL),
 (2, 2, 'Recupere as espadas de Roronoa Zoro', 'PegarItem', NULL, NULL, NULL),
@@ -240,13 +242,8 @@ VALUES
 ('jogador2',1, 2, 25);
 
 -- Constraints para evitar dependências ciclicas.
-
 ALTER TABLE ilha ADD CONSTRAINT fk_ilha_missao FOREIGN KEY (id_missao)
     REFERENCES missao(id_missao) ON DELETE RESTRICT;
-
-ALTER TABLE inimigo ADD CONSTRAINT fk_objetivo FOREIGN KEY (id_missao, id_objetivo)
-        REFERENCES objetivo(id_missao, id_objetivo);
-
 
 INSERT INTO missao_status VALUES
 (1,'Nao_concluida'),
