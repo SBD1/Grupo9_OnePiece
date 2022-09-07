@@ -1,6 +1,8 @@
 import sys
 from database import get_connection
 import ascii_art
+import random
+import time
 
 
 def main():
@@ -8,15 +10,82 @@ def main():
     player = choose_player(save['nome'])
     run_game(player)
 
-def checa_inimigo_regiao(posicao_jogador):
-    inimigos_regiao = select_to_dict('SELECT id_regiao,nome,ocupacao FROM inimigo where id_regiao = %s and vida > 0',posicao_jogador)
+def ataque_simples_player(atacante,atacado,experiencia,energia):
+    '''
+    retorna ata
+    '''
+
+    poder_especial = 0
+
+    #cálculo do dano
+        # baseado em experiencia
+    damage = ((5*experiencia)/3)+(poder_especial) + energia*0.05
+
+    return damage
+
+def luta(player,inimigo):
+    
+    dados_luta = select_to_dict("SELECT nome,vida_maxima,vida,fraqueza,energia_maxima,energia,experiencia from jogador where nome_save = %s and id_personagem = %s",player['nome_save'],player['id_personagem'])
+
+    #print(dados_luta)
+    #print("Inimigo : ")
+    #print(inimigo)
+    
+    vida_personagem = dados_luta[0]['vida']
+    experiencia_personagem = dados_luta[0]['experiencia']
+    energia_personagem = dados_luta[0]['energia']
+        
+    experiencia_inimigo = inimigo['experiencia']
+    vida_inimigo = inimigo['vida']
+    energia_inimigo = inimigo['energia']
+
+
+    print(vida_personagem,vida_inimigo)
+
+    turno = random.choice([0,1])
+
+    print(turno)
+    # enquanto algum dos dois ainda estiverem com vida > 0
+    while vida_personagem > 0 and vida_inimigo > 0:    
+        # luta acontece
+        if(turno % 2 == 0):
+            # personagem ataca
+            print("É tua vez de atacar :")
+            dano = ataque_simples_player(player,inimigo,experiencia_personagem,energia_personagem)
+            print(f"O dano foi de {dano}")
+            vida_inimigo -= dano
+        else:
+            #inimigo ataca
+            print("Vez do Inimigo de atacar :")
+            dano = ataque_simples_player(player,inimigo,experiencia_inimigo,energia_inimigo)
+            print(f"O dano foi de {dano}")
+            vida_personagem -= dano
+
+        turno+=1
+
+        print(f"Tua vida : {vida_personagem}\nVida inimigo : {vida_inimigo}\n")
+
+        time.sleep(2)
+
+
+    # ataque simples
+
+    
+
+def checa_inimigo_regiao(posicao_jogador,player):
+    inimigos_regiao = select_to_dict('SELECT id_regiao,nome,ocupacao,energia,vida,vida_maxima,experiencia FROM inimigo where id_regiao = %s and vida > 0',posicao_jogador)
     i=0
     for inimigo in inimigos_regiao:
-        print(f"{i} - {inimigo['nome']} é um {inimigo['ocupacao']} e está na mesma região que você.")
+        print(f"\n\n{i} - {inimigo['nome']} é um {inimigo['ocupacao']} e está na mesma região que você.")
         i+=1
-    
-    print("A luta vai começar . . .\n\n")
+        if(inimigo['vida'] > 0):    
+            print("A luta vai começar . . .")
+            time.sleep(2)
+            luta(player,inimigo)
 
+    # Pensando a luta por turno...  Simples
+    # iterador par Personagem ataca
+    # iterador ímpar Inimigo ataca
     
 
 
@@ -158,15 +227,18 @@ def menu(player):
 
     while True:
         nome_player = player["nome"]
+        vida_player = player['vida']
         posicao_atual,regioes_to_go = regiao_player(player)
 
         print("##### One Piece ! 💀 - \U0001f480 ######\n\n")
         print(f"Jogador {nome_player} 🏴‍☠️\n"
             f"Você está em {posicao_atual}\n"
             "[[Objetivo atual --------- ]]\n")
+        
+        print(f'Vida = {vida_player}')
 
         npcs_regiao = checa_personagem_regiao(posicao_atual)
-        inimigos_regiao = checa_inimigo_regiao(posicao_atual)
+        inimigos_regiao = checa_inimigo_regiao(posicao_atual,player)
         print(
             "\n\nM - Mover personagem\n"
             "I - Ver Inventário\n"
@@ -223,7 +295,7 @@ def choose_player(save: str) -> list:
 
 
 def get_players(save: str) -> list[list]:
-    return select_to_dict('SELECT nome, id_personagem, nome_save FROM jogador WHERE nome_save = %s', save)
+    return select_to_dict('SELECT nome, id_personagem, nome_save,vida FROM jogador WHERE nome_save = %s', save)
 
 def select_to_dict(query: str, *args):
     import re
