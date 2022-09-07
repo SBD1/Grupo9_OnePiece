@@ -63,6 +63,9 @@ BEGIN
     INSERT INTO inventario_personagem (id_jogador_save, id_jogador_personagem, id_personagem, id_item, qtd_item)
         SELECT NEW.nome, 1, id_personagem, id_item, qtd_item FROM inventario_personagem_default;
 
+    INSERT INTO objetivo_status (id_missao, id_objetivo, id_jogador_save, id_jogador_personagem, status) VALUES
+        (1, 1, NEW.nome, 1, 'Em andamento');
+
     RETURN NEW;
 END;
 $create_save_jogador$ LANGUAGE plpgsql;

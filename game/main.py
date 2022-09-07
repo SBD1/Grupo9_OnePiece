@@ -129,8 +129,8 @@ def menu(player):
 
         print("##### One Piece ! 💀 - \U0001f480 ######\n\n")
         print(f"Jogador {nome_player} 🏴‍☠️\n"
-            f"Você está em {posicao_atual}\n"
-            "[[Objetivo atual --------- ]]\n")
+            f"Você está em {posicao_atual}\n")
+        printa_objetivo_atual(player)
 
         npcs_regiao = checa_personagem_regiao(posicao_atual)
 
@@ -156,6 +156,17 @@ def menu(player):
             fala_com_npc(escolha,npcs_regiao,player)
         else:
             print("Opção inválida")
+
+
+def printa_objetivo_atual(player: dict) -> None:
+    objectives = select_to_dict('SELECT o.id_missao, o.id_objetivo, o.nome, o.descricao, o.tipo, o.id_item, o.id_inimigo, o.id_nao_hostil FROM objetivo o INNER JOIN objetivo_status os ON o.id_missao = os.id_missao AND o.id_objetivo = os.id_objetivo AND os.id_jogador_save = %s AND os.id_jogador_personagem = %s WHERE os.status = %s;', player['nome_save'], player['id_personagem'], 'Em andamento')
+    if not objectives:
+        print('=== Nenhum objetivo em andamento ===\n')
+        return
+
+    obj = objectives[0]
+    print(f'Objetivo: {obj["nome"]}')
+    print(f'  Descrição: {obj["descricao"]}\n\n')
 
 
 def run_game(player: dict):
@@ -197,7 +208,7 @@ def get_players(save: str) -> list[list]:
 def select_to_dict(query: str, *args):
     import re
 
-    fields = tuple(field.strip().lstrip('(').rstrip(')') for field in re.findall(r'SELECT (.*) FROM', query, re.IGNORECASE)[0].split(','))
+    fields = tuple(field.strip().lstrip('(').rstrip(')').rsplit('.')[-1] for field in re.findall(r'SELECT (.*) FROM', query, re.IGNORECASE)[0].split(','))
     with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(query, args or ...)
