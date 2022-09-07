@@ -161,7 +161,6 @@ def menu(player):
 def printa_objetivo_atual(player: dict) -> None:
     query = 'SELECT o.id_missao, o.id_objetivo, m.nome, o.descricao, o.tipo, o.id_item, o.id_inimigo, o.id_nao_hostil FROM objetivo o INNER JOIN objetivo_status os ON o.id_missao = os.id_missao AND o.id_objetivo = os.id_objetivo AND os.id_jogador_save = %s AND os.id_jogador_personagem = %s INNER JOIN missao m ON o.id_missao = m.id_missao WHERE os.status = %s;'
     obj, *_ = select_to_dict(query, player['nome_save'], player['id_personagem'], 'Em andamento') or [{}]
-    obj = {}
 
     title = 'Nenhuma Missão em andamento'
     body = 'Fale com algum Cidadão, ele pode ter uma Missão para você!'
