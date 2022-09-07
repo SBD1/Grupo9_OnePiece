@@ -1,5 +1,5 @@
 import sys
-from database import get_connection
+from database import get_connection, AS_DICT
 import ascii_art
 
 
@@ -159,14 +159,22 @@ def menu(player):
 
 
 def printa_objetivo_atual(player: dict) -> None:
-    objectives = select_to_dict('SELECT o.id_missao, o.id_objetivo, o.nome, o.descricao, o.tipo, o.id_item, o.id_inimigo, o.id_nao_hostil FROM objetivo o INNER JOIN objetivo_status os ON o.id_missao = os.id_missao AND o.id_objetivo = os.id_objetivo AND os.id_jogador_save = %s AND os.id_jogador_personagem = %s WHERE os.status = %s;', player['nome_save'], player['id_personagem'], 'Em andamento')
-    if not objectives:
-        print('=== Nenhum objetivo em andamento ===\n')
-        return
+    query = 'SELECT o.id_missao, o.id_objetivo, m.nome, o.descricao, o.tipo, o.id_item, o.id_inimigo, o.id_nao_hostil FROM objetivo o INNER JOIN objetivo_status os ON o.id_missao = os.id_missao AND o.id_objetivo = os.id_objetivo AND os.id_jogador_save = %s AND os.id_jogador_personagem = %s INNER JOIN missao m ON o.id_missao = m.id_missao WHERE os.status = %s;'
+    obj, *_ = select_to_dict(query, player['nome_save'], player['id_personagem'], 'Em andamento') or [{}]
+    obj = {}
 
-    obj = objectives[0]
-    print(f'Objetivo: {obj["nome"]}')
-    print(f'  Descrição: {obj["descricao"]}\n\n')
+    title = 'Nenhuma Missão em andamento'
+    body = 'Fale com algum Cidadão, ele pode ter uma Missão para você!'
+    if obj:
+        title = obj["nome"]
+        body = obj["descricao"]
+
+    size = len(body) + 14
+
+    print('-' * size)
+    print(f'Missão: {title.center(size - 8)}')
+    print(f'Objetivo: {body.center(size - 10)}')
+    print('-' * size + '\n\n')
 
 
 def run_game(player: dict):
@@ -204,15 +212,11 @@ def get_players(save: str) -> list[list]:
     return select_to_dict('SELECT nome, id_personagem, nome_save FROM jogador WHERE nome_save = %s', save)
 
 
-
 def select_to_dict(query: str, *args):
-    import re
-
-    fields = tuple(field.strip().lstrip('(').rstrip(')').rsplit('.')[-1] for field in re.findall(r'SELECT (.*) FROM', query, re.IGNORECASE)[0].split(','))
     with get_connection() as conn:
-        cursor = conn.cursor()
+        cursor = conn.cursor(cursor_factory=AS_DICT)
         cursor.execute(query, args or ...)
-        return [dict(zip(fields, values)) for values in cursor.fetchall()]
+        return cursor.fetchall()
 
 
 def get_saves() -> list[str]:
