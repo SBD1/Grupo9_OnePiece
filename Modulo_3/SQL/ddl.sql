@@ -152,8 +152,6 @@ CREATE TABLE IF NOT EXISTS inimigo (
     CHECK(vida >= 0),
     vida_maxima INTEGER NOT NULL,
     CHECK(vida_maxima >= 0),
-    id_missao INTEGER DEFAULT NULL,
-    id_objetivo INTEGER DEFAULT NULL,
 
     CONSTRAINT fk_regiao FOREIGN KEY (id_regiao)
         REFERENCES regiao(id_regiao) ON DELETE RESTRICT,
