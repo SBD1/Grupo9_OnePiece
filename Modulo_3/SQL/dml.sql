@@ -201,18 +201,19 @@ INSERT INTO missao (id_missao, nome, descricao, qtd_experiencia, dificuldade, id
 (4,'Palhaço-Pirata, Capitão Buggy', 'Luffy e Zoro se deparam o Capitão Buggy', 10, 0, 21),
 (5,'Mohji, o domador VS Luffy', 'Luffy consegue se libertar da jaula em que estava preso e luta contra Mohji e Richie', 10, 0, 21);
 
-INSERT INTO objetivo (id_missao,id_objetivo, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil) VALUES
-(1,1, '', 'Luffy derrota piratas do bando da Alvida', 'DerrotarInimigo', NULL, NULL, NULL),
-(1,2, '', 'Luffy da o golpe final e manda Alvida pelos ares', 'DerrotarInimigo', NULL, NULL, NULL),
-(2,1, '', 'Luffy derrota os marinheiros que estavam guardando as espadas de Roronoa Zoro', 'DerrotarInimigo', NULL, NULL, NULL),
-(2,2, '', 'Luffy pega as espadas de Roronoa Zoro, que tinham sido confiscadas pela marinha', 'PegarItem', NULL, NULL, NULL),
-(2,3, '', 'Luffy liberta Roronoa Zoro e devolve suas espadas', 'FalarComNPC', NULL, NULL, NULL),
-(3,1, '', 'Luffy e Zoro derrotam os marinheiros que estavam protegendo o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL),
-(3,2, '', 'Luffy e Zoro vencem o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL),
-(3,3, '', 'Coby se dispede de Luffy para seguir sua ambição de se tornar um marinheiro.', 'FalarComNPC', NULL, NULL, NULL),
-(4,1, '', 'Luffy derrota piratas do Capitão Buggy', 'DerrotarInimigo', NULL, NULL, NULL),
-(4,2, '', 'Nami engana Luffy e o entrega para Buggy', 'DerrotarInimigo', NULL, NULL, NULL),
-(4,3, '', 'Luffy enfrenta Richie', 'DerrotarInimigo', NULL, NULL, NULL);
+INSERT INTO objetivo (id_missao,id_objetivo, descricao, tipo, id_item, id_inimigo, id_nao_hostil) VALUES
+(1, 1, 'Derrote os piratas do bando da Alvida', 'DerrotarInimigo', NULL, NULL, NULL),
+(1, 2, 'Derrote com a Alvida', 'DerrotarInimigo', NULL, NULL, NULL),
+(2, 1, 'Derrote os marinheiros que estão de guarda nas espadas de Roronoa Zoro', 'DerrotarInimigo', NULL, NULL, NULL),
+(2, 2, 'Recupere as espadas de Roronoa Zoro', 'PegarItem', NULL, NULL, NULL),
+(2, 3, 'Liberte Roronoa Zoro e devolva suas espadas', 'FalarComNPC', NULL, NULL, NULL),
+(3, 1, 'Derrote os marinheiros que estam protegendo o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL),
+(3, 2, 'Derrote o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL),
+(3, 3, 'Fale com Coby', 'FalarComNPC', NULL, NULL, NULL),
+(4, 1, 'Derrote os piratas do bando do Capitão Buggy', 'DerrotarInimigo', NULL, NULL, NULL),
+(4, 2, 'Convença Nami a entrar para sua tripulação', 'FalarComNPC', NULL, NULL, NULL),
+(4, 3, 'Derrote os piratas de Buggy', 'DerrotarInimigo', NULL, NULL, NULL), -- Nami engana Luffy e o entrega para buggy
+(4, 4, 'Derrote Richie', 'DerrotarInimigo', NULL, NULL, NULL);
 
 
 INSERT INTO save (nome) VALUES 
