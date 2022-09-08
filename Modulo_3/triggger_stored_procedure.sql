@@ -259,5 +259,57 @@ END;
 
 $libera_ilha$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION keep_regiao_anterior() RETURNS trigger AS $keep_regiao_anterior$
+
+BEGIN
+    IF (NEW.id_regiao <> OLD.id_regiao) THEN
+        UPDATE jogador SET id_regiao_anterior = OLD.id_regiao WHERE nome_save = OLD.nome_save and id_personagem = OLD.id_personagem;
+    END IF;
+
+    return new;
+END;
+$keep_regiao_anterior$ LANGUAGE plpgsql;
+
+DROP TRIGGER keep_regiao_anterior_trigger on jogador;
+
+CREATE TRIGGER keep_regiao_anterior_trigger
+AFTER UPDATE ON jogador
+FOR EACH ROW EXECUTE PROCEDURE keep_regiao_anterior();
+
+
+CREATE OR REPLACE procedure consumo_item(vida_param INTEGER,energia_param INTEGER,id_item_param INTEGER,nome_jog VARCHAR(30),id_persona INTEGER)
+AS $consumo_item$
+BEGIN
+    update jogador set vida = vida + vida_param,energia=energia+energia_param where nome_save = nome_jog and id_personagem = id_persona;
+    update inventario_jogador set qtd_item = qtd_item - 1 where id_jogador_save = nome_jog and id_jogador_personagem and id_item = id_item_param;
+END;
+$consumo_item$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION verifica_vida_energia() RETURNS trigger AS $verifica_vida_energia$
+BEGIN
+    IF (NEW.vida <> OLD.vida) THEN
+        IF(NEW.vida > OLD.vida_maxima) THEN 
+            update jogador set vida = vida_maxima where nome_save = OLD.nome_save and id_personagem = OLD.id_personagem;
+        END IF;
+    END IF;
+
+    IF (NEW.energia <> OLD.energia) THEN
+        IF(NEW.energia > OLD.energia_maxima) THEN 
+            update jogador set energia = energia_maxima where nome_save = OLD.nome_save and id_personagem = OLD.id_personagem;
+        END IF;
+    END IF;
+
+    RETURN NEW;
+END;
+$verifica_vida_energia$ LANGUAGE plpgsql;
+
+
+DROP TRIGGER verifica_vida_energia_trigger on jogador;
+
+
+CREATE TRIGGER verifica_vida_energia_trigger
+AFTER UPDATE ON jogador
+FOR EACH ROW EXECUTE PROCEDURE verifica_vida_energia();
+
 
 COMMIT;
