@@ -281,7 +281,7 @@ CREATE OR REPLACE procedure consumo_item(vida_param INTEGER,energia_param INTEGE
 AS $consumo_item$
 BEGIN
     update jogador set vida = vida + vida_param,energia=energia+energia_param where nome_save = nome_jog and id_personagem = id_persona;
-    update inventario_jogador set qtd_item = qtd_item - 1 where id_jogador_save = nome_jog and id_jogador_personagem and id_item = id_item_param;
+    update inventario_jogador set qtd_item = qtd_item - 1 where id_jogador_save = nome_jog and id_jogador_personagem = id_persona and id_item = id_item_param;
 END;
 $consumo_item$ LANGUAGE plpgsql;
 
