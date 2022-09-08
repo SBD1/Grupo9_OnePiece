@@ -17,7 +17,7 @@ def ataque_simples_player(atacante,atacado,experiencia,energia):
 
     poder_especial = 0
 
-    damage = ((17*experiencia)/3)+(poder_especial) + energia*0.05
+    damage = ((17 *experiencia)/3)+(poder_especial) + energia*0.05
 
     return damage
 
@@ -233,8 +233,8 @@ def consumir_item(player,item):
     with get_connection() as db:
         with db:
             cursor = db.cursor()
-            sql = "update jogador set vida = vida + %s,energia = energia + %s where nome_save = %s and id_personagem = %s"
-            data = (vida,energia,player['nome_save'],player['id_personagem'])
+            sql = "CALL consumo_item(%s,%s,%s,%s,%s)"
+            data = (vida,energia,str(item),player['nome_save'],player['id_personagem'])
             cursor.execute(sql,data)
 
     print("Atualizado !!!")
@@ -252,7 +252,7 @@ def inventario(player):
 
     dth = {x['id_item'] : x['qtd_item'] for x in inventario_jogador}
 
-    print(dth)
+    #print(dth)
     with get_connection() as db:
             with db:
                 cursor = db.cursor()
@@ -309,7 +309,7 @@ def inventario(player):
 
     elif escolha == '2':
         equipar_item()
-        
+
     elif escolha == '3':
         return
     else:
