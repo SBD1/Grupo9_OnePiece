@@ -59,7 +59,7 @@ sudo docker-compose exec db psql -U postgres -W
 
 `https://www.postgresql.org/docs/8.0/sql-createuser.html`
 
-### Certifique-se de estar dentro da pasta game:
+### Certifique-se de estar dentro da pasta game cd game:
 
 ```
 pip install -r requirements.txt
