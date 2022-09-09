@@ -50,16 +50,21 @@ sudo docker-compose exec db psql -U postgres -W
 ### Para rodar o jogo Crie um database no seu postgresql com o nome "one_piece"
 
 #### Abrir o arquivo game/database.py e colocar o usuário de senha do seu postgresql em conexão com o localhost em `user"` e `password=`
-#### Certifique-se de estar com o python 3.10 e rode o comando:
-```
-pip install requirements.txt
-```
 
 ####  Se estiver com dúvidas leia a documentação:
+
+#### Certifique-se de estar com o python 3.10 e rode o comando:
+
+####  Se estiver com dúvidas leia a documentação ou entre em contato com alguém do grupo:
 
 `https://www.postgresql.org/docs/8.0/sql-createuser.html`
 
 ### Certifique-se de estar dentro da pasta game:
+
+```
+pip install -r requirements.txt
+```
+
 
 ```
 $ cd game
