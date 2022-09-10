@@ -1,7 +1,7 @@
 import sys
+import time
 from database import get_connection, AS_DICT
 import ascii_art
-import threading
 
 
 def main():
@@ -94,20 +94,9 @@ def fala_com_npc(npc_dict,player):
         falas = select_to_dict('select id_conversa, nome_display, texto, id_missao_liberada from proxima_fala(%s, %s, %s)', npc_id, player['nome_save'], player['id_personagem']) or fala_default
 
         sleep_factor = 0.05
-        event = threading.Event()
-        def pula_sleeps():
-            nonlocal sleep_factor
-            input()
-            # Desfaz o último enter
-            print(end='\033[1A')
-            sleep_factor=0
-            event.set()
-
-        threading.Thread(target=pula_sleeps).start()
         for fala in falas:
             print(f"{fala['nome_display']}: {fala['texto']}")
-            event.clear()
-            event.wait(len(fala['texto']) * sleep_factor)
+            time.sleep(len(fala['texto']) * sleep_factor)
         print()
 
         e_pra_concluir_conversa = falas != fala_default
