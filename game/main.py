@@ -1,6 +1,7 @@
 import sys
 from database import get_connection, AS_DICT
 import ascii_art
+import threading
 
 
 def main():
@@ -41,11 +42,10 @@ def compra(player,id_itens,npc_num):
     print("Compra realizada !!")
 
 
-def fala_com_npc(npc_num,npcs_dict,player):
-    npc_num = int(npc_num)
-    print(f"Olá sou {npcs_dict[npc_num]['nome']}\n")
-    npc_id = npcs_dict[npc_num]['id_personagem']
-    if(npcs_dict[npc_num]['is_vendedor']):
+def fala_com_npc(npc_dict,player):
+    print(f"Olá sou {npc_dict['nome']}\n")
+    npc_id = npc_dict['id_personagem']
+    if(npc_dict['is_vendedor']):
         print("Quer comprar ? ")
 
         # acha berries do cara
@@ -56,7 +56,7 @@ def fala_com_npc(npc_num,npcs_dict,player):
 
         print("Aqui está meu inventário :\n")
         #print(f'id : {player["id_personagem"]} \nnome: {player["nome_save"]}')
-        inventario_npc = select_to_dict("SELECT id_item,qtd_item from inventario_personagem where id_jogador_save = %s and id_jogador_personagem = %s and id_personagem = %s",player["nome_save"],player["id_personagem"],npcs_dict[npc_num]['id_personagem'])
+        inventario_npc = select_to_dict("SELECT id_item,qtd_item from inventario_personagem where id_jogador_save = %s and id_jogador_personagem = %s and id_personagem = %s",player["nome_save"],player["id_personagem"],npc_dict['id_personagem'])
         #print(inventario_npc)
 
         id_itens = [item['id_item'] for item in inventario_npc]
@@ -90,8 +90,48 @@ def fala_com_npc(npc_num,npcs_dict,player):
                 compra(player,id_itens)
 
     else:
-        print("Sou personagem de missão !!! Tá faltando me configurar ainda.\nGomu Gomu noooo Rocket !! -@#$#%%$#@!#")
-        nada = input("Aperte enter")
+        fala_default = [{'nome_display': npc_dict['nome'], 'texto': '...', 'id_missao_liberada': None}]
+        falas = select_to_dict('select id_conversa, nome_display, texto, id_missao_liberada from proxima_fala(%s, %s, %s)', npc_id, player['nome_save'], player['id_personagem']) or fala_default
+
+        sleep_factor = 0.05
+        event = threading.Event()
+        def pula_sleeps():
+            nonlocal sleep_factor
+            input()
+            # Desfaz o último enter
+            print(end='\033[1A')
+            sleep_factor=0
+            event.set()
+
+        threading.Thread(target=pula_sleeps).start()
+        for fala in falas:
+            print(f"{fala['nome_display']}: {fala['texto']}")
+            event.clear()
+            event.wait(len(fala['texto']) * sleep_factor)
+        print()
+
+        e_pra_concluir_conversa = falas != fala_default
+
+        if falas[0].get('id_missao_liberada', None) is not None:
+            escolha = input('Deseja começar uma nova missão?\n1-Sim\n2-Depois\n\n> ')
+            if escolha == '1':
+                e_pra_concluir_conversa = True
+            else:
+                print(f'\nMissão recusada. Você pode conversar com {npc_dict["nome"]} caso mude de ideia.\n')
+
+        if e_pra_concluir_conversa:
+            concluir_conversa(npc_id, falas[0]['id_conversa'], player)
+        input('Aperte enter para continuar...')
+
+
+def concluir_conversa(npc_id, conversa_id, player):
+    with get_connection() as db:
+        with db:
+            cursor = db.cursor()
+            cursor.execute('insert into conversa_concluida '
+                '(id_personagem, id_conversa, id_jogador_save, id_jogador_personagem) values (%s, %s, %s, %s);',
+                [npc_id, conversa_id, player['nome_save'], player['id_personagem']])
+
 
 def inventario(player):
     print("Aqui está seu inventário :\n")
@@ -153,14 +193,13 @@ def menu(player):
 
         elif 0 <= int(escolha) <= len(npcs_regiao):
             print("-------Falando com NPC-------------\n\n")
-            fala_com_npc(escolha,npcs_regiao,player)
+            fala_com_npc(npcs_regiao[int(escolha)],player)
         else:
             print("Opção inválida")
 
 
 def printa_objetivo_atual(player: dict) -> None:
-    query = 'SELECT o.id_missao, o.id_objetivo, m.nome, o.descricao, o.tipo, o.id_item, o.id_inimigo, o.id_nao_hostil FROM objetivo o INNER JOIN objetivo_status os ON o.id_missao = os.id_missao AND o.id_objetivo = os.id_objetivo AND os.id_jogador_save = %s AND os.id_jogador_personagem = %s INNER JOIN missao m ON o.id_missao = m.id_missao WHERE os.status = %s;'
-    obj, *_ = select_to_dict(query, player['nome_save'], player['id_personagem'], 'Em andamento') or [{}]
+    obj = get_current_objective(player)
 
     title = 'Nenhuma Missão em andamento'
     body = 'Fale com algum Cidadão, ele pode ter uma Missão para você!'
@@ -168,12 +207,17 @@ def printa_objetivo_atual(player: dict) -> None:
         title = obj["nome"]
         body = obj["descricao"]
 
-    size = len(body) + 14
+    size = max(len(body), 60) + 14
 
     print('-' * size)
     print(f'Missão: {title.center(size - 8)}')
     print(f'Objetivo: {body.center(size - 10)}')
     print('-' * size + '\n\n')
+
+
+def get_current_objective(player: dict):
+    obj, *_ = select_to_dict('select nome, descricao from objetivo_atual(%s, %s)', player['nome_save'], player['id_personagem']) or [None]
+    return obj
 
 
 def run_game(player: dict):
