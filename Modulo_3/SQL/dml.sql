@@ -196,6 +196,35 @@ VALUES
 
 -- Missões
 
+INSERT INTO conversa (id_personagem, id_conversa, id_missao, id_objetivo, id_missao_liberada)
+VALUES
+(21, 1, NULL, NULL, 1),
+(21, 2, 1, 1, null);
+
+INSERT INTO fala (id_personagem, id_conversa, id_fala, texto, nome_display)
+VALUES
+(21, 1, 1, 'Rápido, fuja daqui! Este navio está sendo invadido por Piratas!!', 'Coby'),
+(21, 1, 2, 'Mas eu tô com fome', 'Luffy'),
+(21, 1, 3, 'Como você pode estar tão calmo? Quando eles chegarem aqui eles vão te matar!!', 'Coby'),
+(21, 1, 4, 'Hmm.. Cheirinho de comidaaa', 'Luffy'),
+(21, 1, 5, 'Espera ai, pra onde você está indo?', 'Coby'),
+
+(21, 2, 1, 'Agora sim!! Eu tava cagado de fome', 'Luffy'),
+(21, 2, 2, 'Mas ae, esse é um navio pirata mesmo é?', 'Luffy'),
+(21, 2, 3, 'Não não, este na verdade é um navio que está sendo saqueado pela capitã Alvida', 'Coby'),
+(21, 2, 4, 'Me conta, você é do bando desses piratas?', 'Luffy'),
+(21, 2, 5, 'Já faz 2 anos que eles me levaram e eu virei o faz tudo deles só pra sobreviver', 'Coby'),
+(21, 2, 6, 'E por que você não foge?', 'Luffy'),
+(21, 2, 7, 'Isso é impossível!! Se a capitã me pegar ela vai me deitar na porrada', 'Coby'),
+(21, 2, 8, 'Você é muito covarde isso sim HAHAHA', 'Luffy'),
+(21, 2, 9, 'Me diga, Luffy, por que está viajando?', 'Coby'),
+(21, 2, 10, 'É que eu vou ser o rei dos piratas! :D', 'Luffy'),
+(21, 2, 11, 'O QUEEE???', 'Coby'),
+(21, 2, 12, 'Então quer dizer que você também é um prita??', 'Coby'),
+(21, 2, 13, 'Sou', 'Luffy'),
+(21, 2, 14, 'E cade sua tripulação?', 'Coby'),
+(21, 2, 15, 'Não tenho ainda. To atrás de uma', 'Luffy');
+
 INSERT INTO missao (id_missao, nome, descricao, qtd_experiencia, dificuldade, id_nao_hostil) VALUES
 (1,'Começo da jornada', 'Luffy derrota Alvida e segue sua viagem junto de Coby pra formar uma tripulação', 10, 0, 21),
 (2,'O grande espadachim aparece', 'Luffy e Coby conhecem e libertam o Caçador de Piratas Roronoa Zoro, que foi preso pelo Capitão Morgan e seu filho Helmeppo', 10, 0, 21),
@@ -203,19 +232,23 @@ INSERT INTO missao (id_missao, nome, descricao, qtd_experiencia, dificuldade, id
 (4,'Palhaço-Pirata, Capitão Buggy', 'Luffy e Zoro se deparam o Capitão Buggy', 10, 0, 21),
 (5,'Mohji, o domador VS Luffy', 'Luffy consegue se libertar da jaula em que estava preso e luta contra Mohji e Richie', 10, 0, 21);
 
-INSERT INTO objetivo (id_missao,id_objetivo, descricao, tipo, id_item, id_inimigo, id_nao_hostil) VALUES
-(1, 1, 'Derrote os piratas do bando da Alvida', 'DerrotarInimigo', NULL, 29, NULL),
-(1, 2, 'Derrote com a Alvida', 'DerrotarInimigo', NULL, NULL, NULL),
-(2, 1, 'Derrote os marinheiros que estão de guarda nas espadas de Roronoa Zoro', 'DerrotarInimigo', NULL, NULL, NULL),
-(2, 2, 'Recupere as espadas de Roronoa Zoro', 'PegarItem', NULL, NULL, NULL),
-(2, 3, 'Liberte Roronoa Zoro e devolva suas espadas', 'FalarComNPC', NULL, NULL, NULL),
-(3, 1, 'Derrote os marinheiros que estam protegendo o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL),
-(3, 2, 'Derrote o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL),
-(3, 3, 'Fale com Coby', 'FalarComNPC', NULL, NULL, NULL),
-(4, 1, 'Derrote os piratas do bando do Capitão Buggy', 'DerrotarInimigo', NULL, NULL, NULL),
-(4, 2, 'Convença Nami a entrar para sua tripulação', 'FalarComNPC', NULL, NULL, NULL),
-(4, 3, 'Derrote os piratas de Buggy', 'DerrotarInimigo', NULL, NULL, NULL), -- Nami engana Luffy e o entrega para buggy
-(4, 4, 'Derrote Richie', 'DerrotarInimigo', NULL, NULL, NULL);
+INSERT INTO objetivo (id_missao,id_objetivo, descricao, tipo, id_item, id_inimigo, id_conversa_personagem, id_conversa) VALUES
+(1, 1, 'Fale com Coby', 'FalarComNPC', NULL, null, 21, 2),
+(1, 2, 'Derrote os piratas do bando da Alvida', 'DerrotarInimigo', NULL, null, NULL, null),
+(1, 3, 'Derrote com a Alvida', 'DerrotarInimigo', NULL, NULL, NULL, null),
+
+(2, 1, 'Derrote os marinheiros que estão de guarda nas espadas de Roronoa Zoro', 'DerrotarInimigo', NULL, NULL, NULL, null),
+(2, 2, 'Recupere as espadas de Roronoa Zoro', 'PegarItem', NULL, NULL, NULL, null),
+(2, 3, 'Liberte Roronoa Zoro e devolva suas espadas', 'FalarComNPC', NULL, NULL, NULL, null),
+
+(3, 1, 'Derrote os marinheiros que estam protegendo o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL, null),
+(3, 2, 'Derrote o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL, null),
+(3, 3, 'Fale com Coby', 'FalarComNPC', NULL, NULL, NULL, null),
+
+(4, 1, 'Derrote os piratas do bando do Capitão Buggy', 'DerrotarInimigo', NULL, NULL, NULL, null),
+(4, 2, 'Convença Nami a entrar para sua tripulação', 'FalarComNPC', NULL, NULL, NULL, null),
+(4, 3, 'Derrote os piratas de Buggy', 'DerrotarInimigo', NULL, NULL, NULL, null), -- Nami engana Luffy e o entrega para buggy
+(4, 4, 'Derrote Richie', 'DerrotarInimigo', NULL, NULL, NULL, null);
 
 
 INSERT INTO save (nome) VALUES 
@@ -244,6 +277,9 @@ VALUES
 -- Constraints para evitar dependências ciclicas.
 ALTER TABLE ilha ADD CONSTRAINT fk_ilha_missao FOREIGN KEY (id_missao)
     REFERENCES missao(id_missao) ON DELETE RESTRICT;
+
+ALTER TABLE conversa ADD CONSTRAINT fk_objetivo FOREIGN KEY (id_missao, id_objetivo)
+    REFERENCES objetivo(id_missao, id_objetivo);
 
 INSERT INTO missao_status VALUES
 (1,'Nao_concluida'),
