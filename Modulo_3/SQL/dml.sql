@@ -220,7 +220,7 @@ VALUES
 (21, 2, 9, 'Me diga, Luffy, por que está viajando?', 'Coby'),
 (21, 2, 10, 'É que eu vou ser o rei dos piratas! :D', 'Luffy'),
 (21, 2, 11, 'O QUEEE???', 'Coby'),
-(21, 2, 12, 'Então quer dizer que você também é um prita??', 'Coby'),
+(21, 2, 12, 'Então quer dizer que você também é um pirata??', 'Coby'),
 (21, 2, 13, 'Sou', 'Luffy'),
 (21, 2, 14, 'E cade sua tripulação?', 'Coby'),
 (21, 2, 15, 'Não tenho ainda. To atrás de uma', 'Luffy');
