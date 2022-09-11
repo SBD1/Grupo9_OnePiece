@@ -86,11 +86,7 @@ def checa_ilha(player):
     if ilha_jogador[0]['tipo'] == 'Porto':
         if len(ilhas_possiveis) <= 0:
             return
-        else:
-            print('\n\nDeseja ir para outra ilha?')
-            print('Ilhas disponíveis:\n')
-            for itens in ilhas_possiveis:
-                print(f"{itens['id_ilha']} {itens['descricao']}")  
+            
 
     return ilhas_possiveis              
 
