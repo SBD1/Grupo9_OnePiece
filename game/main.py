@@ -187,12 +187,12 @@ def fala_com_npc(npc_dict,player):
         inventario_npc = select_to_dict("SELECT id_item,qtd_item from inventario_personagem where id_jogador_save = %s and id_jogador_personagem = %s and id_personagem = %s",player["nome_save"],player["id_personagem"],npc_dict['id_personagem'])
         #print(inventario_npc)
 
-        id_itens = [item['id_item'] for item in inventario_npc]
+        id_itens = sorted([item['id_item'] for item in inventario_npc])
 
         with get_connection() as db:
                 with db:
                     cursor = db.cursor()
-                    sql = "SELECT nome,preco,qtd_energia,qtd_vida from item where id_item in %s"
+                    sql = "SELECT nome,preco,qtd_energia,qtd_vida from item where id_item in %s order by id_item"
                     data = tuple([str(item) for item in id_itens])
                     data = (data,)
                     cursor.execute(sql,data)
