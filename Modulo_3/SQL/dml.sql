@@ -283,9 +283,6 @@ ALTER TABLE conversa ADD CONSTRAINT fk_objetivo FOREIGN KEY (id_missao, id_objet
 
 INSERT INTO missao_status VALUES
 (1,'jogador1',1,'Liberada'),
-(2,'jogador1',1,'Nao_concluida'),
-(3,'jogador1',1,'Nao_concluida'),
-(4,'jogador1',1,'Nao_concluida'),
-(5,'jogador1',1,'Nao_concluida');
+
 
 commit;

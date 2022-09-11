@@ -369,7 +369,8 @@ BEGIN
     if new.status = 'Concluido' and old.status <> 'Concluido' and new.id_objetivo = (select max(id_objetivo) from objetivo where id_missao = new.id_missao) then
 		update missao_status set status = 'Concluida' 
 		where id_jogador_save = new.id_jogador_save and id_jogador_personagem = new.id_jogador_personagem and id_missao = new.id_missao;
-		update missao_status set status = 'Liberada' where id_jogador_save = new.id_jogador_save and id_jogador_personagem = new.id_jogador_personagem and id_missao = new.id_missao+1;
+		INSERT INTO missao_status(id_missao, id_jogador_save, id_jogador_personagem, status) values
+        (new.id_missao+1,new.id_jogador_save, new.id_jogador_personagem, 'Liberada');
     end if;
     return new;
 END;
