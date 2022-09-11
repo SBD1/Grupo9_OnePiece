@@ -29,9 +29,8 @@ def muda_de_ilha(player):
                 print(f"{itens['id_ilha']} {itens['descricao']}")
 
             escolha = input("\n\nSelecione a ilha que deseja ir:\n>")
-            print(escolha)
+            # falta fazer validação para a escolha
             ilha_para_ir = select_to_dict("SELECT id_regiao, id_ilha from regiao where tipo = 'Porto' and id_ilha = %s",escolha)
-            print(ilha_para_ir)
             with get_connection() as db:
                 with db:
                     cursor = db.cursor()
@@ -50,11 +49,6 @@ def checa_ilha(player):
     # ignorar ilha que o personagem se encontra, mostrar apenas as ilhas que ele pode ir
     ilhas_possiveis = [i for i in ilhas_completadas if not (i['id_ilha'] == ilha_jogador[0]['id_ilha'])]  
 
-
-    # print(ilha_jogador)
-    # print(missoes_liberadas)
-    # print(ilhas_completadas)
-    # print(ilhas_possiveis)
     ilhas = [] # liberando ilha de um personagem
     for itens in ilhas_possiveis:
         ilhas.append(itens['id_ilha'])
