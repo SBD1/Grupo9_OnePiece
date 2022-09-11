@@ -371,5 +371,6 @@ BEGIN
 END;
 $missaoconcluida$ LANGUAGE plpgsql;
 
-
+CREATE trigger missaoconcluida after UPDATE ON objetivo_status
+for each row execute PROCEDURE missaoconcluida();
     
