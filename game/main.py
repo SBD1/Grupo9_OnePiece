@@ -1,5 +1,6 @@
 import sys
-from database import get_connection
+import time
+from database import get_connection, AS_DICT
 import ascii_art
 import random
 import time
@@ -45,8 +46,6 @@ def restart(player):
     "Observe sua vida antes de entrar em combate\nComa itens para recuperar sua vida.\nBoa sorte e Bom jogo")
 
     nada = input("Aperte enter . . .")
-
-    menu(player)
     
 
 def luta(player,inimigo):
@@ -99,9 +98,16 @@ def luta(player,inimigo):
 
     if(vida_inimigo < 0):
         vida_inimigo = 0
+        with get_connection() as db:
+            with db:
+                cursor = db.cursor()
+                sql = "update inimigo set vida = %s where id_personagem = %s"
+                data = [0,inimigo['id_personagem']]
+                cursor.execute(sql,data)
     if(vida_personagem <= 0):
         print("Você Morreu ! Naniiii ????")
         restart(player)
+        return
         #restart(player)
         
     # no fim da luta dá o update no banco
@@ -163,13 +169,11 @@ def compra(player,id_itens,npc_num):
 
     print("Compra realizada !!")
 
-def fala_com_npc(npc_num,npcs_dict,player):
-    npc_num = int(npc_num)
-    print(f"Olá sou {npcs_dict[npc_num]['nome']}\n")
-    npc_id = npcs_dict[npc_num]['id_personagem']
 
-    # compra
-    if(npcs_dict[npc_num]['is_vendedor']):
+def fala_com_npc(npc_dict,player):
+    print(f"Olá sou {npc_dict['nome']}\n")
+    npc_id = npc_dict['id_personagem']
+    if(npc_dict['is_vendedor']):
         print("Quer comprar ? ")
 
         # acha berries do cara
@@ -180,7 +184,7 @@ def fala_com_npc(npc_num,npcs_dict,player):
 
         print("Aqui está meu inventário :\n")
         #print(f'id : {player["id_personagem"]} \nnome: {player["nome_save"]}')
-        inventario_npc = select_to_dict("SELECT id_item,qtd_item from inventario_personagem where id_jogador_save = %s and id_jogador_personagem = %s and id_personagem = %s",player["nome_save"],player["id_personagem"],npcs_dict[npc_num]['id_personagem'])
+        inventario_npc = select_to_dict("SELECT id_item,qtd_item from inventario_personagem where id_jogador_save = %s and id_jogador_personagem = %s and id_personagem = %s",player["nome_save"],player["id_personagem"],npc_dict['id_personagem'])
         #print(inventario_npc)
 
         id_itens = [item['id_item'] for item in inventario_npc]
@@ -216,8 +220,38 @@ def fala_com_npc(npc_num,npcs_dict,player):
                 compra(player,id_itens)
 
     else:
-        print("Sou personagem de missão !!! Tá faltando me configurar ainda.\nGomu Gomu noooo Rocket !! -@#$#%%$#@!#")
-        nada = input("Aperte enter")
+        fala_default = [{'nome_display': npc_dict['nome'], 'texto': '...', 'id_missao_liberada': None}]
+        falas = select_to_dict('select id_conversa, nome_display, texto, id_missao_liberada from proxima_fala(%s, %s, %s)', npc_id, player['nome_save'], player['id_personagem']) or fala_default
+
+        sleep_factor = 0.05
+        for fala in falas:
+            print(f"{fala['nome_display']}: {fala['texto']}")
+            time.sleep(len(fala['texto']) * sleep_factor)
+        print()
+
+        e_pra_concluir_conversa = falas != fala_default
+
+        if falas[0].get('id_missao_liberada', None) is not None:
+            escolha = input('Deseja começar uma nova missão?\n1-Sim\n2-Depois\n\n> ')
+            if escolha == '1':
+                e_pra_concluir_conversa = True
+            else:
+                print(f'\nMissão recusada. Você pode conversar com {npc_dict["nome"]} caso mude de ideia.\n')
+                e_pra_concluir_conversa = False
+
+        if e_pra_concluir_conversa:
+            concluir_conversa(npc_id, falas[0]['id_conversa'], player)
+        input('Aperte enter para continuar...')
+
+
+def concluir_conversa(npc_id, conversa_id, player):
+    with get_connection() as db:
+        with db:
+            cursor = db.cursor()
+            cursor.execute('insert into conversa_concluida '
+                '(id_personagem, id_conversa, id_jogador_save, id_jogador_personagem) values (%s, %s, %s, %s);',
+                [npc_id, conversa_id, player['nome_save'], player['id_personagem']])
+
 
 def consumir_item(player,item,qntd_item):
     # recebo um item
@@ -225,18 +259,19 @@ def consumir_item(player,item,qntd_item):
     # pego atributos desse item
     atributos_item = select_to_dict('select qtd_vida,qtd_energia from item where id_item = %s',str(item))
 
-    print(atributos_item[0])
     vida = atributos_item[0]['qtd_vida']
     energia = atributos_item[0]['qtd_energia']
 
-    print(f"Vida = {vida}\nEnergia = {energia}")
-
-    with get_connection() as db:
-        with db:
-            cursor = db.cursor()
-            sql = "CALL consumo_item(%s,%s,%s,%s,%s,%s)"
-            data = (vida,energia,str(item),str(qntd_item),player['nome_save'],player['id_personagem'])
-            cursor.execute(sql,data)
+    try:
+        with get_connection() as db:
+            with db:
+                cursor = db.cursor()
+                sql = "CALL consumo_item(%s,%s,%s,%s,%s,%s)"
+                data = (vida,energia,str(item),str(qntd_item),player['nome_save'],player['id_personagem'])
+                cursor.execute(sql,data)
+    except Exception:
+        print('Você não tem o item ou não tem item suficientes')
+        return
 
     print("Atualizado !!!")
 
@@ -329,10 +364,8 @@ def menu(player):
 
         print("##### One Piece ! 💀 - \U0001f480 ######\n\n")
         print(f"Jogador {nome_player} 🏴‍☠️\n"
-            f"Você está em {posicao_atual}\n"
-            "[[Objetivo atual --------- ]]\n")
-        
-        print(f'Vida = {vida_player}')
+            f"Você está em {posicao_atual}\n")
+        printa_objetivo_atual(player)
 
         npcs_regiao = checa_personagem_regiao(posicao_atual)
         inimigos_regiao = checa_inimigo_regiao(posicao_atual,player)
@@ -353,9 +386,32 @@ def menu(player):
             inventario(player)
         elif 0 <= int(escolha) <= len(npcs_regiao):
             print("-------Falando com NPC-------------\n\n")
-            fala_com_npc(escolha,npcs_regiao,player)
+            fala_com_npc(npcs_regiao[int(escolha)],player)
         else:
             print("Opção inválida")
+
+
+def printa_objetivo_atual(player: dict) -> None:
+    obj = get_current_objective(player)
+
+    title = 'Nenhuma Missão em andamento'
+    body = 'Fale com algum Cidadão, ele pode ter uma Missão para você!'
+    if obj:
+        title = obj["nome"]
+        body = obj["descricao"]
+
+    size = max(len(body), 60) + 14
+
+    print('-' * size)
+    print(f'Missão: {title.center(size - 8)}')
+    print(f'Objetivo: {body.center(size - 10)}')
+    print('-' * size + '\n\n')
+
+
+def get_current_objective(player: dict):
+    obj, *_ = select_to_dict('select nome, descricao from objetivo_atual(%s, %s)', player['nome_save'], player['id_personagem']) or [None]
+    return obj
+
 
 def run_game(player: dict):
     print(f'Rodando o jogo com save [{player["nome_save"]}]'
@@ -391,13 +447,10 @@ def get_players(save: str) -> list[list]:
     return select_to_dict('SELECT nome, id_personagem, nome_save,vida FROM jogador WHERE nome_save = %s', save)
 
 def select_to_dict(query: str, *args):
-    import re
-
-    fields = tuple(field.strip().lstrip('(').rstrip(')') for field in re.findall(r'SELECT (.*) FROM', query, re.IGNORECASE)[0].split(','))
     with get_connection() as conn:
-        cursor = conn.cursor()
+        cursor = conn.cursor(cursor_factory=AS_DICT)
         cursor.execute(query, args or ...)
-        return [dict(zip(fields, values)) for values in cursor.fetchall()]
+        return cursor.fetchall()
 
 
 def get_saves() -> list[str]:
@@ -410,17 +463,17 @@ def intro():
                'q': outro}
 
     op = r"""
-   ___             ____  _
-  / _ \ _ __   ___|  _ \(_) ___  ___ ___
+   ___             ____  _               
+  / _ \ _ __   ___|  _ \(_) ___  ___ ___ 
  | | | | '_ \ / _ \ |_) | |/ _ \/ __/ _ \
  | |_| | | | |  __/  __/| |  __/ (_|  __/
   \___/|_| |_|\___|_|   |_|\___|\___\___|
     """
 
-    print('='*150)
+    print('='*130)
     for s in op.split('\n'):
-        print(f'{s:^150}')
-    print('='*150)
+        print(f'{s:^130}')
+    print('='*130)
     print('[1] - Usar um save existente.')
     print('[2] - Criar um novo save.')
     print('[q] - Sair.')

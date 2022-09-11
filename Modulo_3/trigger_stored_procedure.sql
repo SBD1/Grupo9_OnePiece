@@ -75,32 +75,18 @@ FOR EACH ROW EXECUTE PROCEDURE create_save_jogador();
 
 -- Bernardo
     -- trigger para missão cumprida
-CREATE FUNCTION check_missao_cumprida() RETURNS trigger AS $check_missao_cumprida$
-DECLARE
-    obj_count INTEGER;
-    obj_comc_count INTEGER;
-    xp_missao INTEGER;
-    xp_perso INTEGER;
+CREATE OR REPLACE FUNCTION check_missao_cumprida() RETURNS trigger AS $check_missao_cumprida$
 BEGIN
-    SELECT COUNT(*) INTO obj_count FROM objetivo_status WHERE NEW.id_missao = OLD.id_missao
-    AND NEW.id_jogador_save = OLD.id_jogador_save
-    AND NEW.id_jogador_personagem = OLD.id_jogador_personagem;
-
-    SELECT COUNT(*) INTO obj_comc_count FROM objetivo_status
-    WHERE NEW.objetivo_status_enum = 'Concluido'
-    AND NEW.id_jogador_save = OLD.id_jogador_save;
-
-    SELECT qtd_experiencia INTO xp_missao FROM missao WHERE NEW.id_missao = OLD.id_missao;
-    SELECT experiencia INTO xp_perso FROM personagem_principal WHERE NEW.id_jogador_personagem = OLD.id_jogador_personagem;
-
-    IF obj_count = obj_comp_count THEN UPDATE personagem_principal SET experiencia = xp_perso + xp_missao WHERE id_personagem = id_jogador_personagem;
-    END IF;
-    
+    if new.status = 'Concluido' and old.status <> 'Concluido' and new.id_objetivo = (select max(id_objetivo) from objetivo where id_missao = new.id_missao) then
+        UPDATE jogador j SET experiencia = experiencia + m.qtd_experiencia FROM missao m
+        WHERE j.nome_save = new.id_jogador_save and j.id_personagem = new.id_jogador_personagem and m.id_missao = new.id_missao;
+    end if;
+    return new;
 END;
 $check_missao_cumprida$ LANGUAGE plpgsql;
 
-CREATE trigger check_missao_cumprida AFTER UPDATE ON objetivo_status
-for each ROW EXECUTE PROCEDURE check_missao_cumprida();
+CREATE trigger check_missao_cumprida BEFORE UPDATE ON objetivo_status
+EXECUTE PROCEDURE check_missao_cumprida();
 
     -- Procedure para quando o jogador mata um inimigo
 CREATE OR REPLACE PROCEDURE inimigo_morre(id_jogador_param INTEGER, id_inimigo_param INTEGER, nome_save_param VARCHAR(30) ) AS $inimigo_morre$
@@ -130,7 +116,7 @@ BEGIN
     IF (NEW.id_regiao <> OLD.id_regiao) THEN
         -- Respawna inimigos de missões
         UPDATE inimigo SET vida = vida_maxima, energia = energia_maxima 
-            WHERE id_regiao = NEW.id_regiao AND (id_missao, id_objetivo) IN (SELECT id_missao,id_objetivo FROM objetivo_status WHERE status='Em andamento' AND id_jogador_save = NEW.nome_save AND id_jogador_personagem = NEW.id_personagem);
+            WHERE id_regiao = NEW.id_regiao AND id_personagem IN (SELECT o.id_inimigo FROM objetivo o inner join objetivo_status os on o.id_missao = os.id_missao and o.id_objetivo = os.id_objetivo WHERE os.status='Em andamento' AND os.id_jogador_save = NEW.nome_save AND os.id_jogador_personagem = NEW.id_personagem);
         -- Respawan inimigos comuns
         UPDATE inimigo SET vida = vida_maxima, energia = energia_maxima 
             WHERE id_regiao = NEW.id_regiao;
@@ -143,7 +129,121 @@ CREATE TRIGGER spawn_inimigo_trigger
     BEFORE UPDATE ON jogador
     FOR EACH ROW EXECUTE PROCEDURE spawn_inimigo();
 
-    -- compra de itens  
+    -- Pega próxima fala de um personagem
+CREATE OR REPLACE FUNCTION proxima_fala(_id_personagem int, jog_save varchar(30), jog_persona int)
+RETURNS TABLE (id_missao_liberada int, id_personagem int, id_conversa int, texto text, nome_display varchar(30)) AS $proxima_fala$
+declare
+    _missao int;
+    _objetivo int;
+    _conversa int;
+    _missao_liberada int;
+BEGIN
+    select id_missao, id_objetivo into _missao, _objetivo from objetivo_atual(jog_save, jog_persona);
+
+    if _missao is null then
+        select c.id_conversa, c.id_missao_liberada into _conversa, _missao_liberada from conversa c left join conversa_concluida s on 
+            c.id_personagem = s.id_personagem and c.id_conversa = s.id_conversa
+            and (s.id_jogador_save is null or s.id_jogador_save <> jog_save) and (s.id_jogador_personagem is null or s.id_jogador_personagem <> jog_persona)
+        where s is null and c.id_personagem=_id_personagem and c.id_missao is null and c.id_objetivo is null 
+        order by id_conversa limit 1;
+    else
+        select c.id_conversa, c.id_missao_liberada into _conversa, _missao_liberada from conversa c left join conversa_concluida s on 
+            c.id_personagem = s.id_personagem and c.id_conversa = s.id_conversa
+            and (s.id_jogador_save is null or s.id_jogador_save <> jog_save) and (s.id_jogador_personagem is null or s.id_jogador_personagem <> jog_persona)
+        where s is null and c.id_personagem=_id_personagem and c.id_missao=_missao and c.id_objetivo=_objetivo 
+        order by id_conversa limit 1;
+    end if;
+
+    return query select _missao_liberada as id_missao_liberada, f.id_personagem, f.id_conversa, f.texto, f.nome_display
+        from fala f where f.id_conversa=_conversa and f.id_personagem=_id_personagem order by id_fala;
+END;
+$proxima_fala$ LANGUAGE plpgsql;
+
+    -- Concluir conversa
+CREATE OR REPLACE FUNCTION concluir_objetivo_conversa() RETURNS trigger AS $concluir_objetivo_conversa$
+declare
+    _id_missao int;
+BEGIN
+    -- Conclui o objetivo da conversa
+    UPDATE objetivo_status os SET status = 'Concluido' 
+        FROM objetivo o
+        WHERE o.id_missao = os.id_missao AND o.id_objetivo = os.id_objetivo AND 
+            status = 'Em andamento' AND o.id_conversa_personagem = NEW.id_personagem AND o.id_conversa = NEW.id_conversa AND NEW.id_jogador_save = os.id_jogador_save AND NEW.id_jogador_personagem = os.id_jogador_personagem;
+
+    -- Libera a missão da conversa
+    select id_missao_liberada into _id_missao from conversa where id_personagem = new.id_personagem and id_conversa = new.id_conversa;
+    if _id_missao is not null then
+        insert into objetivo_status (id_missao, id_objetivo, id_jogador_save, id_jogador_personagem, status)
+            values (_id_missao, 1, new.id_jogador_save, new.id_jogador_personagem, 'Em andamento')
+            on conflict (id_objetivo, id_missao, id_jogador_save, id_jogador_personagem)
+            do update set status = excluded.status;
+    end if;    
+
+    RETURN NEW;
+END;
+$concluir_objetivo_conversa$ LANGUAGE plpgsql;
+
+CREATE TRIGGER concluir_objetivo_conversa
+    AFTER INSERT ON conversa_concluida
+    FOR EACH ROW EXECUTE PROCEDURE concluir_objetivo_conversa();
+
+    -- Pega objetivo atual
+CREATE OR REPLACE FUNCTION objetivo_atual(jog_save varchar(30), jog_persona int) 
+RETURNS table(id_missao int, id_objetivo int, nome varchar(35), descricao text) AS $objetivo_atual$
+    select o.id_missao, o.id_objetivo, m.nome, o.descricao
+        from objetivo o INNER JOIN objetivo_status os ON 
+            o.id_missao = os.id_missao AND o.id_objetivo = os.id_objetivo AND 
+                os.id_jogador_save = jog_save AND os.id_jogador_personagem = jog_persona 
+        INNER JOIN missao m ON o.id_missao = m.id_missao WHERE os.status = 'Em andamento';
+$objetivo_atual$ LANGUAGE sql;
+
+    -- Vai para o próximo objetivo caso ele seja concluido
+CREATE OR REPLACE FUNCTION proximo_objetivo() RETURNS trigger AS $proximo_objetivo$
+BEGIN
+    IF (new.status = 'Concluido' and old.status <> 'Concluido') THEN
+        perform * from objetivo where id_missao = new.id_missao and id_objetivo = new.id_objetivo + 1;
+        if found then
+            insert into objetivo_status (id_missao, id_objetivo, id_jogador_save, id_jogador_personagem, status)
+            values (new.id_missao, new.id_objetivo + 1, new.id_jogador_save, new.id_jogador_personagem, 'Em andamento')
+            on conflict (id_objetivo,id_missao, id_jogador_save, id_jogador_personagem)
+            do update set status = excluded.status;
+        end if;
+    END IF;
+
+    RETURN NEW;
+END;
+$proximo_objetivo$ LANGUAGE plpgsql;
+
+CREATE TRIGGER proximo_objetivo
+    AFTER UPDATE ON objetivo_status
+    FOR EACH ROW EXECUTE PROCEDURE proximo_objetivo();
+
+    -- Atacar e Concluir objetivo de derrotar inimigo
+CREATE OR REPLACE procedure derrotar_inimigo(jog_save varchar(30), jog_persona int, _id_inimigo int) AS $derrotar_inimigo$
+BEGIN
+    update inimigo set vida = 0 where id_personagem = _id_inimigo;
+
+    update objetivo_status os SET status = 'Concluido' 
+        from objetivo o 
+    WHERE os.status = 'Em andamento' and o.id_missao = os.id_missao AND o.id_objetivo = os.id_objetivo
+        and os.id_jogador_save = jog_save and os.id_jogador_personagem = jog_persona and o.id_inimigo = _id_inimigo;
+END;
+$derrotar_inimigo$ LANGUAGE plpgsql;
+
+    -- Concluir objetivo de pegar item
+CREATE OR REPLACE FUNCTION concluir_objetivo_item() RETURNS trigger AS $concluir_objetivo_item$
+BEGIN
+    UPDATE objetivo_status os SET status = 'Concluido' 
+        FROM objetivo o
+        WHERE o.id_missao = os.id_missao AND o.id_objetivo = os.id_objetivo AND 
+            status = 'Em andamento' AND o.id_item = NEW.id_item AND NEW.id_jogador_save = os.id_jogador_save AND NEW.id_jogador_personagem = os.id_jogador_personagem;
+    RETURN NEW;
+END;
+$concluir_objetivo_item$ LANGUAGE plpgsql;
+
+CREATE TRIGGER concluir_objetivo_item
+    AFTER INSERT ON inventario_jogador
+    FOR EACH ROW EXECUTE PROCEDURE concluir_objetivo_item();
 
 -- Nicolas 
     -- Atualiza nível consequentemente atualiza poder especial

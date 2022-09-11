@@ -2,6 +2,7 @@ from contextlib import contextmanager
 import os
 
 import psycopg2
+import psycopg2.extras
 
 
 @contextmanager
@@ -16,3 +17,6 @@ def get_connection():
         yield conn
     finally:
         conn.close()
+
+
+AS_DICT = psycopg2.extras.RealDictCursor
