@@ -1,10 +1,5 @@
 begin;
 
-INSERT INTO save (nome) VALUES 
-('jogador1'),
-('jogador2'),
-('jogador3');
-
 INSERT INTO item (id_item,nome, descricao, preco, qtd_energia, qtd_vida, qtd_dano, is_equipavel)
 VALUES
 (1,'Bergamota', 'Recupera vida', 10, 0, 20, NULL, FALSE),
@@ -82,7 +77,8 @@ INSERT INTO personagem VALUES
 (25,'N'),
 (26,'N'),
 (27,'N'),
-(28,'N');
+(28,'N'),
+(29,'I');
 
 INSERT INTO personagem_principal (id_personagem, nome,id_regiao,ocupacao,grupo_ocupacao,berries,energia,energia_maxima,fraqueza,experiencia,vida,vida_maxima,capacidade_de_itens) VALUES
 (1,'Monkey D. Luffy',1,'Pirata','Piratas do Chapéu de Palha',150,100,100,'Kairoseki',1,120,120,10),
@@ -139,18 +135,18 @@ INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, ene
 --('','Ferro', 1, 'Em vez de vapor, essa forma produz uma substância gasosa que aparece como uma mistura de vapor e fogo e, como suas outras contrapartes, também parece ser colocada sobre seus ombros como um lenço, enquanto sob esta forma. Seus punhos também se flexionam diferentemente, com os primeiros nós dos dedos sendo estendidos, semelhante ao punho de leopardo.', 950, 350);
 
 
-INSERT INTO inimigo (id_personagem,id_regiao,nome,ocupacao,grupo_ocupacao,berries,energia,energia_maxima,fraqueza,experiencia,vida,vida_maxima,id_missao,id_objetivo) VALUES
-(10,1,'Marinheiro 1','Marinheiro','Marinha',150,100,100,'Akuma no mi',1,0,100,null,null),
-(11,1,'Marinheiro 2','Marinheiro','Marinha',250,100,100,'Akuma no mi',2,0,100,null,null),
-(12,1,'Marinheiro 3','Marinheiro','Marinha',500,100,100,'Raki',3,0,100,null,null),
-(13,1,'Marinheiro 4','Marinheiro','Marinha',1000,100,100,'Raki do rei',4,0,100,null,null),
-(14,1,'Akainu','Marinheiro','Almirante da Marinha',1000000,10000,10000,'Kairoseki',10,0,10000,1,1),
-(15,1,'Alkiji','Marinheiro','Almirante da Marinha',900000,10000,10000,'Kairoseki',10,0,10000,1,1),
-(16,1,'Kizaru','Marinheiro','Almirante da Marinha',1200000,10000,10000,'Kairoseki',10,0,10000,1,1),
-(17,1,'Alvida','Pirata','Piratas da Alvida',1000,100,100,'Akuma no mi',1,0,100,1,1),
-(18,1,'Morgan','Marinheiro','Capitão da Marinha',3000,150,150,'Akuma no mi',1,0,100,1,1),
-(19,1,'Buggy','Pirata','Piratas do Buggy',1000,200,200,'Akuma no mi',2,0,150,1,1),
-(20,1,'Arlong','Pirata','Piratas do Arlong',50000,250,250,'Akuma no mi',3,0,250,1,1);
+INSERT INTO inimigo (id_personagem,id_regiao,nome,ocupacao,grupo_ocupacao,berries,energia,energia_maxima,fraqueza,experiencia,vida,vida_maxima) VALUES
+(10,1,'Marinheiro 1','Marinheiro','Marinha',150,100,100,'Akuma no mi',1,0,100),
+(11,2,'Marinheiro 2','Marinheiro','Marinha',250,100,100,'Akuma no mi',2,0,100),
+(12,8,'Marinheiro 3','Marinheiro','Marinha',500,100,100,'Raki',3,0,100),
+(13,8,'Marinheiro 4','Marinheiro','Marinha',1000,100,100,'Raki do rei',4,0,100),
+(14,16,'Akainu','Marinheiro','Almirante da Marinha',1000000,10000,10000,'Kairoseki',10,0,10000),
+(15,16,'Alkiji','Marinheiro','Almirante da Marinha',900000,10000,10000,'Kairoseki',10,0,10000),
+(16,16,'Kizaru','Marinheiro','Almirante da Marinha',1200000,10000,10000,'Kairoseki',10,0,10000),
+(17,3,'Alvida','Pirata','Piratas da Alvida',1000,100,100,'Akuma no mi',1,0,100),
+(18,4,'Morgan','Marinheiro','Capitão da Marinha',3000,150,150,'Akuma no mi',1,0,100),
+(19,5,'Buggy','Pirata','Piratas do Buggy',1000,200,200,'Akuma no mi',2,0,150),
+(20,5,'Arlong','Pirata','Piratas do Arlong',50000,250,250,'Akuma no mi',3,0,250);
 
 INSERT INTO personagem_nao_hostil (id_personagem, id_regiao,nome, ocupacao, grupo_ocupacao, is_vendedor, is_personagem_historia)
 VALUES
@@ -162,63 +158,6 @@ VALUES
 (26,1,'Prefeito', 'Cidadao', 'Cidadão', false, false),
 (27,1,'Comerciante', 'Cidadao', 'Cidadão', true, false),
 (28,1,'Chuchu', 'Cidadao', 'Cidadão', false, true);
-
-
-INSERT INTO jogador VALUES
-('jogador1',1,1,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',150,100,100,'Kairoseki',1,120,120,10),
-('jogador1',2,2,'Roronoa Zoro','Pirata','Piratas do Chapéu de Palha',100,100,100,'Cortar Ferro',1,100,100,10),
-('jogador2',1,1,'Monkey D. Luffy','Pirata','Piratas do Chapéu de Palha',5000000,100000,100000,'Kairoseki',10,1200000,1200000,10101010),
-('jogador3',2,2,'Roronoa Zoro','Pirata','Piratas do Chapéu de Palha',100,100,100,'Cortar Ferro',1,100,100,10);
-
-
-INSERT INTO inventario_jogador (id_jogador_save,id_jogador_personagem, id_item, qtd_item)
-VALUES
-('jogador1',1, 1, 1),
-('jogador1',1, 2, 3),
-('jogador1',1, 3, 2),
-('jogador1',1, 4, 3),
-('jogador1',1, 5, 2),
-('jogador2',1, 5, 25),
-('jogador2',1, 4, 25),
-('jogador2',1, 3, 25),
-('jogador2',1, 2, 25);
-
-INSERT INTO inventario_personagem (id_jogador_save,id_jogador_personagem,id_item, qtd_item,id_personagem)
-VALUES 
---            iditem | qnditem
-('jogador1',1,   1,       1       ,5),
-('jogador1',1, 2, 3,8),
-('jogador1',1, 3, 2,6),
-('jogador1',1, 4, 3,10),
-('jogador1',1, 5, 2,23),
-
-('jogador2',1, 5, 25,22),
-
-('jogador1',1, 5, 10,22),
-('jogador1',1, 6, 10,22),
-('jogador1',1, 7, 10,22),
-('jogador1',1, 8, 10,22),
-('jogador1',1, 9, 10,22),
-('jogador1',1, 10, 10,22),
-('jogador1',1, 11, 10,22),
-('jogador1',1, 12, 10,22),
-('jogador1',1, 13, 10,22),
-('jogador1',1, 14, 10,22),
-
-
-('jogador2',1, 5, 25,27),
-
-('jogador1',1, 6, 10,27),
-('jogador1',1, 7, 10,27),
-('jogador1',1, 8, 10,27),
-('jogador1',1, 9, 10,27),
-('jogador1',1, 10, 10,27),
-('jogador1',1, 11, 10,27),
-('jogador1',1, 12, 10,27),
-('jogador1',1, 13, 10,27),
-('jogador1',1, 14, 10,27),
-('jogador1',1, 5, 2,27);
-
 
 
 INSERT INTO inventario_personagem_default (id_item, qtd_item,id_personagem)
@@ -256,6 +195,35 @@ VALUES
 
 -- Missões
 
+INSERT INTO conversa (id_personagem, id_conversa, id_missao, id_objetivo, id_missao_liberada)
+VALUES
+(21, 1, NULL, NULL, 1),
+(21, 2, 1, 1, null);
+
+INSERT INTO fala (id_personagem, id_conversa, id_fala, texto, nome_display)
+VALUES
+(21, 1, 1, 'Rápido, fuja daqui! Este navio está sendo invadido por Piratas!!', 'Coby'),
+(21, 1, 2, 'Mas eu tô com fome', 'Luffy'),
+(21, 1, 3, 'Como você pode estar tão calmo? Quando eles chegarem aqui eles vão te matar!!', 'Coby'),
+(21, 1, 4, 'Hmm.. Cheirinho de comidaaa', 'Luffy'),
+(21, 1, 5, 'Espera ai, pra onde você está indo?', 'Coby'),
+
+(21, 2, 1, 'Agora sim!! Eu tava cagado de fome', 'Luffy'),
+(21, 2, 2, 'Mas ae, esse é um navio pirata mesmo é?', 'Luffy'),
+(21, 2, 3, 'Não não, este na verdade é um navio que está sendo saqueado pela capitã Alvida', 'Coby'),
+(21, 2, 4, 'Me conta, você é do bando desses piratas?', 'Luffy'),
+(21, 2, 5, 'Já faz 2 anos que eles me levaram e eu virei o faz tudo deles só pra sobreviver', 'Coby'),
+(21, 2, 6, 'E por que você não foge?', 'Luffy'),
+(21, 2, 7, 'Isso é impossível!! Se a capitã me pegar ela vai me deitar na porrada', 'Coby'),
+(21, 2, 8, 'Você é muito covarde isso sim HAHAHA', 'Luffy'),
+(21, 2, 9, 'Me diga, Luffy, por que está viajando?', 'Coby'),
+(21, 2, 10, 'É que eu vou ser o rei dos piratas! :D', 'Luffy'),
+(21, 2, 11, 'O QUEEE???', 'Coby'),
+(21, 2, 12, 'Então quer dizer que você também é um pirata??', 'Coby'),
+(21, 2, 13, 'Sou', 'Luffy'),
+(21, 2, 14, 'E cade sua tripulação?', 'Coby'),
+(21, 2, 15, 'Não tenho ainda. To atrás de uma', 'Luffy');
+
 INSERT INTO missao (id_missao, nome, descricao, qtd_experiencia, dificuldade, id_nao_hostil) VALUES
 (1,'Começo da jornada', 'Luffy derrota Alvida e segue sua viagem junto de Coby pra formar uma tripulação', 10, 0, 21),
 (2,'O grande espadachim aparece', 'Luffy e Coby conhecem e libertam o Caçador de Piratas Roronoa Zoro, que foi preso pelo Capitão Morgan e seu filho Helmeppo', 10, 0, 21),
@@ -263,29 +231,37 @@ INSERT INTO missao (id_missao, nome, descricao, qtd_experiencia, dificuldade, id
 (4,'Palhaço-Pirata, Capitão Buggy', 'Luffy e Zoro se deparam o Capitão Buggy', 10, 0, 21),
 (5,'Mohji, o domador VS Luffy', 'Luffy consegue se libertar da jaula em que estava preso e luta contra Mohji e Richie', 10, 0, 21);
 
-INSERT INTO objetivo (id_missao,id_objetivo, nome, descricao, tipo, id_item, id_inimigo, id_nao_hostil) VALUES
-(1,1, '', 'Luffy derrota piratas do bando da Alvida', 'DerrotarInimigo', NULL, NULL, NULL),
-(1,2, '', 'Luffy da o golpe final e manda Alvida pelos ares', 'DerrotarInimigo', NULL, NULL, NULL),
-(2,1, '', 'Luffy derrota os marinheiros que estavam guardando as espadas de Roronoa Zoro', 'DerrotarInimigo', NULL, NULL, NULL),
-(2,2, '', 'Luffy pega as espadas de Roronoa Zoro, que tinham sido confiscadas pela marinha', 'PegarItem', NULL, NULL, NULL),
-(2,3, '', 'Luffy liberta Roronoa Zoro e devolve suas espadas', 'FalarComNPC', NULL, NULL, NULL),
-(3,1, '', 'Luffy e Zoro derrotam os marinheiros que estavam protegendo o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL),
-(3,2, '', 'Luffy e Zoro vencem o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL),
-(3,3, '', 'Coby se dispede de Luffy para seguir sua ambição de se tornar um marinheiro.', 'FalarComNPC', NULL, NULL, NULL),
-(4,1, '', 'Luffy derrota piratas do Capitão Buggy', 'DerrotarInimigo', NULL, NULL, NULL),
-(4,2, '', 'Nami engana Luffy e o entrega para Buggy', 'DerrotarInimigo', NULL, NULL, NULL),
-(4,3, '', 'Luffy enfrenta Richie', 'DerrotarInimigo', NULL, NULL, NULL);
+INSERT INTO objetivo (id_missao,id_objetivo, descricao, tipo, id_item, id_inimigo, id_conversa_personagem, id_conversa) VALUES
+(1, 1, 'Fale com Coby', 'FalarComNPC', NULL, null, 21, 2),
+(1, 2, 'Derrote os piratas do bando da Alvida', 'DerrotarInimigo', NULL, 11, NULL, null),
+(1, 3, 'Derrote com a Alvida', 'DerrotarInimigo', NULL, NULL, NULL, null),
 
+(2, 1, 'Derrote os marinheiros que estão de guarda nas espadas de Roronoa Zoro', 'DerrotarInimigo', NULL, NULL, NULL, null),
+(2, 2, 'Recupere as espadas de Roronoa Zoro', 'PegarItem', NULL, NULL, NULL, null),
+(2, 3, 'Liberte Roronoa Zoro e devolva suas espadas', 'FalarComNPC', NULL, NULL, NULL, null),
+
+(3, 1, 'Derrote os marinheiros que estam protegendo o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL, null),
+(3, 2, 'Derrote o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL, null),
+(3, 3, 'Fale com Coby', 'FalarComNPC', NULL, NULL, NULL, null),
+
+(4, 1, 'Derrote os piratas do bando do Capitão Buggy', 'DerrotarInimigo', NULL, NULL, NULL, null),
+(4, 2, 'Convença Nami a entrar para sua tripulação', 'FalarComNPC', NULL, NULL, NULL, null),
+(4, 3, 'Derrote os piratas de Buggy', 'DerrotarInimigo', NULL, NULL, NULL, null), -- Nami engana Luffy e o entrega para buggy
+(4, 4, 'Derrote Richie', 'DerrotarInimigo', NULL, NULL, NULL, null);
+
+
+INSERT INTO save (nome) VALUES 
+('jogador1'),
+('jogador2'),
+('jogador3');
 
 
 -- Constraints para evitar dependências ciclicas.
-
 ALTER TABLE ilha ADD CONSTRAINT fk_ilha_missao FOREIGN KEY (id_missao)
     REFERENCES missao(id_missao) ON DELETE RESTRICT;
 
-ALTER TABLE inimigo ADD CONSTRAINT fk_objetivo FOREIGN KEY (id_missao, id_objetivo)
-        REFERENCES objetivo(id_missao, id_objetivo);
-
+ALTER TABLE conversa ADD CONSTRAINT fk_objetivo FOREIGN KEY (id_missao, id_objetivo)
+    REFERENCES objetivo(id_missao, id_objetivo);
 
 INSERT INTO missao_status VALUES
 (1,'Nao_concluida'),
