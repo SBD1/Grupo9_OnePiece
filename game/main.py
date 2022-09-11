@@ -168,15 +168,23 @@ def menu(player):
             "[[Objetivo atual --------- ]]\n")
 
         npcs_regiao = checa_personagem_regiao(posicao_atual)
-        checa_ilha(player)
-
-        print(
+        
+        ilhas_disponiveis = checa_ilha(player)
+        if ilhas_disponiveis:
+            print(
             "\n\nM - Mover personagem\n"
             "I - Ver Inventário\n"
-            "Q - Sair"
+            f"H - Ir para outra Ilha\n"
+            "Q - Sair\n"
         )
+        
+        else:
+            print(
+                "\n\nM - Mover personagem\n"
+                "I - Ver Inventário\n"
+                "Q - Sair"
+            )
 
-        checa_ilha(player)
         escolha = input("O que você deseja fazer ?\n\n> ").lower()
 
         if escolha == 'm':
