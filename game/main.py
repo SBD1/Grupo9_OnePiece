@@ -8,6 +8,36 @@ def main():
     player = choose_player(save['nome'])
     run_game(player)
 
+def muda_de_ilha(player):
+
+    ## list of dict com os ids das ilhas que estao liberadas
+    ilhas_completadas = select_to_dict("SELECT id_ilha,descricao from ilha inner join missao_status on ilha.id_missao = missao_status.id_missao where status = 'Concluida' or status = 'Liberada' and id_jogador_save = %s and id_jogador_personagem = %s",player['nome_save'],player['id_personagem'])
+    ilha_jogador = select_to_dict('SELECT id_ilha,tipo,descricao from regiao inner join jogador on regiao.id_regiao = jogador.id_regiao where nome_save = %s and id_personagem = %s',player['nome_save'],player['id_personagem'])
+    # ignorar ilha que o personagem se encontra, mostrar apenas as ilhas que ele pode ir
+    ilhas_possiveis = [i for i in ilhas_completadas if not (i['id_ilha'] == ilha_jogador[0]['id_ilha'])]
+    
+    print(f"Você está na ilha {ilha_jogador[0]['descricao']} do tipo {ilha_jogador[0]['tipo']}")
+
+    print(f"Para qual ilha você deseja ir?")
+    if ilha_jogador[0]['tipo'] == 'Porto':
+        if len(ilhas_possiveis) <= 0:
+            return
+        else:
+            print('\n\nDeseja ir para outra ilha?')
+            print('Ilhas disponíveis:\n')
+            for itens in ilhas_possiveis:
+                print(f"{itens['id_ilha']} {itens['descricao']}")
+
+            escolha = input("\n\nSelecione a ilha que deseja ir:\n>")
+            print(escolha)
+            ilha_para_ir = select_to_dict("SELECT id_regiao, id_ilha from regiao where tipo = 'Porto' and id_ilha = %s",escolha)
+            print(ilha_para_ir)
+            with get_connection() as db:
+                with db:
+                    cursor = db.cursor()
+                    sql = ('UPDATE jogador SET id_regiao = %s where nome_save = %s and id_personagem = %s')
+                    data = [ilha_para_ir[0]['id_regiao'],player['nome_save'],player['id_personagem']]
+                    cursor.execute(sql,data)
 
 def checa_ilha(player):
     
@@ -187,7 +217,11 @@ def menu(player):
 
         escolha = input("O que você deseja fazer ?\n\n> ").lower()
 
-        if escolha == 'm':
+        if ilhas_disponiveis:
+            if escolha =='h':
+                muda_de_ilha(player)
+        
+        elif escolha == 'm':
             regiao = printa_regioes(nome_player,regioes_to_go)
             move_player(player,regiao)
         elif escolha == 'q':
@@ -199,6 +233,7 @@ def menu(player):
         elif 0 <= int(escolha) <= len(npcs_regiao):
             print("-------Falando com NPC-------------\n\n")
             fala_com_npc(escolha,npcs_regiao,player)
+
         else:
             print("Opção inválida")
 
