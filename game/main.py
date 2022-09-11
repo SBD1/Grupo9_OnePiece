@@ -236,7 +236,7 @@ def menu(player):
         escolha = input("O que você deseja fazer ?\n\n> ").lower()
 
         
-        if escolha =='h':
+        if escolha == 'h':
                 muda_de_ilha(player)
                 
         elif escolha == 'm':
