@@ -55,8 +55,8 @@ FOR EACH ROW EXECUTE PROCEDURE check_barco();
 CREATE OR REPLACE FUNCTION create_save_jogador() RETURNS TRIGGER as $create_save_jogador$
 BEGIN
     -- Cria o primeiro jogador para o novo save
-    INSERT INTO jogador (nome_save, id_personagem, id_regiao, nome, ocupacao, grupo_ocupacao, berries, energia, energia_maxima, fraqueza, experiencia, vida, vida_maxima, capacidade_de_itens) 
-        SELECT NEW.nome, 1, id_regiao, nome, ocupacao, grupo_ocupacao, berries, energia, energia_maxima, fraqueza, experiencia, vida, vida_maxima, capacidade_de_itens 
+    INSERT INTO jogador (nome_save, id_personagem, id_regiao, id_regiao_anterior, nome, ocupacao, grupo_ocupacao, berries, energia, energia_maxima, fraqueza, experiencia, vida, vida_maxima, capacidade_de_itens) 
+        SELECT NEW.nome, 1, id_regiao, id_regiao_anterior, nome, ocupacao, grupo_ocupacao, berries, energia, energia_maxima, fraqueza, experiencia, vida, vida_maxima, capacidade_de_itens 
             FROM personagem_principal WHERE id_personagem = 1;
 
     -- Popula o inventario dos NPCs para o novo save baseado nos valores default
@@ -378,7 +378,22 @@ FOR EACH ROW EXECUTE PROCEDURE keep_regiao_anterior();
 
 CREATE OR REPLACE procedure consumo_item(vida_param INTEGER,energia_param INTEGER,id_item_param INTEGER,qntd_item_param INTEGER,nome_jog VARCHAR(30),id_persona INTEGER)
 AS $consumo_item$
+declare
+    _qtd_item int;
 BEGIN
+    select qtd_item into _qtd_item from inventario_jogador where id_jogador_save = nome_jog and id_jogador_personagem = id_persona and id_item = id_item_param;
+    if _qtd_item is null then
+        raise exception 'Você não possui este item';
+    end if;
+
+    if _qtd_item <= 0 then
+        raise exception 'Não é possível comprar uma quantidade negativa';
+    end if;
+
+    if _qtd_item - qntd_item_param < 0 then
+        raise exception 'Você não tem item suficiente';
+    end if;
+
     update jogador set vida = vida + vida_param,energia=energia+energia_param where nome_save = nome_jog and id_personagem = id_persona;
     update inventario_jogador set qtd_item = qtd_item - qntd_item_param where id_jogador_save = nome_jog and id_jogador_personagem = id_persona and id_item = id_item_param;
 END;
