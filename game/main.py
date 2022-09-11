@@ -1,6 +1,5 @@
 import sys
-import time
-from database import get_connection, AS_DICT
+from database import get_connection
 import ascii_art
 
 
@@ -8,6 +7,39 @@ def main():
     save = intro()
     player = choose_player(save['nome'])
     run_game(player)
+
+
+def checa_ilha(player):
+    
+    ilha_jogador = select_to_dict('SELECT id_ilha,tipo,descricao from regiao inner join jogador on regiao.id_regiao = jogador.id_regiao where nome_save = %s and id_personagem = %s',player['nome_save'],player['id_personagem'])
+    missoes_liberadas = select_to_dict("SELECT id_missao, status, id_jogador_save, id_jogador_personagem FROM public.missao_status where status = 'Concluida' and id_jogador_save = %s and id_jogador_personagem = %s",player['nome_save'],player['id_personagem'])
+    
+    ## list of dict com os ids das ilhas que estao liberadas
+    ilhas_completadas = select_to_dict("SELECT id_ilha,descricao from ilha inner join missao_status on ilha.id_missao = missao_status.id_missao where status = 'Concluida' or status = 'Liberada' and id_jogador_save = %s and id_jogador_personagem = %s",player['nome_save'],player['id_personagem'])
+    
+    # ignorar ilha que o personagem se encontra, mostrar apenas as ilhas que ele pode ir
+    ilhas_possiveis = [i for i in ilhas_completadas if not (i['id_ilha'] == ilha_jogador[0]['id_ilha'])]  
+
+
+    # print(ilha_jogador)
+    # print(missoes_liberadas)
+    # print(ilhas_completadas)
+    # print(ilhas_possiveis)
+    ilhas = [] # liberando ilha de um personagem
+    for itens in ilhas_possiveis:
+        ilhas.append(itens['id_ilha'])
+
+    
+    if ilha_jogador[0]['tipo'] == 'Porto':
+        if len(ilhas_possiveis) <= 0:
+            return
+        else:
+            print('\n\nDeseja ir para outra ilha?')
+            print('Ilhas disponíveis:\n')
+            for itens in ilhas_possiveis:
+                print(f"{itens['id_ilha']} {itens['descricao']}")  
+
+    return ilhas_possiveis              
 
 def checa_personagem_regiao(posicao_jogador):
 
@@ -42,10 +74,11 @@ def compra(player,id_itens,npc_num):
     print("Compra realizada !!")
 
 
-def fala_com_npc(npc_dict,player):
-    print(f"Olá sou {npc_dict['nome']}\n")
-    npc_id = npc_dict['id_personagem']
-    if(npc_dict['is_vendedor']):
+def fala_com_npc(npc_num,npcs_dict,player):
+    npc_num = int(npc_num)
+    print(f"Olá sou {npcs_dict[npc_num]['nome']}\n")
+    npc_id = npcs_dict[npc_num]['id_personagem']
+    if(npcs_dict[npc_num]['is_vendedor']):
         print("Quer comprar ? ")
 
         # acha berries do cara
@@ -56,7 +89,7 @@ def fala_com_npc(npc_dict,player):
 
         print("Aqui está meu inventário :\n")
         #print(f'id : {player["id_personagem"]} \nnome: {player["nome_save"]}')
-        inventario_npc = select_to_dict("SELECT id_item,qtd_item from inventario_personagem where id_jogador_save = %s and id_jogador_personagem = %s and id_personagem = %s",player["nome_save"],player["id_personagem"],npc_dict['id_personagem'])
+        inventario_npc = select_to_dict("SELECT id_item,qtd_item from inventario_personagem where id_jogador_save = %s and id_jogador_personagem = %s and id_personagem = %s",player["nome_save"],player["id_personagem"],npcs_dict[npc_num]['id_personagem'])
         #print(inventario_npc)
 
         id_itens = [item['id_item'] for item in inventario_npc]
@@ -90,37 +123,8 @@ def fala_com_npc(npc_dict,player):
                 compra(player,id_itens)
 
     else:
-        fala_default = [{'nome_display': npc_dict['nome'], 'texto': '...', 'id_missao_liberada': None}]
-        falas = select_to_dict('select id_conversa, nome_display, texto, id_missao_liberada from proxima_fala(%s, %s, %s)', npc_id, player['nome_save'], player['id_personagem']) or fala_default
-
-        sleep_factor = 0.05
-        for fala in falas:
-            print(f"{fala['nome_display']}: {fala['texto']}")
-            time.sleep(len(fala['texto']) * sleep_factor)
-        print()
-
-        e_pra_concluir_conversa = falas != fala_default
-
-        if falas[0].get('id_missao_liberada', None) is not None:
-            escolha = input('Deseja começar uma nova missão?\n1-Sim\n2-Depois\n\n> ')
-            if escolha == '1':
-                e_pra_concluir_conversa = True
-            else:
-                print(f'\nMissão recusada. Você pode conversar com {npc_dict["nome"]} caso mude de ideia.\n')
-
-        if e_pra_concluir_conversa:
-            concluir_conversa(npc_id, falas[0]['id_conversa'], player)
-        input('Aperte enter para continuar...')
-
-
-def concluir_conversa(npc_id, conversa_id, player):
-    with get_connection() as db:
-        with db:
-            cursor = db.cursor()
-            cursor.execute('insert into conversa_concluida '
-                '(id_personagem, id_conversa, id_jogador_save, id_jogador_personagem) values (%s, %s, %s, %s);',
-                [npc_id, conversa_id, player['nome_save'], player['id_personagem']])
-
+        print("Sou personagem de missão !!! Tá faltando me configurar ainda.\nGomu Gomu noooo Rocket !! -@#$#%%$#@!#")
+        nada = input("Aperte enter")
 
 def inventario(player):
     print("Aqui está seu inventário :\n")
@@ -155,13 +159,16 @@ def menu(player):
     while True:
         nome_player = player["nome"]
         posicao_atual,regioes_to_go = regiao_player(player)
+        ilha_jogador = select_to_dict('SELECT id_ilha,tipo,descricao from regiao inner join jogador on regiao.id_regiao = jogador.id_regiao where nome_save = %s and id_personagem = %s',player['nome_save'],player['id_personagem'])
 
         print("##### One Piece ! 💀 - \U0001f480 ######\n\n")
         print(f"Jogador {nome_player} 🏴‍☠️\n"
-            f"Você está em {posicao_atual}\n")
-        printa_objetivo_atual(player)
+            f"Você está em {posicao_atual}\n"
+            f"Na ilha {ilha_jogador[0]['descricao']} do tipo {ilha_jogador[0]['tipo']}\n"
+            "[[Objetivo atual --------- ]]\n")
 
         npcs_regiao = checa_personagem_regiao(posicao_atual)
+        checa_ilha(player)
 
         print(
             "\n\nM - Mover personagem\n"
@@ -169,6 +176,7 @@ def menu(player):
             "Q - Sair"
         )
 
+        checa_ilha(player)
         escolha = input("O que você deseja fazer ?\n\n> ").lower()
 
         if escolha == 'm':
@@ -182,31 +190,9 @@ def menu(player):
 
         elif 0 <= int(escolha) <= len(npcs_regiao):
             print("-------Falando com NPC-------------\n\n")
-            fala_com_npc(npcs_regiao[int(escolha)],player)
+            fala_com_npc(escolha,npcs_regiao,player)
         else:
             print("Opção inválida")
-
-
-def printa_objetivo_atual(player: dict) -> None:
-    obj = get_current_objective(player)
-
-    title = 'Nenhuma Missão em andamento'
-    body = 'Fale com algum Cidadão, ele pode ter uma Missão para você!'
-    if obj:
-        title = obj["nome"]
-        body = obj["descricao"]
-
-    size = max(len(body), 60) + 14
-
-    print('-' * size)
-    print(f'Missão: {title.center(size - 8)}')
-    print(f'Objetivo: {body.center(size - 10)}')
-    print('-' * size + '\n\n')
-
-
-def get_current_objective(player: dict):
-    obj, *_ = select_to_dict('select nome, descricao from objetivo_atual(%s, %s)', player['nome_save'], player['id_personagem']) or [None]
-    return obj
 
 
 def run_game(player: dict):
@@ -244,11 +230,15 @@ def get_players(save: str) -> list[list]:
     return select_to_dict('SELECT nome, id_personagem, nome_save FROM jogador WHERE nome_save = %s', save)
 
 
+
 def select_to_dict(query: str, *args):
+    import re
+
+    fields = tuple(field.strip().lstrip('(').rstrip(')') for field in re.findall(r'SELECT (.*) FROM', query, re.IGNORECASE)[0].split(','))
     with get_connection() as conn:
-        cursor = conn.cursor(cursor_factory=AS_DICT)
+        cursor = conn.cursor()
         cursor.execute(query, args or ...)
-        return cursor.fetchall()
+        return [dict(zip(fields, values)) for values in cursor.fetchall()]
 
 
 def get_saves() -> list[str]:
@@ -283,7 +273,7 @@ def intro():
             return actions[value]()
 
 
-def choose_save() -> str | None:
+def choose_save() -> str:
     saves = get_saves()
 
     print('Selecione um save para carregar o jogo salvo.')
