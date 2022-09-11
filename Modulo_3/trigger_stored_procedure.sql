@@ -63,6 +63,10 @@ BEGIN
     INSERT INTO inventario_personagem (id_jogador_save, id_jogador_personagem, id_personagem, id_item, qtd_item)
         SELECT NEW.nome, 1, id_personagem, id_item, qtd_item FROM inventario_personagem_default;
 
+    -- Libera a missao pro personagem
+    INSERT INTO missao_status(id_missao, id_jogador_save, id_jogador_personagem, status) values
+    ('1',new.nome, 1, 'Liberada');
+
     RETURN NEW;
 END;
 $create_save_jogador$ LANGUAGE plpgsql;
