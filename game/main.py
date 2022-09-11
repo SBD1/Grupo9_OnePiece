@@ -16,7 +16,7 @@ def ataque_simples_player(atacante,atacado,experiencia,energia):
     '''
 
     poder_especial = 0
-
+    
     damage = ((17 *experiencia)/3)+(poder_especial) + energia*0.05
 
     return damage
@@ -72,9 +72,10 @@ def luta(player,inimigo):
 
     print(turno)
     # enquanto algum dos dois ainda estiverem com vida > 0
-    while vida_personagem > 0 and vida_inimigo > 0:    
+    while vida_personagem > 0 and vida_inimigo > 0:
         # luta acontece
         if(turno % 2 == 0):
+            print("Sua vez :\n1)Ataque Simples\n2)Poder especial\n")
             # personagem ataca
             print("É tua vez de atacar :")
             dano = ataque_simples_player(player,inimigo,experiencia_personagem,energia_personagem)
@@ -218,7 +219,7 @@ def fala_com_npc(npc_num,npcs_dict,player):
         print("Sou personagem de missão !!! Tá faltando me configurar ainda.\nGomu Gomu noooo Rocket !! -@#$#%%$#@!#")
         nada = input("Aperte enter")
 
-def consumir_item(player,item):
+def consumir_item(player,item,qntd_item):
     # recebo um item
     
     # pego atributos desse item
@@ -233,8 +234,8 @@ def consumir_item(player,item):
     with get_connection() as db:
         with db:
             cursor = db.cursor()
-            sql = "CALL consumo_item(%s,%s,%s,%s,%s)"
-            data = (vida,energia,str(item),player['nome_save'],player['id_personagem'])
+            sql = "CALL consumo_item(%s,%s,%s,%s,%s,%s)"
+            data = (vida,energia,str(item),str(qntd_item),player['nome_save'],player['id_personagem'])
             cursor.execute(sql,data)
 
     print("Atualizado !!!")
@@ -305,7 +306,8 @@ def inventario(player):
 
     if escolha == '1':
         item = int(input("Qual item deseja consumir ?\n>"))
-        consumir_item(player,item)
+        qtd_item = input("Qual a quantidade desse item ?\n>")
+        consumir_item(player,item,qtd_item)
 
     elif escolha == '2':
         equipar_item()
@@ -315,14 +317,14 @@ def inventario(player):
     else:
         print("Opção inválida\n")
 
-
 def menu(player):
 
     invalid = True
 
     while True:
-        nome_player = player["nome"]
-        vida_player = player['vida']
+        player_data = select_to_dict("SELECT nome,vida from jogador where nome_save = %s and id_personagem = %s",player['nome_save'],player['id_personagem'])
+        nome_player = player_data[0]["nome"]
+        vida_player = player_data[0]['vida']
         posicao_atual,regioes_to_go = regiao_player(player)
 
         print("##### One Piece ! 💀 - \U0001f480 ######\n\n")
@@ -347,16 +349,13 @@ def menu(player):
             move_player(player,regiao)
         elif escolha == 'q':
             main()
-
         elif escolha == 'i':
             inventario(player)
-
         elif 0 <= int(escolha) <= len(npcs_regiao):
             print("-------Falando com NPC-------------\n\n")
             fala_com_npc(escolha,npcs_regiao,player)
         else:
             print("Opção inválida")
-
 
 def run_game(player: dict):
     print(f'Rodando o jogo com save [{player["nome_save"]}]'
@@ -366,7 +365,6 @@ def run_game(player: dict):
     while game_loop:
         if menu(player) == False:
             game_loop = False
-
 
 def choose_player(save: str) -> list:
     players = get_players(save)

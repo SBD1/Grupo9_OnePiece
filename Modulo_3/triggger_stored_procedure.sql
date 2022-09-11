@@ -270,18 +270,17 @@ BEGIN
 END;
 $keep_regiao_anterior$ LANGUAGE plpgsql;
 
-DROP TRIGGER keep_regiao_anterior_trigger on jogador;
 
 CREATE TRIGGER keep_regiao_anterior_trigger
 AFTER UPDATE ON jogador
 FOR EACH ROW EXECUTE PROCEDURE keep_regiao_anterior();
 
 
-CREATE OR REPLACE procedure consumo_item(vida_param INTEGER,energia_param INTEGER,id_item_param INTEGER,nome_jog VARCHAR(30),id_persona INTEGER)
+CREATE OR REPLACE procedure consumo_item(vida_param INTEGER,energia_param INTEGER,id_item_param INTEGER,qntd_item_param INTEGER,nome_jog VARCHAR(30),id_persona INTEGER)
 AS $consumo_item$
 BEGIN
     update jogador set vida = vida + vida_param,energia=energia+energia_param where nome_save = nome_jog and id_personagem = id_persona;
-    update inventario_jogador set qtd_item = qtd_item - 1 where id_jogador_save = nome_jog and id_jogador_personagem = id_persona and id_item = id_item_param;
+    update inventario_jogador set qtd_item = qtd_item - qntd_item_param where id_jogador_save = nome_jog and id_jogador_personagem = id_persona and id_item = id_item_param;
 END;
 $consumo_item$ LANGUAGE plpgsql;
 
@@ -302,9 +301,6 @@ BEGIN
     RETURN NEW;
 END;
 $verifica_vida_energia$ LANGUAGE plpgsql;
-
-
-DROP TRIGGER verifica_vida_energia_trigger on jogador;
 
 
 CREATE TRIGGER verifica_vida_energia_trigger
