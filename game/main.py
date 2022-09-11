@@ -23,10 +23,9 @@ def muda_de_ilha(player):
         if len(ilhas_possiveis) <= 0:
             return
         else:
-            print('\n\nDeseja ir para outra ilha?')
-            print('Ilhas disponíveis:\n')
+            print('Ilhas disponíveis para navegar:\n')
             for itens in ilhas_possiveis:
-                print(f"{itens['id_ilha']} {itens['descricao']}")
+                print(f"{itens['id_ilha']} - {itens['descricao']}")
 
             escolha = input("\n\nSelecione a ilha que deseja ir:\n>")
             # falta fazer validação para a escolha
@@ -86,9 +85,9 @@ def checa_ilha(player):
     if ilha_jogador[0]['tipo'] == 'Porto':
         if len(ilhas_possiveis) <= 0:
             return
-            
-
-    return ilhas_possiveis              
+        else:   
+            return ilhas_possiveis 
+                 
 
 def checa_personagem_regiao(posicao_jogador):
 
@@ -236,10 +235,10 @@ def menu(player):
 
         escolha = input("O que você deseja fazer ?\n\n> ").lower()
 
-        if ilhas_disponiveis:
-            if escolha =='h':
-                muda_de_ilha(player)
         
+        if escolha =='h':
+                muda_de_ilha(player)
+                
         elif escolha == 'm':
             regiao = printa_regioes(nome_player,regioes_to_go)
             move_player(player,regiao)
