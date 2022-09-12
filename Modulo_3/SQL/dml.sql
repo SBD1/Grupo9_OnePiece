@@ -19,34 +19,51 @@ VALUES
 (15,'rapidez', 'aumenta o dano do personagem quando equipado', 8, 90, 5, 12, TRUE);
 
 INSERT INTO ilha (id_ilha,id_missao,nome,descricao) VALUES
-(1,1,'Ilha do Capitão Morgan','Ilha com uma base da Marinha, comandada pelo Capitão Morgan. Um marinheiro temido tanto pela população quanto pela marinha.Zoro aparece capturado nessa ilha'),
-(2,2,'Orange Town','Ilha tomada pelo Buggy, cujo prefeito se chama Boodle'),
-(3,3,'Vila Syrup','Vila da ilhas Geecko, onde Usopp, um grande Guerreiro do mar com mais de 8 mil seguidores, vive'),
-(4,4,'Baratie','Restaurante Marítmo comandado pelo chefe Zeff. Zeff tem um filho chamado Sanji, um cozinheiro romântico que ama mulheres.'),
-(5,5,'Ilhas Conami','Arquipélogo de Ilhas onde Nami nasceu. Era um arquipélogo quieto, até Arlong e seus piratas chegarem.');
+(1,1,'Barco da Marinha - O início de tudo.','Barco da Marinha onde Luffy foi resgatado quando estava dentro de um barril a deriva.'),
+(2,1,'Ilha do Capitão Morgan','Ilha com uma base da Marinha, comandada pelo Capitão Morgan. Um marinheiro temido tanto pela população quanto pela marinha.Zoro aparece capturado nessa ilha'),
+(3,2,'Orange Town','Ilha tomada pelo Buggy, cujo prefeito se chama Boodle'),
+(4,3,'Vila Syrup','Vila da ilhas Geecko, onde Usopp, um grande Guerreiro do mar com mais de 8 mil seguidores, vive'),
+(5,4,'Baratie','Restaurante Marítmo comandado pelo chefe Zeff. Zeff tem um filho chamado Sanji, um cozinheiro romântico que ama mulheres.'),
+(6,5,'Ilhas Conami','Arquipélogo de Ilhas onde Nami nasceu. Era um arquipélogo quieto, até Arlong e seus piratas chegarem.');
 
 insert into regiao (id_regiao,descricao,tipo,norte,sul,leste,oeste,id_ilha)
 values
+--Barco da marinha inicial
+(1,'Sala repleta de barris','Cidade',NULL,NULL,2,NULL,1), -- 1
+(2,'Porão onde fica a dispensa, Coby se encontra lá','Cidade',4,3,NULL,1,1), -- 1
+(3,'Convés onde Alvida, da clava, se encontra. Tome Cuidado pois ela está furiosa.','Cidade',2,NULL,NULL,NULL,1), -- 1
+(4,'Porto, onde você encontra um barco e pode viajar para outras ilhas.','Porto',NULL,2,NULL,NULL,1),
+
 -- Ilha Capitão Morgan
-(1,'Porto onde você pode viajar para outras cidades','Porto',2,NULL,NULL,4,1), -- 1
-(2,'Feira onde você pode comprar itens','Cidade',3,NULL,1,NULL,1), -- 2
-(3,'Taverna onde você encontra variedades da cachaça, mas o Luffy só toma leite','Cidade',NULL,4,2,NULL,1), -- 3
-(4,'Base da Marinha, parece que Zoro se encontra lá, Converse com Rika.','Cidade',NULL,1,NULL,3,1),  -- 4
+(5,'Porto onde você pode viajar para outras cidades','Porto',NULL,NULL,6,NULL,2), -- 1
+(6,'Praça onde você encontra NPCs','Cidade',7,8,9,5,2), -- 
+(7,'Taverna da Mãe da Rika, onde você encontra itens para comprar.','Cidade',NULL,6,NULL,NULL,2), -- 
+(8,'Feira onde você encontra uma grande variedade de itens para comprar.','Cidade',6,NULL,NULL,NULL,2), -- 
+(9,'Campo de castigo da Marinha. Dizem que por lá tem um criminoso amarrado na cruz sem comer por quase 1 mês.','Cidade',NULL,NULL,10,9,2), -- 
+(10,'Prédio da Marinha, onde a grande força do capitão Morgan se encontra.','Cidade',NULL,NULL,11,9,2), -- 
+(11,'Base da Marinha, onde o capitão Morgan se encontra.','Cidade',NULL,NULL,NULL,10,2),
+
 --Ilha Buggy
-(5,'Porto de Orange Town','Porto',6,NULL,7,NULL,2), -- 5
-(6,'Loja Cachorro Xuxu','Cidade',NULL,7,5,NULL,2), -- 6
-(7,'Base Buggy','Cidade',NULL,8,NULL,6,2), -- 7
-(8,'Casa do Prefeito','Cidade',7,NULL,NULL,5,2),-- 8
+(12,'Porto de Orange Town, onde você pode ir para outras ilhas','Porto',NULL,NULL,13,NULL,3), -- 5
+(13,'Praça ! Dizem que existem piratas por lá. Mas também uma moça de cabelo laranja.','Cidade',14,15,16,12,3), -- 6
+(14,'Casa dos Pets. Existem um cão bravo por lá.','Cidade',NULL,13,NULL,NULL,3), -- 7
+(15,'Casa do Prefeito','Cidade',13,NULL,NULL,NULL,3),-- 8
+(16,'Base do pirata Buggy. Tome cuidado por lá, ele fez um estrago na cidade.','Cidade',NULL,NULL,NULL,13,3),-- 8
+
 -- Ilha Usopp
-(9,'Porto saída Sul','Porto',10,NULL,NULL,NULL,3), -- 9
-(10,'Centro da cidade','Cidade',NULL,9,11,NULL,3), -- 10
-(11,'Casa da Kaya','Cidade',12,NULL,10,NULL,3), -- 11
-(12,'Porto da Saída Norte','Porto',NULL,11,NULL,NULL,3), -- 12
+(17,'Porto saída Sul','Porto',NULL,NULL,18,NULL,4), -- 9
+(18,'Praça da cidade.','Cidade',19,20,17,21,4), -- 10
+(19,'Restaurante','Cidade',NULL,18,NULL,NULL,4), -- 11
+(20,'Feira onde você encontra uma variedade de itens','Cidade',19,NULL,NULL,NULL,4), -- 12
+(21,'Floresta','Floresta',NULL,NULL,22,18,4), -- 12
+(22,'Casa da Kaya onde você encontra a Kaya','Cidade',NULL,NULL,23,21,4), -- 12
+(23,'Porto da Saída Norte','Porto',NULL,NULL,NULL,22,4), -- 12
+
 -- Baratie
-(13,'Porto','Porto',14,NULL,NULL,NULL,4), -- 13
-(14,'Restaurante','Porto',NULL,11,NULL,NULL,3), -- 14
-(15,'Deck','Porto',NULL,11,NULL,NULL,3), -- 15
-(16,'Barco','Porto',NULL,11,NULL,NULL,3); -- 15
+(24,'Porto','Porto',25,NULL,NULL,NULL,5), -- 13
+(25,'Restaurante','Cidade',NULL,24,26,NULL,5), -- 14
+(26,'Deck','Cidade',NULL,27,NULL,25,5), -- 15
+(27,'Barco','Cidade',26,NULL,NULL,24,5); -- 15
 
 
 INSERT INTO personagem VALUES
@@ -136,17 +153,17 @@ INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, ene
 
 
 INSERT INTO inimigo (id_personagem,id_regiao,nome,ocupacao,grupo_ocupacao,berries,energia,energia_maxima,fraqueza,experiencia,vida,vida_maxima) VALUES
-(10,1,'Marinheiro 1','Marinheiro','Marinha',150,100,100,'Akuma no mi',1,0,100),
-(11,2,'Marinheiro 2','Marinheiro','Marinha',250,100,100,'Akuma no mi',2,0,100),
-(12,8,'Marinheiro 3','Marinheiro','Marinha',500,100,100,'Raki',3,0,100),
-(13,8,'Marinheiro 4','Marinheiro','Marinha',1000,100,100,'Raki do rei',4,0,100),
-(14,16,'Akainu','Marinheiro','Almirante da Marinha',1000000,10000,10000,'Kairoseki',10,0,10000),
-(15,16,'Alkiji','Marinheiro','Almirante da Marinha',900000,10000,10000,'Kairoseki',10,0,10000),
-(16,16,'Kizaru','Marinheiro','Almirante da Marinha',1200000,10000,10000,'Kairoseki',10,0,10000),
-(17,3,'Alvida','Pirata','Piratas da Alvida',1000,100,100,'Akuma no mi',1,0,100),
-(18,4,'Morgan','Marinheiro','Capitão da Marinha',3000,150,150,'Akuma no mi',1,0,100),
-(19,5,'Buggy','Pirata','Piratas do Buggy',1000,200,200,'Akuma no mi',2,0,150),
-(20,5,'Arlong','Pirata','Piratas do Arlong',50000,250,250,'Akuma no mi',3,0,250);
+(10,9,'Marinheiro 1','Marinheiro','Marinha',150,100,100,'Akuma no mi',1,0,100),
+(11,10,'Marinheiro 2','Marinheiro','Marinha',250,100,100,'Akuma no mi',2,0,100),
+(12,11,'Marinheiro 3','Marinheiro','Marinha',500,100,100,'Raki',3,0,100),
+(13,50,'Marinheiro 4','Marinheiro','Marinha',1000,100,100,'Raki do rei',4,0,100),
+(14,50,'Akainu','Marinheiro','Almirante da Marinha',1000000,10000,10000,'Kairoseki',10,0,10000),
+(15,50,'Alkiji','Marinheiro','Almirante da Marinha',900000,10000,10000,'Kairoseki',10,0,10000),
+(16,50,'Kizaru','Marinheiro','Almirante da Marinha',1200000,10000,10000,'Kairoseki',10,0,10000),
+(17,2,'Alvida','Pirata','Piratas da Alvida',1000,100,100,'Akuma no mi',1,0,100),
+(18,11,'Morgan','Marinheiro','Capitão da Marinha',3000,150,150,'Akuma no mi',1,0,100),
+(19,16,'Buggy','Pirata','Piratas do Buggy',1000,200,200,'Akuma no mi',2,0,150),
+(20,50,'Arlong','Pirata','Piratas do Arlong',50000,250,250,'Akuma no mi',3,0,250);
 
 INSERT INTO personagem_nao_hostil (id_personagem, id_regiao,nome, ocupacao, grupo_ocupacao, is_vendedor, is_personagem_historia)
 VALUES
@@ -155,7 +172,7 @@ VALUES
 (23,3,'Mãe da Rika', 'Cidadao', 'Cidadão', false, true),
 (24,3,'Rika', 'Cidadao', 'Cidadão', false, true),
 (25,1,'Marinheiro', 'Marinheiro', 'Marinha', false, false),
-(26,1,'Prefeito', 'Cidadao', 'Cidadão', false, false),
+(26,1,'Prefeito', 'Cidadao', 'Cidadão', false, true),
 (27,1,'Comerciante', 'Cidadao', 'Cidadão', true, false),
 (28,1,'Chuchu', 'Cidadao', 'Cidadão', false, true);
 
@@ -223,6 +240,9 @@ VALUES
 (21, 2, 13, 'Sou', 'Luffy'),
 (21, 2, 14, 'E cade sua tripulação?', 'Coby'),
 (21, 2, 15, 'Não tenho ainda. To atrás de uma', 'Luffy');
+
+(21, 3, 1, '', 'Luffy');
+
 
 INSERT INTO missao (id_missao, nome, descricao, qtd_experiencia, dificuldade, id_nao_hostil) VALUES
 (1,'Começo da jornada', 'Luffy derrota Alvida e segue sua viagem junto de Coby pra formar uma tripulação', 10, 0, 21),
