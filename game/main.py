@@ -250,11 +250,10 @@ def compra(player,id_itens,npc_num):
     print("Compra realizada !!")
 
 
-def fala_com_npc(npc_num,npcs_dict,player):
-    npc_num = int(npc_num)
-    print(f"Olá sou {npcs_dict[npc_num]['nome']}\n")
-    npc_id = npcs_dict[npc_num]['id_personagem']
-    if(npcs_dict[npc_num]['is_vendedor']):
+def fala_com_npc(npc_dict,player):
+    print(f"Olá sou {npc_dict['nome']}\n")
+    npc_id = npc_dict['id_personagem']
+    if(npc_dict['is_vendedor']):
         print("Quer comprar ? ")
 
         # acha berries do cara
@@ -265,7 +264,7 @@ def fala_com_npc(npc_num,npcs_dict,player):
 
         print("Aqui está meu inventário :\n")
         #print(f'id : {player["id_personagem"]} \nnome: {player["nome_save"]}')
-        inventario_npc = select_to_dict("SELECT id_item,qtd_item from inventario_personagem where id_jogador_save = %s and id_jogador_personagem = %s and id_personagem = %s",player["nome_save"],player["id_personagem"],npcs_dict[npc_num]['id_personagem'])
+        inventario_npc = select_to_dict("SELECT id_item,qtd_item from inventario_personagem where id_jogador_save = %s and id_jogador_personagem = %s and id_personagem = %s",player["nome_save"],player["id_personagem"],npc_dict['id_personagem'])
         #print(inventario_npc)
 
         id_itens = sorted([item['id_item'] for item in inventario_npc])
@@ -323,6 +322,7 @@ def fala_com_npc(npc_num,npcs_dict,player):
         if e_pra_concluir_conversa:
             concluir_conversa(npc_id, falas[0]['id_conversa'], player)
         input('Aperte enter para continuar...')
+
 
 
 def concluir_conversa(npc_id, conversa_id, player):
