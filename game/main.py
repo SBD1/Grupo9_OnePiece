@@ -451,8 +451,9 @@ def menu(player):
             "[[Objetivo atual --------- ]]\n")
 
         npcs_regiao = checa_personagem_regiao(posicao_atual)
-                inimigos_regiao = checa_inimigo_regiao(posicao_atual,player)
+        inimigos_regiao = checa_inimigo_regiao(posicao_atual,player)
         ilhas_disponiveis = checa_ilha(player)
+        
         if ilhas_disponiveis:
             print(
             "\n\nM - Mover personagem\n"
