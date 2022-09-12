@@ -63,6 +63,10 @@ BEGIN
     INSERT INTO inventario_personagem (id_jogador_save, id_jogador_personagem, id_personagem, id_item, qtd_item)
         SELECT NEW.nome, 1, id_personagem, id_item, qtd_item FROM inventario_personagem_default;
 
+    -- Libera a missao pro personagem
+    INSERT INTO missao_status(id_missao, id_jogador_save, id_jogador_personagem, status) values
+    ('1',new.nome, 1, 'Liberada');
+
     RETURN NEW;
 END;
 $create_save_jogador$ LANGUAGE plpgsql;
@@ -486,4 +490,18 @@ AFTER UPDATE ON jogador
 FOR EACH ROW EXECUTE PROCEDURE verifica_vida_energia();
 
 
-COMMIT;
+CREATE OR REPLACE FUNCTION missaoconcluida() RETURNS trigger AS $missaoconcluida$
+BEGIN
+    if new.status = 'Concluido' and old.status <> 'Concluido' and new.id_objetivo = (select max(id_objetivo) from objetivo where id_missao = new.id_missao) then
+		update missao_status set status = 'Concluida' 
+		where id_jogador_save = new.id_jogador_save and id_jogador_personagem = new.id_jogador_personagem and id_missao = new.id_missao;
+		INSERT INTO missao_status(id_missao, id_jogador_save, id_jogador_personagem, status) values
+        (new.id_missao+1,new.id_jogador_save, new.id_jogador_personagem, 'Liberada');
+    end if;
+    return new;
+END;
+$missaoconcluida$ LANGUAGE plpgsql;
+
+CREATE trigger missaoconcluida after UPDATE ON objetivo_status
+for each row execute PROCEDURE missaoconcluida();
+    

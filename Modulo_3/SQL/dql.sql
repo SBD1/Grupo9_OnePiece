@@ -110,3 +110,19 @@ select * from regiao where id_regiao IN (
     (SELECT oeste from regiao where id_regiao = (table current_reg))
 );
 
+SELECT id_missao, status, id_jogador_save, id_jogador_personagem
+	FROM public.missao_status;
+	
+SELECT id_missao, id_objetivo, id_jogador_save, id_jogador_personagem, status
+	FROM public.objetivo_status;
+
+UPDATE
+  objetivo_status
+SET
+  status = 'Concluido'
+WHERE
+  id_missao = 1 and id_objetivo = 2 and id_jogador_save = 'jogador1' and id_jogador_personagem = 1;	
+
+DELETE FROM public.missao_status; 
+DELETE FROM public.objetivo_status;   
+
