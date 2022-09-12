@@ -1,6 +1,5 @@
 import sys
-import time
-from database import get_connection, AS_DICT
+from database import get_connection,AS_DICT
 import ascii_art
 import random
 import time
@@ -10,6 +9,87 @@ def main():
     save = intro()
     player = choose_player(save['nome'])
     run_game(player)
+
+def muda_de_ilha(player):
+
+    ## list of dict com os ids das ilhas que estao liberadas
+    ilhas_completadas = select_to_dict("SELECT id_ilha,descricao from ilha inner join missao_status on ilha.id_missao = missao_status.id_missao where status = 'Concluida' or status = 'Liberada' and id_jogador_save = %s and id_jogador_personagem = %s",player['nome_save'],player['id_personagem'])
+    ilha_jogador = select_to_dict('SELECT id_ilha,tipo,descricao from regiao inner join jogador on regiao.id_regiao = jogador.id_regiao where nome_save = %s and id_personagem = %s',player['nome_save'],player['id_personagem'])
+    # ignorar ilha que o personagem se encontra, mostrar apenas as ilhas que ele pode ir
+    ilhas_possiveis = [i for i in ilhas_completadas if not (i['id_ilha'] == ilha_jogador[0]['id_ilha'])]
+    
+    print(f"Você está na ilha {ilha_jogador[0]['descricao']} do tipo {ilha_jogador[0]['tipo']}")
+
+    print(f"Para qual ilha você deseja ir?")
+    if ilha_jogador[0]['tipo'] == 'Porto':
+        if len(ilhas_possiveis) <= 0:
+            return
+        else:
+            print('Ilhas disponíveis para navegar:\n')
+            for itens in ilhas_possiveis:
+                print(f"{itens['id_ilha']} - {itens['descricao']}")
+
+            escolha = input("\n\nSelecione a ilha que deseja ir:\n>")
+            # falta fazer validação para a escolha
+            ilha_para_ir = select_to_dict("SELECT id_regiao, id_ilha from regiao where tipo = 'Porto' and id_ilha = %s",escolha)
+            with get_connection() as db:
+                with db:
+                    cursor = db.cursor()
+                    sql = ('UPDATE jogador SET id_regiao = %s where nome_save = %s and id_personagem = %s')
+                    data = [ilha_para_ir[0]['id_regiao'],player['nome_save'],player['id_personagem']]
+                    cursor.execute(sql,data)
+
+            print('\nNavegando pelo Mar Aberto\n')
+            print(r"""
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣶⣶⣶⣶⣶⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⡿⠛⣯⣷⣷⣿⣿⣷⣯⣿⡿⣷⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⡟⣋⣶⢟⣙⣥⣾⡿⢿⣿⣿⣮⡙⣯⣿⡆⠸⣿⢿⣟⠿⣶⣦⣀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⢛⣵⠿⣵⣾⡿⢹⣿⣦⣿⣿⣧⣍⡙⢦⡹⣿⡀⠻⢿⡻⣿⣿⣯⡻⣷⣄⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡾⢏⣿⡟⣆⣾⣟⠤⣢⡿⡟⢼⣫⣧⣇⡈⠻⣆⠣⢸⡇⢨⣿⢷⠿⠾⣧⣟⣿⢿⣦⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣿⣁⡾⢃⣶⠟⡅⢀⣶⠿⠂⣼⣿⠟⠋⠙⢿⣦⠈⠆⣸⡇⢐⣌⣮⣧⣀⣀⣉⠻⣄⠹⣇⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⣼⠏⣰⡿⠬⣴⣿⣠⣁⣿⠿⢄⣾⡟⠁⣴⣏⣣⡀⢻⡇⠀⣿⠀⣰⣿⣿⣯⣥⣀⡉⠳⣮⡂⢻⡄
+⠀⠀⠀⠀⠀⠀⢀⣾⣟⣸⣿⠠⣽⠟⣾⣵⣹⣿⣏⡼⣿⠁⡼⡟⡏⠃⢡⠈⣿⣸⠇⢰⠯⣽⡿⠋⠉⠙⠻⣶⣌⢳⠸⣧
+⠀⠀⠀⠀⠀⢀⣾⠿⢿⣿⠫⢸⣿⡿⠟⡁⣻⡿⠈⣟⣿⠀⢇⡂⠇⣳⣟⠀⣿⠏⢠⢻⣼⡟⠀⠀⠀⠀⠀⠈⢻⣆⠀⣿
+⠀⠀⠀⠀⢠⣿⣵⢨⣾⠽⢉⣿⣷⠨⠷⠀⢿⣷⣰⡈⣿⡄⠀⠏⣽⣿⢋⠰⠃⢰⣿⣹⣿⠀⠀⠀⠀⠀⠀⠀⠀⢻⣆⡟
+⠀⠀⠀⢠⣿⣿⠻⣿⣷⠠⢸⣿⡷⡩⣔⡨⢽⣿⡳⠯⢹⣷⡀⠙⣿⡏⠂⢀⠠⣼⣗⢏⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠃
+⠀⠀⢠⣿⢿⣈⣾⣿⣶⣷⣿⡿⠿⢷⣶⣷⣿⣿⣷⣦⡂⢹⣷⡀⢻⡖⡈⠂⣜⢻⡧⢰⢿⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢀⣞⣵⣾⡿⠟⠋⠉⣀⣀⣤⣤⣤⣤⣤⣀⣈⠉⠛⠛⠿⣿⣷⣄⠈⠐⠀⢀⣻⣗⢜⣚⢿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⣼⠿⠋⢁⣠⢴⢾⢻⣹⣼⣿⣟⣶⣿⣿⢹⣿⣿⣶⣦⣀⡀⠉⠛⢷⣄⡀⠁⠼⣯⡴⣔⠈⢻⣧⡀⠀⠀⠀⠀⠀⠀⠀
+⠘⠁⣠⣶⣫⡽⠾⠛⠋⠉⠉⠁⠉⠉⠙⠛⠻⠿⣦⣇⡝⡛⢿⣶⣤⡀⠈⠛⢷⣤⣀⠀⠀⠙⠈⠙⠓⠀⠀⠀⠀⠀⢀⡀
+⠠⠾⠛⠉⠀⣀⣤⠴⡶⢿⣟⣻⣟⠻⡶⢦⣤⣀⠀⠉⠙⠻⢦⣆⡏⠻⣷⣤⡀⠉⠛⠻⠷⠶⠶⠶⠶⠟⠛⠀⣠⣴⣿⠁
+⠀⠀⣠⡶⣿⣽⣸⣬⣿⠿⠿⠿⢿⣿⣯⣯⣝⢋⠿⢷⣦⣄⠀⠈⠛⢷⣯⡩⢙⣷⣦⣤⣀⣀⣀⣀⣀⣠⡴⠞⢍⡾⠃⠀
+⠀⣴⣯⠾⠛⠋⠁⢀⣀⣠⣤⣤⣤⣀⡀⠉⠛⠷⣬⣏⡒⢍⣿⣦⣄⡀⠈⠛⠷⣶⣍⡍⢛⣭⣋⣟⣍⣡⣢⡿⠋⠁⢀⡄
+⠘⠉⠀⢀⣠⢶⠻⣛⢟⣿⣻⣿⡾⣟⡏⣛⣶⣤⡀⠉⠛⢷⣎⡝⠟⣟⡷⣤⡀⠀⠉⠛⠻⠷⠾⠿⠟⠛⠁⠀⣠⡶⢿⠃
+⠀⢀⣴⣻⣥⠶⠷⠛⠛⠛⠛⠛⠻⢾⣿⣔⠪⣿⣿⣷⣤⡀⠈⠛⢶⣆⡝⢎⠛⠷⣦⣤⣀⣀⣀⣀⣀⣤⣴⠾⢣⣹⠏⠀
+⠀⠚⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠻⢿⣿⣛⡭⠛⢶⣤⡀⠈⠛⠶⣬⣉⡙⢾⠯⠏⠏⣯⡟⢿⣧⣿⠟⠁⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠛⠷⠷⠿⣽⣷⣦⣤⠈⠉⠛⠛⠶⠾⠿⠷⠞⠛⠋⠁⠀⠀⠀⠀ 
+"""
+        )
+            print('Você chegou ---> Atracando seu Barco no Porto\n')
+
+
+def checa_ilha(player):
+    
+    ilha_jogador = select_to_dict('SELECT id_ilha,tipo,descricao from regiao inner join jogador on regiao.id_regiao = jogador.id_regiao where nome_save = %s and id_personagem = %s',player['nome_save'],player['id_personagem'])
+    missoes_liberadas = select_to_dict("SELECT id_missao, status, id_jogador_save, id_jogador_personagem FROM public.missao_status where status = 'Concluida' and id_jogador_save = %s and id_jogador_personagem = %s",player['nome_save'],player['id_personagem'])
+    
+    ## list of dict com os ids das ilhas que estao liberadas
+    ilhas_completadas = select_to_dict("SELECT id_ilha,descricao from ilha inner join missao_status on ilha.id_missao = missao_status.id_missao where status = 'Concluida' or status = 'Liberada' and id_jogador_save = %s and id_jogador_personagem = %s",player['nome_save'],player['id_personagem'])
+    
+    # ignorar ilha que o personagem se encontra, mostrar apenas as ilhas que ele pode ir
+    ilhas_possiveis = [i for i in ilhas_completadas if not (i['id_ilha'] == ilha_jogador[0]['id_ilha'])]  
+
+    ilhas = [] # liberando ilha de um personagem
+    for itens in ilhas_possiveis:
+        ilhas.append(itens['id_ilha'])
+
+    
+    if ilha_jogador[0]['tipo'] == 'Porto':
+        if len(ilhas_possiveis) <= 0:
+            return
+        else:   
+            return ilhas_possiveis 
+                 
 
 def ataque_simples_player(atacante,atacado,experiencia,energia):
     '''
@@ -101,9 +181,8 @@ def luta(player,inimigo):
         with get_connection() as db:
             with db:
                 cursor = db.cursor()
-                sql = "update inimigo set vida = %s where id_personagem = %s"
-                data = [0,inimigo['id_personagem']]
-                cursor.execute(sql,data)
+                data = [player['nome_save'], player['id_personagem'],inimigo['id_personagem']]
+                cursor.execute('call derrotar_inimigo(%s, %s, %s)',data)
     if(vida_personagem <= 0):
         print("Você Morreu ! Naniiii ????")
         restart(player)
@@ -244,6 +323,7 @@ def fala_com_npc(npc_dict,player):
         input('Aperte enter para continuar...')
 
 
+
 def concluir_conversa(npc_id, conversa_id, player):
     with get_connection() as db:
         with db:
@@ -361,23 +441,41 @@ def menu(player):
         nome_player = player_data[0]["nome"]
         vida_player = player_data[0]['vida']
         posicao_atual,regioes_to_go = regiao_player(player)
+        ilha_jogador = select_to_dict('SELECT id_ilha,tipo,descricao from regiao inner join jogador on regiao.id_regiao = jogador.id_regiao where nome_save = %s and id_personagem = %s',player['nome_save'],player['id_personagem'])
 
+       
         print("##### One Piece ! 💀 - \U0001f480 ######\n\n")
         print(f"Jogador {nome_player} 🏴‍☠️\n"
-            f"Você está em {posicao_atual}\n")
-        printa_objetivo_atual(player)
+            f"Você está em {posicao_atual}\n"
+            f"Na ilha {ilha_jogador[0]['descricao']} do tipo {ilha_jogador[0]['tipo']}\n")
+        printa_objetivo_atual(player)    
 
         npcs_regiao = checa_personagem_regiao(posicao_atual)
         inimigos_regiao = checa_inimigo_regiao(posicao_atual,player)
-        print(
+        ilhas_disponiveis = checa_ilha(player)
+        
+        if ilhas_disponiveis:
+            print(
             "\n\nM - Mover personagem\n"
             "I - Ver Inventário\n"
-            "Q - Sair"
+            f"H - Ir para outra Ilha\n"
+            "Q - Sair\n"
         )
+        
+        else:
+            print(
+                "\n\nM - Mover personagem\n"
+                "I - Ver Inventário\n"
+                "Q - Sair"
+            )
 
         escolha = input("O que você deseja fazer ?\n\n> ").lower()
 
-        if escolha == 'm':
+        
+        if escolha == 'h':
+                muda_de_ilha(player)
+                
+        elif escolha == 'm':
             regiao = printa_regioes(nome_player,regioes_to_go)
             move_player(player,regiao)
         elif escolha == 'q':
@@ -387,9 +485,9 @@ def menu(player):
         elif 0 <= int(escolha) <= len(npcs_regiao):
             print("-------Falando com NPC-------------\n\n")
             fala_com_npc(npcs_regiao[int(escolha)],player)
+
         else:
             print("Opção inválida")
-
 
 def printa_objetivo_atual(player: dict) -> None:
     obj = get_current_objective(player)
@@ -485,7 +583,7 @@ def intro():
             return actions[value]()
 
 
-def choose_save() -> str | None:
+def choose_save() -> str:
     saves = get_saves()
 
     print('Selecione um save para carregar o jogo salvo.')
