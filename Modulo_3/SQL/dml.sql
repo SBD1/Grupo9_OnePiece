@@ -20,11 +20,11 @@ VALUES
 
 INSERT INTO ilha (id_ilha,id_missao,nome,descricao) VALUES
 (1,1,'Barco da Marinha - O início de tudo.','Barco da Marinha onde Luffy foi resgatado quando estava dentro de um barril a deriva.'),
-(2,1,'Ilha do Capitão Morgan','Ilha com uma base da Marinha, comandada pelo Capitão Morgan. Um marinheiro temido tanto pela população quanto pela marinha.Zoro aparece capturado nessa ilha'),
-(3,2,'Orange Town','Ilha tomada pelo Buggy, cujo prefeito se chama Boodle'),
-(4,3,'Vila Syrup','Vila da ilhas Geecko, onde Usopp, um grande Guerreiro do mar com mais de 8 mil seguidores, vive'),
-(5,4,'Baratie','Restaurante Marítmo comandado pelo chefe Zeff. Zeff tem um filho chamado Sanji, um cozinheiro romântico que ama mulheres.'),
-(6,5,'Ilhas Conami','Arquipélogo de Ilhas onde Nami nasceu. Era um arquipélogo quieto, até Arlong e seus piratas chegarem.');
+(2,2,'Ilha do Capitão Morgan','Ilha com uma base da Marinha, comandada pelo Capitão Morgan. Um marinheiro temido tanto pela população quanto pela marinha.Zoro aparece capturado nessa ilha'),
+(3,3,'Orange Town','Ilha tomada pelo Buggy, cujo prefeito se chama Boodle'),
+(4,4,'Vila Syrup','Vila da ilhas Geecko, onde Usopp, um grande Guerreiro do mar com mais de 8 mil seguidores, vive'),
+(5,5,'Baratie','Restaurante Marítmo comandado pelo chefe Zeff. Zeff tem um filho chamado Sanji, um cozinheiro romântico que ama mulheres.'),
+(6,6,'Ilhas Conami','Arquipélogo de Ilhas onde Nami nasceu. Era um arquipélogo quieto, até Arlong e seus piratas chegarem.');
 
 insert into regiao (id_regiao,descricao,tipo,norte,sul,leste,oeste,id_ilha)
 values
@@ -63,8 +63,8 @@ values
 (24,'Porto','Porto',25,NULL,NULL,NULL,5), -- 13
 (25,'Restaurante','Cidade',NULL,24,26,NULL,5), -- 14
 (26,'Deck','Cidade',NULL,27,NULL,25,5), -- 15
-(27,'Barco','Cidade',26,NULL,NULL,24,5); -- 15
-
+(27,'Barco','Cidade',26,NULL,NULL,24,5),-- 15
+(50,'Ilha oculta','Cidade',NULL,NULL,NULL,NULL,5);
 
 INSERT INTO personagem VALUES
 (1,'P'),
@@ -240,9 +240,7 @@ VALUES
 (21, 2, 13, 'Sou', 'Luffy'),
 (21, 2, 14, 'E cade sua tripulação?', 'Coby'),
 (21, 2, 15, 'Não tenho ainda. To atrás de uma', 'Luffy');
-
-(21, 3, 1, '', 'Luffy');
-
+    
 
 INSERT INTO missao (id_missao, nome, descricao, qtd_experiencia, dificuldade, id_nao_hostil) VALUES
 (1,'Começo da jornada', 'Luffy derrota Alvida e segue sua viagem junto de Coby pra formar uma tripulação', 10, 0, 21),
