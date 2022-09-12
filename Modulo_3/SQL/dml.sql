@@ -249,6 +249,10 @@ INSERT INTO objetivo (id_missao,id_objetivo, descricao, tipo, id_item, id_inimig
 (4, 3, 'Derrote os piratas de Buggy', 'DerrotarInimigo', NULL, NULL, NULL, null), -- Nami engana Luffy e o entrega para buggy
 (4, 4, 'Derrote Richie', 'DerrotarInimigo', NULL, NULL, NULL, null);
 
+INSERT INTO objetivo_status VALUES
+(1,1,'jogador1',1,'Em andamento'),
+(1,2,'jogador1',1,'Em andamento');
+
 
 INSERT INTO save (nome) VALUES 
 ('jogador1'),
@@ -264,7 +268,7 @@ ALTER TABLE conversa ADD CONSTRAINT fk_objetivo FOREIGN KEY (id_missao, id_objet
     REFERENCES objetivo(id_missao, id_objetivo);
 
 INSERT INTO missao_status VALUES
-(1,'jogador1',1,'Liberada'),
+(1,'jogador1',1,'Liberada');
 
 
 commit;
