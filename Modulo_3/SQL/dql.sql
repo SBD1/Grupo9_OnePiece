@@ -115,14 +115,3 @@ SELECT id_missao, status, id_jogador_save, id_jogador_personagem
 	
 SELECT id_missao, id_objetivo, id_jogador_save, id_jogador_personagem, status
 	FROM public.objetivo_status;
-
-UPDATE
-  objetivo_status
-SET
-  status = 'Concluido'
-WHERE
-  id_missao = 1 and id_objetivo = 2 and id_jogador_save = 'jogador1' and id_jogador_personagem = 1;	
-
-DELETE FROM public.missao_status; 
-DELETE FROM public.objetivo_status;   
-
