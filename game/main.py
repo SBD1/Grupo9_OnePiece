@@ -1,5 +1,5 @@
 import sys
-from database import get_connection
+from database import get_connection,AS_DICT
 import ascii_art
 import random
 import time
