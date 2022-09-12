@@ -163,18 +163,18 @@ def luta(player,inimigo):
     turno = random.choice([0,1])
     dano_extra = 1
     is_equipado = False
-
+    luta_automatica = False
 
     # enquanto algum dos dois ainda estiverem com vida > 0
     while vida_personagem > 0 and vida_inimigo > 0:
         # luta acontece
-        
+
         if(turno % 2 == 0):
             print("Você entrou em uma luta !!!\n")
 
             print("É tua vez de atacar :")
-            while True:
-                luta_escolha = input("1 - Equipar itens\n2 - Poderes especiais\n3 - Partir pra Luta\n")
+            while not luta_automatica:
+                luta_escolha = input("1 - Equipar itens\n2 - Poderes especiais\n3 - Partir pra Luta\n4 - Luta controlada por IA\n")
 
                 if luta_escolha == '1':
                     dano_extra = inventario(player)
@@ -185,6 +185,9 @@ def luta(player,inimigo):
                     print("Não tem ainda . . .\n")
 
                 elif luta_escolha == '3':
+                    break
+                elif luta_escolha == '4':
+                    luta_automatica = True
                     break
                 else:
                     print("Opção inválida")

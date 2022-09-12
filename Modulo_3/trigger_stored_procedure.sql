@@ -120,10 +120,10 @@ BEGIN
     IF (NEW.id_regiao <> OLD.id_regiao) THEN
         -- Respawna inimigos de missões
         UPDATE inimigo SET vida = vida_maxima, energia = energia_maxima 
-            WHERE id_regiao = NEW.id_regiao AND id_personagem IN (SELECT o.id_inimigo FROM objetivo o inner join objetivo_status os on o.id_missao = os.id_missao and o.id_objetivo = os.id_objetivo WHERE os.status='Em andamento' AND os.id_jogador_save = NEW.nome_save AND os.id_jogador_personagem = NEW.id_personagem);
+            WHERE id_regiao = NEW.id_regiao AND id_personagem = (SELECT id_inimigo FROM objetivo_atual(NEW.nome_save, NEW.id_personagem));
         -- Respawan inimigos comuns
         UPDATE inimigo SET vida = vida_maxima, energia = energia_maxima 
-            WHERE id_regiao = NEW.id_regiao;
+            WHERE id_regiao = NEW.id_regiao AND id_personagem NOT IN (SELECT DISTINCT(id_inimigo) FROM objetivo);
     END IF;
     RETURN NEW;
 END;
@@ -193,8 +193,8 @@ CREATE TRIGGER concluir_objetivo_conversa
 
     -- Pega objetivo atual
 CREATE OR REPLACE FUNCTION objetivo_atual(jog_save varchar(30), jog_persona int) 
-RETURNS table(id_missao int, id_objetivo int, nome varchar(35), descricao text) AS $objetivo_atual$
-    select o.id_missao, o.id_objetivo, m.nome, o.descricao
+RETURNS table(id_missao int, id_objetivo int, nome varchar(35), descricao text, id_item integer, id_inimigo integer, id_conversa_personagem integer, id_conversa integer) AS $objetivo_atual$
+    select o.id_missao, o.id_objetivo, m.nome, o.descricao, o.id_item, o.id_inimigo, o.id_conversa_personagem, o.id_conversa
         from objetivo o INNER JOIN objetivo_status os ON 
             o.id_missao = os.id_missao AND o.id_objetivo = os.id_objetivo AND 
                 os.id_jogador_save = jog_save AND os.id_jogador_personagem = jog_persona 

@@ -39,7 +39,7 @@ values
 (6,'Praça onde você encontra NPCs','Cidade',7,8,9,5,2), -- 
 (7,'Taverna da Mãe da Rika, onde você encontra itens para comprar.','Cidade',NULL,6,NULL,NULL,2), -- 
 (8,'Feira onde você encontra uma grande variedade de itens para comprar.','Cidade',6,NULL,NULL,NULL,2), -- 
-(9,'Campo de castigo da Marinha. Dizem que por lá tem um criminoso amarrado na cruz sem comer por quase 1 mês.','Cidade',NULL,NULL,10,9,2), -- 
+(9,'Campo de castigo da Marinha. Dizem que por lá tem um criminoso amarrado na cruz sem comer por quase 1 mês.','Cidade',NULL,NULL,10,6,2), -- 
 (10,'Prédio da Marinha, onde a grande força do capitão Morgan se encontra.','Cidade',NULL,NULL,11,9,2), -- 
 (11,'Base da Marinha, onde o capitão Morgan se encontra.','Cidade',NULL,NULL,NULL,10,2),
 
@@ -96,7 +96,8 @@ INSERT INTO personagem VALUES
 (27,'N'),
 (28,'N'),
 (29,'N'),
-(30,'N');
+(30,'N'),
+(31,'I');
 
 INSERT INTO personagem_principal (id_personagem, nome,id_regiao,ocupacao,grupo_ocupacao,berries,energia,energia_maxima,fraqueza,experiencia,vida,vida_maxima,capacidade_de_itens) VALUES
 (1,'Monkey D. Luffy',1,'Pirata','Piratas do Chapéu de Palha',150,100,100,'Kairoseki',1,120,120,10),
@@ -166,6 +167,7 @@ INSERT INTO inimigo (id_personagem,id_regiao,nome,ocupacao,grupo_ocupacao,berrie
 (19,16,'Buggy','Pirata','Piratas do Buggy',1000,200,200,'Akuma no mi',2,0,150),
 (20,50,'Arlong','Pirata','Piratas do Arlong',50000,250,250,'Akuma no mi',3,0,250),
 (31,2,'Pirata do bando da Alvida.','Pirata','Piratas da Alvida',50,50,50,1,1,50,50);
+
 INSERT INTO personagem_nao_hostil (id_personagem, id_regiao,nome, ocupacao, grupo_ocupacao, is_vendedor, is_personagem_historia)
 VALUES
 (21,1,'Coby', 'Cidadao', 'Marinha', false, true),
@@ -220,10 +222,10 @@ VALUES
 (21, 1, NULL, NULL, 1),
 (21, 2, 1, 1, null),
 (24, 3, NULL, NULL, 2),
-(21, 4, 2, 2, NULL),
-(30,  5, 2, 3, NULL),
-(24, 6, 2, 4, NULL),
-(30, 7, 2, 5, NULL)
+(29, 4, 2, 1, NULL),
+(30, 5, 2, 2, NULL),
+(24, 6, 2, 3, NULL),
+(30, 7, 2, 4, NULL)
 
 
 ;
@@ -258,21 +260,21 @@ VALUES
 (24,3,4,'Eii, Coby, vamos ver esse Zoro, você quer entrar na Marinha mesmo né ?','Luffy'),
 (24,3,5,'Luffy . . . Não sei se é uma boa ideia ele na tua tripulação. . .','Coby'),
 
-(21,4,1,'Você está com fome não está ?','Rika'),
-(21,4,2,'Ei, vá embora daqui, você vai se machucar.','Zoro'),
-(21,4,3,'Mas eu fiz esse Onigiri pra você . . .','Rika'),
-(21,4,4,'Vá embora !!! ','Zoro'),
-(21,4,5,'Ei Ei Ei . ..  Por que não para de incomodar as criancinhas ?','Homem de terno'),
-(21,4,6,'Portão do campo de castigo se abre, e um homem de terno acompanhado de 2 marinheiros entra','Narrador'),
-(21,4,7,'Você veio trazer comida para esse crimonoso ?','Homem de terno'),
-(21,4,8,' . . . ','Rika'),
-(21,4,9,'Me dá isso daqui !!! (Pisa pisa pisa pisa)','Homem de terno'),
-(21,4,10,'Ei você marinheiro, arremesse essa criança por cima do muro !!! ','Homem de terno'),
-(21,4,11,'Mas ela é apenas uma criança.','Marinheiro 1'),
-(21,4,12,'Vá logo ou chamarei o capitão Morgan.','Homem de terno'),
-(21,4,13,'(Sussura baixo no ouvido de Rika) - Desculpa criança.\nArremessa Rika pelos Ares !!!','Marinheiro 1'),
-(21,4,14,'Luffy, pegue ela !!!','Coby'),
-(21,4,15,'Luffy se estica, dá um salto e pegue Rika no ar !','Narrador'),
+(29,4,1,'Você está com fome não está ?','Rika'),
+(29,4,2,'Ei, vá embora daqui, você vai se machucar.','Zoro'),
+(29,4,3,'Mas eu fiz esse Onigiri pra você . . .','Rika'),
+(29,4,4,'Vá embora !!! ','Zoro'),
+(29,4,5,'Ei Ei Ei . ..  Por que não para de incomodar as criancinhas ?','Homem de terno'),
+(29,4,6,'Portão do campo de castigo se abre, e um homem de terno acompanhado de 2 marinheiros entra','Narrador'),
+(29,4,7,'Você veio trazer comida para esse crimonoso ?','Homem de terno'),
+(29,4,8,' . . . ','Rika'),
+(29,4,9,'Me dá isso daqui !!! (Pisa pisa pisa pisa)','Homem de terno'),
+(29,4,10,'Ei você marinheiro, arremesse essa criança por cima do muro !!! ','Homem de terno'),
+(29,4,11,'Mas ela é apenas uma criança.','Marinheiro 1'),
+(29,4,12,'Vá logo ou chamarei o capitão Morgan.','Homem de terno'),
+(29,4,13,'(Sussura baixo no ouvido de Rika) - Desculpa criança.\nArremessa Rika pelos Ares !!!','Marinheiro 1'),
+(29,4,14,'Luffy, pegue ela !!!','Coby'),
+(29,4,15,'Luffy se estica, dá um salto e pegue Rika no ar !','Narrador'),
 
 (30,5,1,'Ei Ei,sendo humilhado publicamente . . . você é forte mesmo ?','Luffy'),
 (30,5,2,'Vá cuidar dos seus problemas. ','Zoro'),
@@ -324,17 +326,16 @@ INSERT INTO missao (id_missao, nome, descricao, qtd_experiencia, dificuldade, id
 
 INSERT INTO objetivo (id_missao,id_objetivo, descricao, tipo, id_item, id_inimigo, id_conversa_personagem, id_conversa) VALUES
 (1, 1, 'Fale com Coby', 'FalarComNPC', NULL, null, 21, 2),
-(1, 2, 'Derrote os piratas do bando da Alvida', 'DerrotarInimigo', NULL, 2, NULL, null),
+(1, 2, 'Derrote os piratas do bando da Alvida', 'DerrotarInimigo', NULL, 31, NULL, null),
 (1, 3, 'Derrote a Capitã Alvida, ao derrotar o último inimigo de uma missão, uma nova ilha é liberada.', 'DerrotarInimigo', NULL, 17, NULL, null),
 
-(2, 1, 'Fale com Rika','FalarComNPC',NULL,NULL,24,3),
-(2, 2, 'Fale com Coby no campo de castigo da Marinha','FalarComNPC',NULL,NULL,21,4),
-(2, 3, 'Fale com Zoro','FalarComNPC',NULL,NULL,30,5),
-(2, 4, 'Fale com Rika, ela está na praça','FalarComNPC',NULL,NULL,24,6),
-(2, 5, 'Fale com Zoro','FalarComNPC',NULL,NULL,30,7),
-(2, 6, 'Derrote os marinheiros que estão de guarda nas espadas de Roronoa Zoro', 'DerrotarInimigo', NULL, NULL, NULL, null),
-(2, 7, 'Recupere as espadas de Roronoa Zoro', 'PegarItem', NULL, NULL, NULL, null),
-(2, 8, 'Liberte Roronoa Zoro e devolva suas espadas', 'FalarComNPC', NULL, NULL, NULL, null),
+(2, 1, 'Fale com Coby no campo de castigo da Marinha','FalarComNPC',NULL,NULL,29,4),
+(2, 2, 'Fale com Zoro','FalarComNPC',NULL,NULL,30,5),
+(2, 3, 'Fale com Rika, ela está na praça','FalarComNPC',NULL,NULL,24,6),
+(2, 4, 'Fale com Zoro','FalarComNPC',NULL,NULL,30,7),
+(2, 5, 'Derrote os marinheiros que estão de guarda nas espadas de Roronoa Zoro', 'DerrotarInimigo', NULL, NULL, NULL, null),
+(2, 6, 'Recupere as espadas de Roronoa Zoro', 'PegarItem', NULL, NULL, NULL, null),
+(2, 7, 'Liberte Roronoa Zoro e devolva suas espadas', 'FalarComNPC', NULL, NULL, NULL, null),
 
 (3, 1, 'Derrote os marinheiros que estam protegendo o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL, null),
 (3, 2, 'Derrote o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL, null),
