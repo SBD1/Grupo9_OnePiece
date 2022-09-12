@@ -11,14 +11,14 @@ def main():
     player = choose_player(save['nome'])
     run_game(player)
 
-def ataque_simples_player(atacante,atacado,experiencia,energia):
+def ataque_simples_player(atacante,atacado,experiencia,energia,dano_extra):
     '''
     retorna dano
     '''
 
     poder_especial = 0
     
-    damage = ((17 *experiencia)/3)+(poder_especial) + energia*0.05
+    damage = ((dano_extra * experiencia)/3)+(poder_especial) + energia*0.05
 
     return damage
 
@@ -26,14 +26,11 @@ def restart(player):
 
     dados_restart = select_to_dict("SELECT id_regiao_anterior,vida_maxima,energia_maxima,berries FROM jogador WHERE nome_save = %s and id_personagem = %s",player['nome_save'],player['id_personagem'])
 
-    print(dados_restart)
-
     for dado in dados_restart:
         energia_personagem = dado['energia_maxima']
         vida_personagem = dado['vida_maxima']
         regiao_anterior = dado['id_regiao_anterior']
         berries = dado['berries']
-
 
     with get_connection() as db:
         with db:
@@ -47,14 +44,31 @@ def restart(player):
 
     nada = input("Aperte enter . . .")
     
+def equipar_item(player,item,qntd_item):
+
+    atributos_item = select_to_dict('select qtd_vida,qtd_energia,qtd_dano from item where id_item = %s',str(item))
+
+    vida = atributos_item[0]['qtd_vida']
+    energia = atributos_item[0]['qtd_energia']
+    dano = atributos_item[0]['qtd_dano']
+    try:
+        with get_connection() as db:
+            with db:
+                cursor = db.cursor()
+                sql = "CALL consumo_item(%s,%s,%s,%s,%s,%s)"
+                data = (vida,energia,str(item),str(qntd_item),player['nome_save'],player['id_personagem'])
+                cursor.execute(sql,data)
+    except Exception:
+        print('Você não tem o item ou não tem item suficientes')
+        return 1
+        
+    print(f"Equipado !!\nDano extra de {dano}")
+    
+    return dano*int(qntd_item)
 
 def luta(player,inimigo):
     
     dados_luta = select_to_dict("SELECT nome,vida_maxima,vida,fraqueza,energia_maxima,energia,experiencia from jogador where nome_save = %s and id_personagem = %s",player['nome_save'],player['id_personagem'])
-
-    #print(dados_luta)
-    #print("Inimigo : ")
-    #print(inimigo)
     
     vida_personagem = dados_luta[0]['vida']
     experiencia_personagem = dados_luta[0]['experiencia']
@@ -64,31 +78,53 @@ def luta(player,inimigo):
     vida_inimigo = inimigo['vida']
     energia_inimigo = inimigo['energia']
 
-
     print(vida_personagem,vida_inimigo)
 
     turno = random.choice([0,1])
+    dano_extra = 1
+    is_equipado = False
 
-    print(turno)
+
     # enquanto algum dos dois ainda estiverem com vida > 0
     while vida_personagem > 0 and vida_inimigo > 0:
         # luta acontece
+        
         if(turno % 2 == 0):
-            print("Sua vez :\n1)Ataque Simples\n2)Poder especial\n")
-            # personagem ataca
+            print("Você entrou em uma luta !!!\n")
+
             print("É tua vez de atacar :")
-            dano = ataque_simples_player(player,inimigo,experiencia_personagem,energia_personagem)
+            while True:
+                luta_escolha = input("1 - Equipar itens\n2 - Poderes especiais\n3 - Partir pra Luta\n")
+
+                if luta_escolha == '1':
+                    dano_extra = inventario(player)
+                    if dano_extra != None:
+                        is_equipado = True
+
+                elif luta_escolha == '2':
+                    print("Não tem ainda . . .\n")
+
+                elif luta_escolha == '3':
+                    break
+                else:
+                    print("Opção inválida")
+
+
+            if not is_equipado:
+                dano_extra = 10
+            dano = ataque_simples_player(player,inimigo,experiencia_personagem,energia_personagem,dano_extra)
             print(f"O dano foi de {dano}")
             vida_inimigo -= dano
             energia_personagem = energia_personagem * 0.95
+            # personagem ataca
+
         else:
             #inimigo ataca
             print("Vez do Inimigo de atacar :")
-            dano = ataque_simples_player(player,inimigo,experiencia_inimigo,energia_inimigo)
+            dano = ataque_simples_player(player,inimigo,experiencia_inimigo,energia_inimigo,1)
             print(f"O dano foi de {dano}")
             vida_personagem -= dano
             energia_inimigo = energia_inimigo * 0.95
-
 
         turno+=1
 
@@ -131,12 +167,6 @@ def checa_inimigo_regiao(posicao_jogador,player):
             time.sleep(2)
             luta(player,inimigo)
 
-    # Pensando a luta por turno...  Simples
-    # iterador par Personagem ataca
-    # iterador ímpar Inimigo ataca
-    
-
-
 def checa_personagem_regiao(posicao_jogador):
 
     inimigos_regiao = select_to_dict('SELECT id_regiao,nome,ocupacao FROM inimigo where id_regiao = %s and vida > 0',posicao_jogador)
@@ -168,7 +198,6 @@ def compra(player,id_itens,npc_num):
             cursor.execute(sql,data)
 
     print("Compra realizada !!")
-
 
 def fala_com_npc(npc_dict,player):
     print(f"Olá sou {npc_dict['nome']}\n")
@@ -275,24 +304,22 @@ def consumir_item(player,item,qntd_item):
 
     print("Atualizado !!!")
 
+
 def inventario(player):
     print("Aqui está seu inventário :\n")
     inventario_jogador = select_to_dict("SELECT id_item,qtd_item from inventario_jogador where id_jogador_save = %s and id_jogador_personagem = %s",player["nome_save"],player["id_personagem"])
     #print(inventario_jogador)
 
     if not inventario_jogador:
-        print("Inventário está vazio !")
+        nada = input("Inventário está vazio ! Aperte enter . . .")
         return
 
-    id_itens = [item['id_item'] for item in inventario_jogador]
+    id_itens = sorted([item['id_item'] for item in inventario_jogador])
 
-    dth = {x['id_item'] : x['qtd_item'] for x in inventario_jogador}
-
-    #print(dth)
     with get_connection() as db:
             with db:
                 cursor = db.cursor()
-                sql = "SELECT id_item,nome,qtd_vida,qtd_energia,preco,is_equipavel from item where id_item in %s"
+                sql = "SELECT id_item,nome,qtd_vida,qtd_energia,preco,is_equipavel,qtd_dano from item where id_item in %s order by id_item"
                 data = tuple([str(item) for item in id_itens])
                 data = (data,)
                 cursor.execute(sql,data)
@@ -303,6 +330,7 @@ def inventario(player):
     vidas = [item[2] for item in itens]
     energias = [item[3] for item in itens]
     precos = [item[4] for item in itens]
+    dano = [item[6] for item in itens]
     
     '''
     header = ['Id_item','Nome','Vida','Energia','Preço','Quantidade']
@@ -313,60 +341,48 @@ def inventario(player):
         print('|' + '|'.join(str(r).center(20) for r in row) + '|')
 
     '''
-
-    itens_consumiveis = []
-    itens_equipaveis = []
-
-    for item in itens:
-        if item[5]:
-            itens_equipaveis.append(item)
-        else:
-            itens_consumiveis.append(item)
-
     i = 0
-    if itens_consumiveis:
-        print("\tItens consumíveis\n")
-        for key in dth:
-            print(f"{key} : {str(nomes[i])}\n\tQuantidade : {dth[key]}x\n\tVida : {str(vidas[i])}\n\tEnergia : {str(energias[i])}\n\tPreço ฿ {str(precos[i])},00\n\n")
-            i+=1
+    for item in inventario_jogador:
+        print(f"{id_itens[i]} : {str(nomes[i])}\nPreço ฿{str(precos[i])}  Quantidade : {item['qtd_item']}x \nGanha {str(vidas[i])} de vida | Ganha {str(energias[i])} de energia\n{str(dano[i])} de dano adicional\n\n")
+        i+=1
 
-    i = 0
-    if itens_equipaveis:
-        print("\tItens equipáveis\n")
-        for item in itens_equipaveis:
-            print(f"{id_itens[i]} : {str(nomes[i])}\n\tQuantidade : {item['qtd_item']}x\n\tVida : {str(vidas[i])}\n\tEnergia : {str(energias[i])}\n\tPreço ฿ {str(precos[i])},00\n\n")
-            i+=1
-
-    escolha = input("\nO que deseja fazer ?\n1 - Consumir item\n2 - Equipar Item\n3 - Voltar\n>")
+    escolha = input("\nO que deseja fazer ?\n1 - Consumir item\n2 - Equipar Item\n3 - Voltar\n> ")
 
     if escolha == '1':
         item = int(input("Qual item deseja consumir ?\n>"))
         qtd_item = input("Qual a quantidade desse item ?\n>")
         consumir_item(player,item,qtd_item)
 
-    elif escolha == '2':
-        equipar_item()
-
+    if escolha == '2':
+        item = int(input("Qual item deseja consumir ?\n>"))
+        qtd_item = input("Qual a quantidade desse item ?\n>")
+        return equipar_item(player,item,qtd_item)
+    
     elif escolha == '3':
         return
     else:
         print("Opção inválida\n")
+
 
 def menu(player):
 
     invalid = True
 
     while True:
-        player_data = select_to_dict("SELECT nome,vida from jogador where nome_save = %s and id_personagem = %s",player['nome_save'],player['id_personagem'])
+        player_data = select_to_dict("SELECT nome,vida,energia from jogador where nome_save = %s and id_personagem = %s",player['nome_save'],player['id_personagem'])
         nome_player = player_data[0]["nome"]
         vida_player = player_data[0]['vida']
+        energia_player = player_data[0]['energia']
+        ilha_jogador = select_to_dict('SELECT id_ilha,tipo,descricao from regiao inner join jogador on regiao.id_regiao = jogador.id_regiao where nome_save = %s and id_personagem = %s',player['nome_save'],player['id_personagem'])
+        
         posicao_atual,regioes_to_go = regiao_player(player)
 
         print("##### One Piece ! 💀 - \U0001f480 ######\n\n")
         print(f"Jogador {nome_player} 🏴‍☠️\n"
-            f"Você está em {posicao_atual}\n")
+            f"Você está em {posicao_atual}\n"
+            f"Na ilha {ilha_jogador[0]['descricao']} do tipo {ilha_jogador[0]['tipo']}\n")
         printa_objetivo_atual(player)
-
+        print(f"Vida {vida_player}\nEnergia {energia_player}")
         npcs_regiao = checa_personagem_regiao(posicao_atual)
         inimigos_regiao = checa_inimigo_regiao(posicao_atual,player)
         print(
@@ -451,7 +467,6 @@ def select_to_dict(query: str, *args):
         cursor = conn.cursor(cursor_factory=AS_DICT)
         cursor.execute(query, args or ...)
         return cursor.fetchall()
-
 
 def get_saves() -> list[str]:
     return select_to_dict('SELECT nome FROM save')
@@ -598,8 +613,6 @@ def printa_regioes(nome,regioes_to_go):
             invalid = False
 
     return escolha
-
-
 
 if __name__ == '__main__':
     main()
