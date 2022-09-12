@@ -444,11 +444,12 @@ def menu(player):
         posicao_atual,regioes_to_go = regiao_player(player)
         ilha_jogador = select_to_dict('SELECT id_ilha,tipo,descricao from regiao inner join jogador on regiao.id_regiao = jogador.id_regiao where nome_save = %s and id_personagem = %s',player['nome_save'],player['id_personagem'])
 
+       
         print("##### One Piece ! 💀 - \U0001f480 ######\n\n")
         print(f"Jogador {nome_player} 🏴‍☠️\n"
             f"Você está em {posicao_atual}\n"
-            f"Na ilha {ilha_jogador[0]['descricao']} do tipo {ilha_jogador[0]['tipo']}\n"
-            "[[Objetivo atual --------- ]]\n")
+            f"Na ilha {ilha_jogador[0]['descricao']} do tipo {ilha_jogador[0]['tipo']}\n")
+        printa_objetivo_atual(player)    
 
         npcs_regiao = checa_personagem_regiao(posicao_atual)
         inimigos_regiao = checa_inimigo_regiao(posicao_atual,player)
