@@ -489,6 +489,27 @@ def menu(player):
         else:
             print("Opção inválida")
 
+def printa_objetivo_atual(player: dict) -> None:
+    obj = get_current_objective(player)
+
+    title = 'Nenhuma Missão em andamento'
+    body = 'Fale com algum Cidadão, ele pode ter uma Missão para você!'
+    if obj:
+        title = obj["nome"]
+        body = obj["descricao"]
+
+    size = max(len(body), 60) + 14
+
+    print('-' * size)
+    print(f'Missão: {title.center(size - 8)}')
+    print(f'Objetivo: {body.center(size - 10)}')
+    print('-' * size + '\n\n')
+
+
+def get_current_objective(player: dict):
+    obj, *_ = select_to_dict('select nome, descricao from objetivo_atual(%s, %s)', player['nome_save'], player['id_personagem']) or [None]
+    return obj
+
 
 def run_game(player: dict):
     print(f'Rodando o jogo com save [{player["nome_save"]}]'
