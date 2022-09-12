@@ -95,7 +95,8 @@ INSERT INTO personagem VALUES
 (26,'N'),
 (27,'N'),
 (28,'N'),
-(29,'I');
+(29,'N'),
+(30,'N');
 
 INSERT INTO personagem_principal (id_personagem, nome,id_regiao,ocupacao,grupo_ocupacao,berries,energia,energia_maxima,fraqueza,experiencia,vida,vida_maxima,capacidade_de_itens) VALUES
 (1,'Monkey D. Luffy',1,'Pirata','Piratas do Chapéu de Palha',150,100,100,'Kairoseki',1,120,120,10),
@@ -160,17 +161,19 @@ INSERT INTO inimigo (id_personagem,id_regiao,nome,ocupacao,grupo_ocupacao,berrie
 (14,50,'Akainu','Marinheiro','Almirante da Marinha',1000000,10000,10000,'Kairoseki',10,0,10000),
 (15,50,'Alkiji','Marinheiro','Almirante da Marinha',900000,10000,10000,'Kairoseki',10,0,10000),
 (16,50,'Kizaru','Marinheiro','Almirante da Marinha',1200000,10000,10000,'Kairoseki',10,0,10000),
-(17,2,'Alvida','Pirata','Piratas da Alvida',1000,100,100,'Akuma no mi',1,0,100),
+(17,3,'Alvida','Pirata','Piratas da Alvida',1000,100,100,'Akuma no mi',1,0,100),
 (18,11,'Morgan','Marinheiro','Capitão da Marinha',3000,150,150,'Akuma no mi',1,0,100),
 (19,16,'Buggy','Pirata','Piratas do Buggy',1000,200,200,'Akuma no mi',2,0,150),
-(20,50,'Arlong','Pirata','Piratas do Arlong',50000,250,250,'Akuma no mi',3,0,250);
-
+(20,50,'Arlong','Pirata','Piratas do Arlong',50000,250,250,'Akuma no mi',3,0,250),
+(31,2,'Pirata do bando da Alvida.','Pirata','Piratas da Alvida',50,50,50,1,1,50,50);
 INSERT INTO personagem_nao_hostil (id_personagem, id_regiao,nome, ocupacao, grupo_ocupacao, is_vendedor, is_personagem_historia)
 VALUES
 (21,1,'Coby', 'Cidadao', 'Marinha', false, true),
+(29,9,'Coby', 'Cidadao', 'Marinha', false, true),
+(30,9,'Zoro', 'Cidadao', 'Pirata', false, true),
 (22,2,'vendedor', 'Cidadao', 'Cidadão', true, false),
-(23,3,'Mãe da Rika', 'Cidadao', 'Cidadão', false, true),
-(24,3,'Rika', 'Cidadao', 'Cidadão', false, true),
+(23,7,'Mãe da Rika', 'Cidadao', 'Cidadão', true, false),
+(24,6,'Rika', 'Cidadao', 'Cidadão', false, true),
 (25,1,'Marinheiro', 'Marinheiro', 'Marinha', false, false),
 (26,1,'Prefeito', 'Cidadao', 'Cidadão', false, true),
 (27,1,'Comerciante', 'Cidadao', 'Cidadão', true, false),
@@ -215,7 +218,15 @@ VALUES
 INSERT INTO conversa (id_personagem, id_conversa, id_missao, id_objetivo, id_missao_liberada)
 VALUES
 (21, 1, NULL, NULL, 1),
-(21, 2, 1, 1, null);
+(21, 2, 1, 1, null),
+(24, 3, NULL, NULL, 2),
+(21, 4, 2, 2, NULL),
+(30,  5, 2, 3, NULL),
+(24, 6, 2, 4, NULL),
+(30, 7, 2, 5, NULL)
+
+
+;
 
 INSERT INTO fala (id_personagem, id_conversa, id_fala, texto, nome_display)
 VALUES
@@ -234,29 +245,96 @@ VALUES
 (21, 2, 7, 'Isso é impossível!! Se a capitã me pegar ela vai me deitar na porrada', 'Coby'),
 (21, 2, 8, 'Você é muito covarde isso sim HAHAHA', 'Luffy'),
 (21, 2, 9, 'Me diga, Luffy, por que está viajando?', 'Coby'),
-(21, 2, 10, 'É que eu vou ser o rei dos piratas! :D', 'Luffy'),
+(21, 2, 10, 'É que eu vou ser o Rei dos Piratas! :D', 'Luffy'),
 (21, 2, 11, 'O QUEEE???', 'Coby'),
 (21, 2, 12, 'Então quer dizer que você também é um pirata??', 'Coby'),
 (21, 2, 13, 'Sou', 'Luffy'),
 (21, 2, 14, 'E cade sua tripulação?', 'Coby'),
-(21, 2, 15, 'Não tenho ainda. To atrás de uma', 'Luffy');
-    
+(21, 2, 15, 'Não tenho ainda. Tô atrás de uma', 'Luffy'),
+
+(24,3,1,'Eu vou dar esse Onigiri para ele . . .','Rika'),
+(24,3,2,'Ele está lá sem comer tem quase 1 mês. . .','Rika'),
+(24,3,3,'. . .','Luffy'),
+(24,3,4,'Eii, Coby, vamos ver esse Zoro, você quer entrar na Marinha mesmo né ?','Luffy'),
+(24,3,5,'Luffy . . . Não sei se é uma boa ideia ele na tua tripulação. . .','Coby'),
+
+(21,4,1,'Você está com fome não está ?','Rika'),
+(21,4,2,'Ei, vá embora daqui, você vai se machucar.','Zoro'),
+(21,4,3,'Mas eu fiz esse Onigiri pra você . . .','Rika'),
+(21,4,4,'Vá embora !!! ','Zoro'),
+(21,4,5,'Ei Ei Ei . ..  Por que não para de incomodar as criancinhas ?','Homem de terno'),
+(21,4,6,'Portão do campo de castigo se abre, e um homem de terno acompanhado de 2 marinheiros entra','Narrador'),
+(21,4,7,'Você veio trazer comida para esse crimonoso ?','Homem de terno'),
+(21,4,8,' . . . ','Rika'),
+(21,4,9,'Me dá isso daqui !!! (Pisa pisa pisa pisa)','Homem de terno'),
+(21,4,10,'Ei você marinheiro, arremesse essa criança por cima do muro !!! ','Homem de terno'),
+(21,4,11,'Mas ela é apenas uma criança.','Marinheiro 1'),
+(21,4,12,'Vá logo ou chamarei o capitão Morgan.','Homem de terno'),
+(21,4,13,'(Sussura baixo no ouvido de Rika) - Desculpa criança.\nArremessa Rika pelos Ares !!!','Marinheiro 1'),
+(21,4,14,'Luffy, pegue ela !!!','Coby'),
+(21,4,15,'Luffy se estica, dá um salto e pegue Rika no ar !','Narrador'),
+
+(30,5,1,'Ei Ei,sendo humilhado publicamente . . . você é forte mesmo ?','Luffy'),
+(30,5,2,'Vá cuidar dos seus problemas. ','Zoro'),
+(30,5,3,'Eu teria fugido em 3 dias . . .','Luffy'),
+(30,5,4,'Esse não é meu objetivo, eu vou sobreviver 1 mês sem comer e mostrar a eles !!','Zoro'),
+(30,5,5,'Você é mesmo teimoso ein ? ','Luffy'),
+(30,5,6,'Luffy se vira, dá um sorriso e começa a ir embora  . . .','Narrador'),
+(30,5,7,'Ei, pegue aquilo pra mim ! O bolinho que está no chão.','Zoro'),
+(30,5,8,'Você quer mesmo isso ? virou uma bola de sujeira, o maluco lá pisou em cima!','Luffy'),
+(30,5,9,'Cala a boca e me dá logo !!!','Zoro'),
+(30,5,10,' . . . ','Luffy'),
+(30,5,11,'Estava maravilhoso ! Obrigado pela comida !','Zoro'),
+(30,5,12,'Luffy sorri e tem um olhar confiante','Narrador'),
+
+(24,6,1,'Ele comeu tudinho ! Hihihi','Luffy'),
+(24,6,2,'Sério ?','Rika'),
+(24,6,3,'Sim !','Luffy'),
+(24,6,4,'Ele é mesmo tão mau assim ? ','Coby'),
+(24,6,5,'Não, ele tá na prisão por nossa causa.','Rika'),
+(24,6,6,'O Helmeppo filho do capitão Morgan, aquele que estava de terno, apareceu com um lobo na cidade. . .','Rika'),
+(24,6,7,'Falando que quem mexesse com o novo bichinho dele iria ser executado. Ele chegou com aquele bicho na taverna na minha mãe, eu fui bater nele com a vassoura e aquele lobo avançou em mim. . .','Rika'),
+(24,6,8,'O Zoro jogou um banco na cabeça do lobo quando ele ia me morder !!!','Rika'),
+(24,6,9,'E aí ele desarmou o Helmeppo e botou uma Katana bem na cabeça dele !','Rika'),
+(24,6,10,'Helmeppo disse que se o pai dele descobrisse, iria executar todos da taverna, inclusive eu e minha mãe','Rika'),
+(24,6,11,'Então Zoro fez um acordo com ele, se ele passasse um mês sem comer, a gente ficaria a salvo.','Rika'),
+(24,6,12,'É por isso que ele está lá','Rika'),
+(24,6,13,'Luffy, Rika e Coby vão para a taverna. . .','Narrador'),
+(24,6,14,'Helmeppo chega na taverna com seus marinheiros e diz que irá executar o Zoro amanhã.','Rika'),
+(24,6,15,'Luffy corre na direção de Helmeppo e dá um grande soco na sua cara !!!','Narrador'),
+(24,6,16,'Você é um lixo !!!','Luffy'),
+(24,6,17,'Helmeppo sai correndo para falar com seu pai, o grande capitão Morgan !','Narrador'),
+
+(30,7,1,'Ei, decidi que você vai ser meu companheiro!','Luffy'),
+(30,7,2,'E você por acaso é o quê ?','Zoro'),
+(30,7,3,'Sou um pirata. E vou me tornar o Rei dos Piratas !','Luffy'),
+(30,7,4,'Piratas são a escória, por que eu me juntaria a você ?','Zoro'),
+(30,7,5,'Você já um caçador de piratas mesmo. Já decidi que você será meu companheiro. Você usa espadas não é?','Luffy'),
+(30,7,6,'Sim, mas aquele filhinho de papai pegou.','Zoro'),
+(30,7,7,'Vou trazê-las pra você !!','Luffy'),
+(30,7,8,'Ei ei espera  . . . ','Zoro');    
 
 INSERT INTO missao (id_missao, nome, descricao, qtd_experiencia, dificuldade, id_nao_hostil) VALUES
 (1,'Começo da jornada', 'Luffy derrota Alvida e segue sua viagem junto de Coby pra formar uma tripulação', 10, 0, 21),
 (2,'O grande espadachim aparece', 'Luffy e Coby conhecem e libertam o Caçador de Piratas Roronoa Zoro, que foi preso pelo Capitão Morgan e seu filho Helmeppo', 10, 0, 21),
 (3,'Morgan VS Luffy', 'Luffy e o mais novo membro de sua tripulação, Roronoa Zoro, lutam contra o Capitão Morgan', 10, 0, 21),
 (4,'Palhaço-Pirata, Capitão Buggy', 'Luffy e Zoro se deparam o Capitão Buggy', 10, 0, 21),
-(5,'Mohji, o domador VS Luffy', 'Luffy consegue se libertar da jaula em que estava preso e luta contra Mohji e Richie', 10, 0, 21);
+(5,'Mohji, o domador VS Luffy', 'Luffy consegue se libertar da jaula em que estava preso e luta contra Mohji e Richie', 10, 0, 21),
+(6,'Luffy vc Buggy', 'Luffy luta com Buggy', 10, 0, 21);
 
 INSERT INTO objetivo (id_missao,id_objetivo, descricao, tipo, id_item, id_inimigo, id_conversa_personagem, id_conversa) VALUES
 (1, 1, 'Fale com Coby', 'FalarComNPC', NULL, null, 21, 2),
-(1, 2, 'Derrote os piratas do bando da Alvida', 'DerrotarInimigo', NULL, 11, NULL, null),
-(1, 3, 'Derrote com a Alvida', 'DerrotarInimigo', NULL, 17, NULL, null),
+(1, 2, 'Derrote os piratas do bando da Alvida', 'DerrotarInimigo', NULL, 2, NULL, null),
+(1, 3, 'Derrote a Capitã Alvida, ao derrotar o último inimigo de uma missão, uma nova ilha é liberada.', 'DerrotarInimigo', NULL, 17, NULL, null),
 
-(2, 1, 'Derrote os marinheiros que estão de guarda nas espadas de Roronoa Zoro', 'DerrotarInimigo', NULL, NULL, NULL, null),
-(2, 2, 'Recupere as espadas de Roronoa Zoro', 'PegarItem', NULL, NULL, NULL, null),
-(2, 3, 'Liberte Roronoa Zoro e devolva suas espadas', 'FalarComNPC', NULL, NULL, NULL, null),
+(2, 1, 'Fale com Rika','FalarComNPC',NULL,NULL,24,3),
+(2, 2, 'Fale com Coby no campo de castigo da Marinha','FalarComNPC',NULL,NULL,21,4),
+(2, 3, 'Fale com Zoro','FalarComNPC',NULL,NULL,30,5),
+(2, 4, 'Fale com Rika, ela está na praça','FalarComNPC',NULL,NULL,24,6),
+(2, 5, 'Fale com Zoro','FalarComNPC',NULL,NULL,30,7),
+(2, 6, 'Derrote os marinheiros que estão de guarda nas espadas de Roronoa Zoro', 'DerrotarInimigo', NULL, NULL, NULL, null),
+(2, 7, 'Recupere as espadas de Roronoa Zoro', 'PegarItem', NULL, NULL, NULL, null),
+(2, 8, 'Liberte Roronoa Zoro e devolva suas espadas', 'FalarComNPC', NULL, NULL, NULL, null),
 
 (3, 1, 'Derrote os marinheiros que estam protegendo o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL, null),
 (3, 2, 'Derrote o Capitão Morgan', 'DerrotarInimigo', NULL, NULL, NULL, null),

@@ -286,7 +286,7 @@ CREATE TABLE IF NOT EXISTS conversa (
     repete boolean default false not null,
 
     CONSTRAINT fk_nao_hostil FOREIGN KEY (id_personagem)
-        REFERENCES personagem_nao_hostil(id_personagem),
+        REFERENCES personagem(id_personagem),
 
     PRIMARY KEY (id_personagem, id_conversa)
 );
