@@ -234,7 +234,7 @@ INSERT INTO missao (id_missao, nome, descricao, qtd_experiencia, dificuldade, id
 INSERT INTO objetivo (id_missao,id_objetivo, descricao, tipo, id_item, id_inimigo, id_conversa_personagem, id_conversa) VALUES
 (1, 1, 'Fale com Coby', 'FalarComNPC', NULL, null, 21, 2),
 (1, 2, 'Derrote os piratas do bando da Alvida', 'DerrotarInimigo', NULL, 11, NULL, null),
-(1, 3, 'Derrote com a Alvida', 'DerrotarInimigo', NULL, NULL, NULL, null),
+(1, 3, 'Derrote com a Alvida', 'DerrotarInimigo', NULL, 17, NULL, null),
 
 (2, 1, 'Derrote os marinheiros que estão de guarda nas espadas de Roronoa Zoro', 'DerrotarInimigo', NULL, NULL, NULL, null),
 (2, 2, 'Recupere as espadas de Roronoa Zoro', 'PegarItem', NULL, NULL, NULL, null),
@@ -249,10 +249,6 @@ INSERT INTO objetivo (id_missao,id_objetivo, descricao, tipo, id_item, id_inimig
 (4, 3, 'Derrote os piratas de Buggy', 'DerrotarInimigo', NULL, NULL, NULL, null), -- Nami engana Luffy e o entrega para buggy
 (4, 4, 'Derrote Richie', 'DerrotarInimigo', NULL, NULL, NULL, null);
 
-INSERT INTO objetivo_status VALUES
-(1,1,'jogador1',1,'Em andamento'),
-(1,2,'jogador1',1,'Em andamento');
-
 
 INSERT INTO save (nome) VALUES 
 ('jogador1'),
@@ -266,9 +262,5 @@ ALTER TABLE ilha ADD CONSTRAINT fk_ilha_missao FOREIGN KEY (id_missao)
 
 ALTER TABLE conversa ADD CONSTRAINT fk_objetivo FOREIGN KEY (id_missao, id_objetivo)
     REFERENCES objetivo(id_missao, id_objetivo);
-
-INSERT INTO missao_status VALUES
-(1,'jogador1',1,'Liberada');
-
 
 commit;

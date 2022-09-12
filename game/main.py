@@ -181,9 +181,8 @@ def luta(player,inimigo):
         with get_connection() as db:
             with db:
                 cursor = db.cursor()
-                sql = "update inimigo set vida = %s where id_personagem = %s"
-                data = [0,inimigo['id_personagem']]
-                cursor.execute(sql,data)
+                data = [player['nome_save'], player['id_personagem'],inimigo['id_personagem']]
+                cursor.execute('call derrotar_inimigo(%s, %s, %s)',data)
     if(vida_personagem <= 0):
         print("Você Morreu ! Naniiii ????")
         restart(player)
@@ -485,7 +484,7 @@ def menu(player):
             inventario(player)
         elif 0 <= int(escolha) <= len(npcs_regiao):
             print("-------Falando com NPC-------------\n\n")
-            fala_com_npc(escolha,npcs_regiao,player)
+            fala_com_npc(npcs_regiao[int(escolha)],player)
 
         else:
             print("Opção inválida")
