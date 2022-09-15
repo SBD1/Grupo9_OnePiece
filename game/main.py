@@ -264,20 +264,35 @@ def checa_personagem_regiao(posicao_jogador):
     return npcs_regiao
 
 def compra(player,id_itens,npc_num):
+    
+    item_invalido = True
+    qntd_invalida = True
 
-    print(f'Estou comprando de {npc_num}')
-    item_id = input("Digite o número do item que deseja comprar :\n>")
+    while item_invalido:
+        item_id = input("Digite o número do item que deseja comprar :\n>")
+        if item_id.isdigit():
+            if int(item_id) in id_itens:
+                item_invalido = False
     # falta verificar se a escolha foi válida
 
-    qtd_item = input("Quantidade :\n>")
-    # falta verificar se a qntd é válida de acordo com o que o cara tem no inventário
+    while qntd_invalida:
+        qtd_item = input("Quantidade :\n>")
+        # select na qntd de item do id escolhido
+        if qtd_item.isdigit():
+                qntd = select_to_dict("select qtd_item from inventario_personagem where id_personagem = %s and id_jogador_save = %s and id_jogador_personagem = %s and id_item = %s",npc_num,player['nome_save'],player['id_personagem'],item_id)
+                if 0 < int(qtd_item) <= int(qntd[0]['qtd_item']):
+                    qntd_invalida = False
 
-    with get_connection() as db:
-        with db:
-            cursor = db.cursor()
-            sql = "CALL compra2(%s,%s,%s,%s,%s)"
-            data = (item_id,qtd_item,player['nome_save'],player['id_personagem'],npc_num)
-            cursor.execute(sql,data)
+    try:
+        with get_connection() as db:
+            with db:
+                cursor = db.cursor()
+                sql = "CALL compra2(%s,%s,%s,%s,%s)"
+                data = (item_id,qtd_item,player['nome_save'],player['id_personagem'],npc_num)
+                cursor.execute(sql,data)
+    except Exception:
+        print('Você não Berries o suficiente.')
+        return
 
     print("Compra realizada !!")
 
@@ -452,9 +467,10 @@ def menu(player):
     invalid = True
 
     while True:
-        player_data = select_to_dict("SELECT nome,vida,energia from jogador where nome_save = %s and id_personagem = %s",player['nome_save'],player['id_personagem'])
+        player_data = select_to_dict("SELECT nome,vida,energia,berries from jogador where nome_save = %s and id_personagem = %s",player['nome_save'],player['id_personagem'])
         nome_player = player_data[0]["nome"]
         vida_player = player_data[0]['vida']
+        berries_player = player_data[0]['berries']
         energia_player = player_data[0]['energia']
         ilha_jogador = select_to_dict('SELECT id_ilha,tipo,descricao from regiao inner join jogador on regiao.id_regiao = jogador.id_regiao where nome_save = %s and id_personagem = %s',player['nome_save'],player['id_personagem'])
         
@@ -463,12 +479,12 @@ def menu(player):
 
        
         print("##### One Piece ! 💀 - \U0001f480 ######\n\n")
-        print(f"Jogador {nome_player} 🏴‍☠️\n"
-            f"Você está em {posicao_atual}\n"
-            f"Na ilha {ilha_jogador[0]['descricao']} do tipo {ilha_jogador[0]['tipo']}\n")
 
         printa_objetivo_atual(player)
-        print(f"Vida {vida_player}\nEnergia {energia_player}")
+        print(f"Jogador {nome_player} 🏴‍☠️\n"
+        f"Você está na {ilha_jogador[0]['tipo']}\nRegião : {ilha_jogador[0]['descricao']}\n")
+
+        print(f"Vida 🖤 : {vida_player}\nEnergia ⚡ : {energia_player}\nBerries ฿ : {berries_player}\n".center(10))
 
         npcs_regiao = checa_personagem_regiao(posicao_atual)
         inimigos_regiao = checa_inimigo_regiao(posicao_atual,player)
@@ -502,9 +518,13 @@ def menu(player):
             main()
         elif escolha == 'i':
             inventario(player)
-        elif 0 <= int(escolha) <= len(npcs_regiao):
-            print("-------Falando com NPC-------------\n\n")
-            fala_com_npc(npcs_regiao[int(escolha)],player)
+        elif escolha.isdigit():
+            if 0 <= int(escolha) <= len(npcs_regiao):    
+                print("-"*50)
+                print("Falando com NPC".center(50))
+                print("-"*50)
+
+                fala_com_npc(npcs_regiao[int(escolha)],player)
 
         else:
             print("Opção inválida")
