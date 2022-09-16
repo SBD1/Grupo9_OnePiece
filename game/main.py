@@ -515,11 +515,11 @@ def inventario(player):
         qtd_item = input("Qual a quantidade desse item ?\n>")
         consumir_item(player,item,qtd_item)
 
-    if escolha == '2':
-        item = int(input("Qual item deseja consumir ?\n>"))
+    elif escolha == '2':
+        item = int(input("Qual item deseja equipar ?\n>"))
         qtd_item = input("Qual a quantidade desse item ?\n>")
         return equipar_item(player,item,qtd_item)
-    
+
     elif escolha == '3':
         return
     else:
