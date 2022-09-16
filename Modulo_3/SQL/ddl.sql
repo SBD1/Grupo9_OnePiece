@@ -199,20 +199,6 @@ CREATE TYPE tipo_poder_especial AS ENUM (
 );
 
 
-CREATE TABLE IF NOT EXISTS poder_especial (
-    nome VARCHAR(40) NOT NULL,
-    tipo_poder tipo_poder_especial NOT NULL,
-    id_personagem INTEGER NOT NULL,
-    descricao TEXT NOT NULL DEFAULT '',
-    dano INTEGER NOT NULL,
-    CHECK(dano >= 0),
-    energia INTEGER NOT NULL,
-    CHECK(energia >= 0),
-    PRIMARY KEY (nome, id_personagem),
-    CONSTRAINT fk_personagem FOREIGN KEY (id_personagem)
-        REFERENCES personagem(id_personagem) ON DELETE RESTRICT
-);
-
 -- Itens
 
 CREATE TABLE IF NOT EXISTS item (
@@ -272,9 +258,6 @@ CREATE TABLE IF NOT EXISTS inventario_personagem (
 
     PRIMARY KEY (id_jogador_save,id_jogador_personagem,id_personagem,id_item)
 );
-
-
-
 -- Missão
 
 CREATE TABLE IF NOT EXISTS conversa (
@@ -395,5 +378,41 @@ CREATE TABLE missao_status(
         REFERENCES jogador(nome_save,id_personagem),    
     PRIMARY KEY(id_missao,id_jogador_save,id_jogador_personagem)  
 );
+
+
+CREATE TABLE IF NOT EXISTS poder_especial (
+    id_poder_especial INT NOT NULL,
+    nome VARCHAR(40) NOT NULL,
+    tipo_poder tipo_poder_especial NOT NULL,
+    id_missao INT,
+    id_personagem_poder INTEGER NOT NULL,
+    descricao TEXT NOT NULL DEFAULT '',
+    dano INTEGER NOT NULL,
+    CHECK(dano >= 0),
+    energia INTEGER NOT NULL,
+    CHECK(energia >= 0),
+    PRIMARY KEY (id_poder_especial),
+
+    CONSTRAINT fk_personagem FOREIGN KEY (id_personagem_poder)
+        REFERENCES personagem(id_personagem) ON DELETE RESTRICT,
+
+    CONSTRAINT fk_missao FOREIGN KEY (id_missao)
+        REFERENCES missao(id_missao) ON DELETE RESTRICT
+
+);
+
+CREATE TABLE IF NOT EXISTS poder_jogador(
+    nome_save VARCHAR(30) NOT NULL,
+    id_personagem INTEGER NOT NULL,
+    id_poder_especial INTEGER NOT NULL,
+
+    PRIMARY KEY(nome_save,id_personagem,id_poder_especial),
+    CONSTRAINT fk_jogador FOREIGN KEY (nome_save,id_personagem)
+        REFERENCES jogador(nome_save,id_personagem) ON DELETE RESTRICT,
+    CONSTRAINT fk_poder_especial FOREIGN KEY (id_poder_especial)
+        REFERENCES poder_especial(id_poder_especial) ON DELETE RESTRICT
+        
+);
+
 
 commit;

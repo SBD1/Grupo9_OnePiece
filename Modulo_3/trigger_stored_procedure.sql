@@ -249,56 +249,6 @@ CREATE TRIGGER concluir_objetivo_item
     AFTER INSERT ON inventario_jogador
     FOR EACH ROW EXECUTE PROCEDURE concluir_objetivo_item();
 
--- Nicolas   
-    -- Atualiza nível consequentemente atualiza poder especial
-CREATE OR REPLACE FUNCTION level_up() 
-RETURNS trigger
-AS $level_up$
-
-DECLARE
-    xp_atual INTEGER;
-
-BEGIN
-    SELECT experiencia INTO xp_atual FROM personagem_principal WHERE id_personagem = NEW.id_personagem;
-
-    IF(xp_atual >= 20) THEN
-
-        PERFORM * FROM poder_especial WHERE nome = 'Gomu Gomu no Pistol';
-        IF NOT FOUND THEN 
-            INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, energia) VALUES
-            ('Gomu Gomu no Pistol','Akuma no mi',1,'Soco pistola do Luffy',80,50);
-        END IF;
-
-    END IF;
-    IF(xp_atual >= 40) THEN
-        PERFORM * FROM poder_especial WHERE nome = 'Gomu Gomu no Gatling Gun';
-        IF NOT FOUND THEN 
-            INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, energia) VALUES
-            ('Gomu Gomu no Gatling Gun','Akuma no mi',1,'Metralhadora de Soco pistola do Luffy',140,100);    
-        END IF;
-    END IF;
-    IF(xp_atual >= 100) THEN
-        PERFORM * FROM poder_especial WHERE nome = 'Gomu Gomu no Axe';
-        IF NOT FOUND THEN 
-            INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, energia) VALUES
-            ('Gomu Gomu no Axe','Akuma no mi',1,'Luffy estica o pé lá no alto e desce de uma vez dando uma pézada da peste.',160,80);    
-        END IF;
-    END IF;
-    IF(xp_atual >= 200 ) THEN
-        PERFORM * FROM poder_especial WHERE nome = 'Gomu Gomu no Rocket';
-        IF NOT FOUND THEN 
-            INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, energia) VALUES
-            ('Gomu Gomu no Rocket','Akuma no mi',1,'Luffy se lança para atingir o alvo.',50,25);    
-        END IF;
-    END IF;
-    return new;
-END;
-
-$level_up$ LANGUAGE plpgsql;
-
-CREATE trigger level_up AFTER UPDATE ON personagem_principal
-FOR EACH ROW EXECUTE PROCEDURE level_up();
-
     -- Inventário lotado, não pode receber item.
 CREATE OR REPLACE FUNCTION check_inventario() 
 RETURNS trigger
@@ -461,7 +411,7 @@ BEGIN
         raise exception 'Você não tem item suficiente';
     end if;
 
-    update jogador set vida = vida + vida_param,energia=energia+energia_param where nome_save = nome_jog and id_personagem = id_persona;
+    update jogador set vida = vida + vida_param*qntd_item_param ,energia=energia+energia_param*qntd_item_param where nome_save = nome_jog and id_personagem = id_persona;
     update inventario_jogador set qtd_item = qtd_item - qntd_item_param where id_jogador_save = nome_jog and id_jogador_personagem = id_persona and id_item = id_item_param;
 END;
 $consumo_item$ LANGUAGE plpgsql;
@@ -497,6 +447,14 @@ BEGIN
 		where id_jogador_save = new.id_jogador_save and id_jogador_personagem = new.id_jogador_personagem and id_missao = new.id_missao;
 		INSERT INTO missao_status(id_missao, id_jogador_save, id_jogador_personagem, status) values
         (new.id_missao+1,new.id_jogador_save, new.id_jogador_personagem, 'Liberada');
+
+        -- dá mais um poder especial pro jogador
+        insert into poder_jogador values (new.id_jogador_save,new.id_jogador_personagem,new.id_missao);
+
+        -- dá grana pro cara
+        update jogador set berries = berries + 300 where nome_save = new.id_jogador_save and id_personagem = new.id_jogador_personagem;
+        
+        -- atualiza experiencia
     end if;
     return new;
 END;
