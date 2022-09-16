@@ -13,6 +13,7 @@ services:
       - ./Modulo_3/SQL/ddl.sql:/docker-entrypoint-initdb.d/0ddl.sql
       - ./Modulo_3/trigger_stored_procedure.sql:/docker-entrypoint-initdb.d/1trigger_stored_procedure.sql
       - ./Modulo_3/SQL/dml.sql:/docker-entrypoint-initdb.d/2dml.sql
+      - ./Modulo_3/SQL/create_user.sql:/docker-entrypoint-initdb.d/3create_user.sql
 
   pgadmin:
     image: dpage/pgadmin4
