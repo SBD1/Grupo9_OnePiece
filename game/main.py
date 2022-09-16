@@ -552,28 +552,30 @@ def menu(player):
         npcs_regiao = checa_personagem_regiao(posicao_atual)
         inimigos_regiao = checa_inimigo_regiao(posicao_atual,player)
         ilhas_disponiveis = checa_ilha(player)
-        
+        barcos = select_to_dict('select id_barco, id_regiao, nome, capacidade_de_itens from barco where grupo_ocupacao = %s and id_regiao = %s', player['grupo_ocupacao'], player['id_regiao'])
+
+        opcoes_menu = [
+            'M - Mover personagem',
+            'I - Ver Inventário'
+        ]
+
+        if barcos:
+            opcoes_menu.append('B - Usar barco')
+
         if ilhas_disponiveis:
-            print(
-            "\n\nM - Mover personagem\n"
-            "I - Ver Inventário\n"
-            f"H - Ir para outra Ilha\n"
-            "Q - Sair\n"
-        )
-        
-        else:
-            print(
-                "\n\nM - Mover personagem\n"
-                "I - Ver Inventário\n"
-                "Q - Sair"
-            )
+            opcoes_menu.append('H - Ir para outra Ilha')
+
+        opcoes_menu.append('Q - Sair')
+
+        print('\n')
+        for op in opcoes_menu:
+            print(op)
 
         escolha = input("O que você deseja fazer ?\n\n> ").lower()
 
         
         if escolha == 'h':
-                muda_de_ilha(player)
-                
+            muda_de_ilha(player)
         elif escolha == 'm':
             regiao = printa_regioes(nome_player,regioes_to_go)
             move_player(player,regiao)
@@ -581,16 +583,111 @@ def menu(player):
             main()
         elif escolha == 'i':
             inventario(player)
+        elif escolha == 'b':
+            inventario_barco(player, barcos)
         elif escolha.isdigit():
             if 0 <= int(escolha) <= len(npcs_regiao):    
                 print("-"*50)
                 print("Falando com NPC".center(50))
                 print("-"*50)
-
                 fala_com_npc(npcs_regiao[int(escolha)],player)
 
         else:
             print("Opção inválida")
+
+
+def inventario_barco(player, barcos):
+    if not barcos: return
+    if len(barcos) == 1:
+        barco, = barcos
+    else:
+        print('Selecione o barco desejado.')
+        for i, barco in enumerate(barcos, 1):
+            print(f"{i} - {barco['nome']}")
+        print(f'{i + 1} - Voltar')
+
+        while True:
+            escolha = input('\n> ')
+            if escolha == str(i + 1): return
+            if escolha in map(str, range(1, len(barcos) + 1)):
+                barco = barcos[int(escolha) - 1]
+                break
+            else:
+                print('Opção inválida.')
+
+    while True:
+        escolha = 'invalid'
+        while escolha not in '123q':
+            escolha = input('\n1 - Consumir item do inventário do barco\n2 - Transferir item do seu inventário para o barco\n3 - Transferir item do inventário do barco para você\nQ - Voltar\n> ').lower()
+
+        if escolha == '1':
+            inv = get_inventario(player, barco['id_barco'])
+            printa_inventario(inv)
+            if not inv: continue
+            item_ids = [*map(str, inv.keys()), 'q']
+            item_selecionado = ''
+            while item_selecionado not in item_ids:
+                item_selecionado = input('\nQual item deseja consumir? (Aperte q para voltar)\n\n> ')
+            if item_selecionado == 'q':
+                continue
+            qtd_item = input('\nQuantos itens deseja consumir?\n\n> ')
+            transferir_item(player, item_selecionado, qtd_item, barco['id_barco'])
+            consumir_item(player, item_selecionado, qtd_item)
+        elif escolha == '2':
+            print('Em desenvolvimento...')
+            ...
+        elif escolha == '3':
+            inv = get_inventario(player, barco['id_barco'])
+            printa_inventario(inv)
+            if not inv: continue
+            item_ids = [*map(str, inv.keys()), 'q']
+            item_selecionado = ''
+            while item_selecionado not in item_ids:
+                item_selecionado = input('\nQual item deseja transferir? (Aperte q para voltar)\n\n> ')
+            if item_selecionado == 'q':
+                continue
+            qtd_item = input('\nQuantos itens deseja consumir?\n\n> ')
+            transferir_item(player, item_selecionado, qtd_item, barco['id_barco'])
+        elif escolha == 'q':
+            break
+
+    input('Aperte enter para continuar...')
+
+
+def transferir_item(player, id_item, qtd_item, id_personagem):
+    try:
+        with get_connection() as db:
+            with db:
+                cursor = db.cursor()
+                sql = "CALL transferir_item(%s,%s,%s,%s,%s)"
+                data = (player['nome_save'],player['id_personagem'], id_personagem, id_item, qtd_item)
+                cursor.execute(sql,data)
+    except Exception as e:
+        print('Não foi possível concluir a transferência')
+        print(e)
+
+
+def get_inventario(player, id_personagem=None):
+    fields = 'iv.id_item, iv.qtd_item, i.nome, i.preco, i.qtd_vida, i.qtd_energia, i.qtd_dano'
+    inv = (
+        select_to_dict(f'select {fields} from inventario_personagem iv inner join item i on iv.id_item = i.id_item where iv.id_jogador_save = %s and iv.id_jogador_personagem = %s and iv.id_personagem = %s', player['nome_save'], player['id_personagem'], id_personagem)
+        if id_personagem else
+        select_to_dict(f'select {fields} from inventario_jogador iv inner join item i on iv.id_item = i.id_item where iv.id_jogador_save = %s and iv.id_jogador_personagem = %s', player['nome_save'], player['id_personagem'])
+    )
+    return {i['id_item']: i for i in inv}
+
+
+def printa_inventario(inv: dict):
+    if not inv:
+        print('Inventário está vazio.')
+        return
+
+    for id_item, item in inv.items():
+        print(f"{id_item} : {item['nome']}")
+        print(f"\tPreço ฿{item['preco']}  Quantidade : {item['qtd_item']}x")
+        print(f"\tGanha {item['qtd_vida']} de vida | Ganha {item['qtd_energia']} de energia")
+        print(f"\t{item['qtd_dano']} de dano adicional\n")
+
 
 def printa_objetivo_atual(player: dict) -> None:
     obj = get_current_objective(player)
@@ -645,7 +742,7 @@ def choose_player(save: str) -> list:
 
 
 def get_players(save: str) -> list[list]:
-    return select_to_dict('SELECT nome, id_personagem, nome_save,vida FROM jogador WHERE nome_save = %s', save)
+    return select_to_dict('SELECT nome, id_personagem, nome_save,vida,grupo_ocupacao,id_regiao FROM jogador WHERE nome_save = %s', save)
 
 def select_to_dict(query: str, *args):
     with get_connection() as conn:
