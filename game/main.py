@@ -312,6 +312,7 @@ def checa_inimigo_regiao(posicao_jogador,player):
             print("A luta vai começar . . .")
             time.sleep(2)
             luta(player,inimigo)
+    return inimigos_regiao
 
 def checa_personagem_regiao(posicao_jogador):
 
@@ -333,19 +334,23 @@ def compra(player,id_itens,npc_num):
     qntd_invalida = True
 
     while item_invalido:
-        item_id = input("Digite o número do item que deseja comprar :\n>")
+        item_id = input("Digite o número do item que deseja comprar :\n>").lower()
         if item_id.isdigit():
             if int(item_id) in id_itens:
                 item_invalido = False
+        elif item_id == 'q':
+            return
     # falta verificar se a escolha foi válida
 
     while qntd_invalida:
-        qtd_item = input("Quantidade :\n>")
+        qtd_item = input("Quantidade :\n>").lower()
         # select na qntd de item do id escolhido
         if qtd_item.isdigit():
-                qntd = select_to_dict("select qtd_item from inventario_personagem where id_personagem = %s and id_jogador_save = %s and id_jogador_personagem = %s and id_item = %s",npc_num,player['nome_save'],player['id_personagem'],item_id)
-                if 0 < int(qtd_item) <= int(qntd[0]['qtd_item']):
-                    qntd_invalida = False
+            qntd = select_to_dict("select qtd_item from inventario_personagem where id_personagem = %s and id_jogador_save = %s and id_jogador_personagem = %s and id_item = %s",npc_num,player['nome_save'],player['id_personagem'],item_id)
+            if 0 < int(qtd_item) <= int(qntd[0]['qtd_item']):
+                qntd_invalida = False
+        elif qtd_item == 'q':
+            return
 
     try:
         with get_connection() as db:
@@ -379,15 +384,17 @@ def fala_com_npc(npc_dict,player):
 
         id_itens = sorted([item['id_item'] for item in inventario_npc])
 
-        with get_connection() as db:
-                with db:
-                    cursor = db.cursor()
-                    sql = "SELECT nome,preco,qtd_energia,qtd_vida from item where id_item in %s order by id_item"
-                    data = tuple([str(item) for item in id_itens])
-                    data = (data,)
-                    cursor.execute(sql,data)
+        if id_itens:
+            with get_connection() as db:
+                    with db:
+                        cursor = db.cursor()
+                        sql = "SELECT nome,preco,qtd_energia,qtd_vida from item where id_item in %s order by id_item"
+                        data = tuple([str(item) for item in id_itens])
+                        data = (data,)
+                        cursor.execute(sql,data)
 
-                itens = cursor.fetchall()
+                    itens = cursor.fetchall()
+        else: itens = []
 
         nomes = [item[0] for item in itens]
         precos = [item[1] for item in itens]
@@ -403,11 +410,9 @@ def fala_com_npc(npc_dict,player):
         escolha = input("\n\nVocê deseja comprar algo :\n1-Sim\n2-Não\n3-Voltar\n>")
         if int(escolha) == 1:
             compra(player,id_itens,npc_id)
-            escolha2 = input("\n\nVocê deseja comprar algo a mais:\n1-Sim\n2-Não\n>")
 
-            while int(escolha2) == 1:
-                escolha2 = input("\n\nVocê deseja comprar algo a mais:\n1-Sim\n2-Não\n>")
-                compra(player,id_itens)
+            while input("\n\nVocê deseja comprar algo a mais:\n1-Sim\n2-Não\n>") == '1':
+                compra(player,id_itens, npc_id)
 
     else:
         fala_default = [{'nome_display': npc_dict['nome'], 'texto': '...', 'id_missao_liberada': None}]
@@ -552,6 +557,7 @@ def menu(player):
 
         npcs_regiao = checa_personagem_regiao(posicao_atual)
         inimigos_regiao = checa_inimigo_regiao(posicao_atual,player)
+        if inimigos_regiao: continue
         esta_no_porto, ilhas_disponiveis = checa_ilha(player)
         barcos = []
         if esta_no_porto:
