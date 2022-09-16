@@ -497,6 +497,14 @@ BEGIN
 		where id_jogador_save = new.id_jogador_save and id_jogador_personagem = new.id_jogador_personagem and id_missao = new.id_missao;
 		INSERT INTO missao_status(id_missao, id_jogador_save, id_jogador_personagem, status) values
         (new.id_missao+1,new.id_jogador_save, new.id_jogador_personagem, 'Liberada');
+
+        -- dá mais um poder especial pro jogador
+        insert into poder_jogador values (new.id_jogador_save,new.id_jogador_personagem,new.id_missao);
+
+        -- dá grana pro cara
+        update jogador set berries = old.berries + 300 where nome_save = id_jogador_save and id_personagem = id_jogador_personagem;
+        
+        -- atualiza experiencia
     end if;
     return new;
 END;
