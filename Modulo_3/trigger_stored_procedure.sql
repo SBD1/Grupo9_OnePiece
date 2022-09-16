@@ -502,7 +502,7 @@ BEGIN
         insert into poder_jogador values (new.id_jogador_save,new.id_jogador_personagem,new.id_missao);
 
         -- dá grana pro cara
-        update jogador set berries = old.berries + 300 where nome_save = id_jogador_save and id_personagem = id_jogador_personagem;
+        update jogador set berries = berries + 300 where nome_save = new.id_jogador_save and id_personagem = new.id_jogador_personagem;
         
         -- atualiza experiencia
     end if;

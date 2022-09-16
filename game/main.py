@@ -206,23 +206,21 @@ def luta(player,inimigo):
     vida_inimigo = inimigo['vida']
     energia_inimigo = inimigo['energia']
 
-    print(vida_personagem,vida_inimigo)
-
     turno = random.choice([0,1])
     dano_extra = 1
     is_equipado = False
     luta_automatica = False
     
-    print("Você entrou em uma luta !!! ⚔️  vs 🛡")
+    print("Você entrou em uma luta !!! ⚔️  vs 🛡\n")
     rodada = 1
     # enquanto algum dos dois ainda estiverem com vida > 0
     while vida_personagem > 0 and vida_inimigo > 0:
         # luta acontece
-
         if(turno % 2 == 0):
+
             poder_usado = False
 
-            print("É tua vez de atacar :")
+            print(f"####### ROUND {rodada} #######\n")
             while not luta_automatica:
                 luta_escolha = input("1 - Equipar itens\n2 - Poderes especiais\n3 - Partir pra Luta\n4 - Luta controlada por IA\n>")
 
@@ -232,12 +230,14 @@ def luta(player,inimigo):
                         is_equipado = True
 
                 elif luta_escolha == '2':
-                    dano_poder,energia_gasta = poder_especial(player,energia)
+                    dano_poder,energia_gasta = poder_especial(player,energia_personagem)
                     vida_inimigo -= dano_poder
                     energia_personagem -= energia_gasta
                     poder_usado = True
                     if energia_personagem < 0:
                         energia_personagem = 0
+                    
+                    print(f"Você deu um dano de {dano_poder}")
 
                     break
                 elif luta_escolha == '3':
@@ -248,33 +248,35 @@ def luta(player,inimigo):
                 else:
                     print("Opção inválida")
 
-
             if not is_equipado:
-                dano_extra = 10
+                dano_extra = 5
 
             if not poder_usado:
                 dano = ataque_simples_player(player,inimigo,experiencia_personagem,energia_personagem,dano_extra)
-                print(f"O dano foi de {dano}")
+                dano = round(dano,2)
+                print(f"Você deu um dano de {dano}")
+                print(f"Teu dano extra é de {dano_extra}")
                 vida_inimigo -= dano
                 if energia_personagem < 0:
                     energia_personagem = 0
                 else:
                     energia_personagem = energia_personagem * 0.95
             # personagem ataca
-
         else:
             #inimigo ataca
-            print("Vez do Inimigo de atacar :")
+            print(f"####### ROUND {rodada} #######\n")
             dano = ataque_simples_player(player,inimigo,experiencia_inimigo,energia_inimigo,1)
-            print(f"O dano foi de {dano}")
+            dano = round(dano,2)
+            print(f"Você levou um dano de {dano}")
             vida_personagem -= dano
             energia_inimigo = energia_inimigo * 0.95
 
         turno+=1
 
-        print(f"Tua vida 🤍 : {vida_personagem}\nEnergia ⚡: {energia_personagem}\nVida inimigo 🖤: {vida_inimigo}\nEnergia inimigo ⚡ : {energia_inimigo}\n")
+        print(f"Tua vida 🤍 : {vida_personagem}\nEnergia ⚡: {energia_personagem}\n\nVida inimigo 🖤: {vida_inimigo}\nEnergia inimigo ⚡ : {energia_inimigo}\n")
 
         time.sleep(2)
+        rodada+=1
 
     if(vida_inimigo < 0):
         vida_inimigo = 0
