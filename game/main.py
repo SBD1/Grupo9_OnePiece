@@ -179,7 +179,7 @@ def poder_especial(player,energia_atual):
             if int(escolha) in ids:
                 invalid = False
                 dados_poder = select_to_dict("select dano,energia from poder_especial where id_poder_especial = %s",escolha)
-                print(dados_poder)
+                #print(dados_poder)
                 if energia_atual -  dados_poder[0]['energia'] >= 0: 
                     return dados_poder[0]['dano'],dados_poder[0]['energia']
                 else:
