@@ -249,6 +249,29 @@ CREATE TRIGGER concluir_objetivo_item
     AFTER INSERT ON inventario_jogador
     FOR EACH ROW EXECUTE PROCEDURE concluir_objetivo_item();
 
+
+    -- Transferir item do inventário de um personagem para o jogador
+CREATE OR REPLACE procedure transferir_item(jog_save varchar(30), jog_persona int, _id_personagem int, _id_item int, _qtd_item int) AS $transferir_item$
+BEGIN
+    if _qtd_item <= 0 then
+        raise exception 'qtd_item deve ser um inteiro positivo';
+    end if;
+
+    if _qtd_item > (select coalesce(qtd_item, 0) from inventario_personagem where id_personagem = _id_personagem and id_item = _id_item and id_jogador_save = jog_save and id_jogador_personagem = jog_persona) then
+        raise exception 'O personagem não possui itens suficientes';
+    end if;
+
+    update inventario_personagem set qtd_item = qtd_item - _qtd_item where id_personagem = _id_personagem and id_item = _id_item and id_jogador_save = jog_save and id_jogador_personagem = jog_persona;
+
+    insert into inventario_jogador 
+        (id_jogador_save, id_jogador_personagem, id_item, qtd_item) values 
+        (jog_save, jog_persona, _id_item, _qtd_item)
+    on conflict (id_jogador_save, id_jogador_personagem, id_item)
+    do update set qtd_item = excluded.qtd_item + _qtd_item;
+END;
+$transferir_item$ LANGUAGE plpgsql;
+
+
 -- Nicolas   
     -- Atualiza nível consequentemente atualiza poder especial
 CREATE OR REPLACE FUNCTION level_up() 

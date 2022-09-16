@@ -106,10 +106,10 @@ INSERT INTO personagem_principal (id_personagem, nome,id_regiao,ocupacao,grupo_o
 (4,'Nami',1,'Pirata','Piratas do Chapéu de Palha',1000000,75,75,'Tritões',1,100,100,8);
 
 INSERT INTO barco (id_barco,id_regiao,nome, ocupacao, grupo_ocupacao, capacidade_de_itens) VALUES
-(5,1,'Thousand Sunny', 'Pirata', 'Piratas do Chapéu de Palha', 400),
+(5,1,'Barco', 'Pirata', 'Piratas do Chapéu de Palha', 50),
 (6,1,'Miss Love Duck', 'Pirata', 'Piratas do Bon Chan', 250),
 (7,1,'Moby Dick', 'Pirata', 'Piratas do Barba Branca', 1000),
-(8,1,'Going Merry', 'Pirata', 'Piratas do Chapéu de Palha', 200),
+--(8,1,'Going Merry', 'Pirata', 'Piratas do Chapéu de Palha', 200),
 (9,1,'Oro Jackson', 'Pirata', 'Piratas do Roger', 1000);
 
 -- poderia criar um tipo para poder especial e a fraqueza seria um tipo
