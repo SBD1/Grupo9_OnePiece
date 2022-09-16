@@ -30,7 +30,7 @@ insert into regiao (id_regiao,descricao,tipo,norte,sul,leste,oeste,id_ilha)
 values
 --Barco da marinha inicial
 (1,'Sala repleta de barris','Cidade',NULL,NULL,2,NULL,1), -- 1
-(2,'Porão onde fica a dispensa, Coby se encontra lá','Cidade',4,3,NULL,1,1), -- 1
+(2,'Porão onde fica a dispensa','Cidade',4,3,NULL,1,1), -- 1
 (3,'Convés onde Alvida, da clava, se encontra. Tome Cuidado pois ela está furiosa.','Cidade',2,NULL,NULL,NULL,1), -- 1
 (4,'Porto, onde você encontra um barco e pode viajar para outras ilhas.','Porto',NULL,2,NULL,NULL,1),
 
@@ -112,47 +112,6 @@ INSERT INTO barco (id_barco,id_regiao,nome, ocupacao, grupo_ocupacao, capacidade
 --(8,1,'Going Merry', 'Pirata', 'Piratas do Chapéu de Palha', 200),
 (9,1,'Oro Jackson', 'Pirata', 'Piratas do Roger', 1000);
 
--- poderia criar um tipo para poder especial e a fraqueza seria um tipo
-INSERT INTO poder_especial (nome,tipo_poder ,id_personagem, descricao, dano, energia) VALUES
--- Fraqueza de todos os usuários de akuma no mi.
-('Pistola de Kairoseki','Kairoseki', 1, 'Pistola com tiro de Kairoseki', 25, 10),
-('Fuzil de Kairoseki','Kairoseki',1,'Fuzil forte com tiro de Kairoseki',100,50),
-('Canhão de Kairoseki','Kairoseki',1,'Canhão de tiro de Kairoseki',200,100),
-('Balde de Água do Mar','Água do Mar',1,'Um balde de água do mar para atingir  usuários de Akuma no Mi.',50,10),
-
--- Fraqueza do Sanji, mas não só dele especificamente
-('Mulher Feia','Mulher', 1, 'Mulher feia que impede que Sanji a ataque', 100, 0),
-('Mulher Bonita','Mulher', 1, 'Mullher bonita que além de impedir que Sanji a ataque, tira sua energia', 150, 0),
-
--- Poderes especiais de espadachins que não cortam ferro.
--- ('Espadada especial de Ferro','Ferro', 1, 'Espadada Especial de Ferro', 50, 100),
-
--- Poderes especiais relacionadas a tritões
-('Lança de água','Tritões', 1, 'Lança de água do mar lançada pelo tritão.', 200, 100),
-('Mizu shot.','Tritões', 1, 'Tiro disparado pelo tritão de água', 80, 50),
-('Mizu Rain Shot.','Tritões', 1, 'Rajada de tiro disparado pelo tritão de água', 150, 100),
-
--- Poderes especiais Luffy
-('Gomu Gomu no Pistol','Akuma no mi',1,'Soco pistola do Luffy',80,50),
-('Gomu Gomu no Gatling Gun','Akuma no mi',1,'Metralhadora de Soco pistola do Luffy',140,100),
-('Gomu Gomu no Axe','Akuma no mi',1,'Luffy estica o pé lá no alto e desce de uma vez dando uma pézada da peste.',160,80),
-('Gomu Gomu no Rocket','Akuma no mi',1,'Luffy se lança para atingir o alvo.',50,25),
-
--- Poderes especiais do Zoro
-('Ittoryu Iai: Shishi Sonson','Ferro',2,'Zoro usa uma espada só dando um corte selvagemente forte.',100,100),
-('Santoryuu Tatsumaki','Ferro',2,'Zoro cria um furacão rodando as suas 3 espadas.',50,25),
-('Santoryuu Onigiri','Ferro',2,'Zoro corta o alvo com 3 cortes rápidos',50,25),
-('Santoryuu Daisen Sekai','Ferro',2,'Zoro corta qualquer alvo com o corte mais forte.',50,25),
--- ('Santoryuu Onigiri','Ferro',2,'Zoro usa as 3 espadas dando 3 cortes simultâneos',50,25),
-
--- Espadadas
-('Espadada especial de Ferro','Ferro', 1, 'Espadada Especial de Ferro', 50, 100);
-
---
---('','', 1, 'dá um soco como um Gomu Gomu no Pistol, mas ele pode redirecionar seu soco à um número indeterminado de vezes, sem perder o impulso, mantendo a sua força tremenda.', 1000, 500),
---('','Mulher', 1, 'Nesta forma, ele se assemelha a uma bola com proporções exageradas: enquanto seus braços e pernas são ligeiramente pequenos em relação ao corpo, seu torso com Busoshoku Haki-revestido torna-se muito maior e completamente redondo, embora ainda há músculos nos braços e no peitoral.', 900, 300),
---('','Ferro', 1, 'Em vez de vapor, essa forma produz uma substância gasosa que aparece como uma mistura de vapor e fogo e, como suas outras contrapartes, também parece ser colocada sobre seus ombros como um lenço, enquanto sob esta forma. Seus punhos também se flexionam diferentemente, com os primeiros nós dos dedos sendo estendidos, semelhante ao punho de leopardo.', 950, 350);
-
 
 INSERT INTO inimigo (id_personagem,id_regiao,nome,ocupacao,grupo_ocupacao,berries,energia,energia_maxima,fraqueza,experiencia,vida,vida_maxima) VALUES
 (10,9,'Marinheiro 1','Marinheiro','Marinha',150,100,100,'Akuma no mi',1,0,100),
@@ -176,10 +135,10 @@ VALUES
 (22,2,'vendedor', 'Cidadao', 'Cidadão', true, false),
 (23,7,'Mãe da Rika', 'Cidadao', 'Cidadão', true, false),
 (24,6,'Rika', 'Cidadao', 'Cidadão', false, true),
-(25,1,'Marinheiro', 'Marinheiro', 'Marinha', false, false),
-(26,1,'Prefeito', 'Cidadao', 'Cidadão', false, true),
-(27,1,'Comerciante', 'Cidadao', 'Cidadão', true, false),
-(28,1,'Chuchu', 'Cidadao', 'Cidadão', false, true);
+(25,10,'Marinheiro', 'Marinheiro', 'Marinha', false, false),
+(26,15,'Prefeito', 'Cidadao', 'Cidadão', false, true),
+(27,13,'Comerciante', 'Cidadao', 'Cidadão', true, false),
+(28,14,'Chuchu', 'Cidadao', 'Cidadão', false, true);
 
 
 INSERT INTO inventario_personagem_default (id_item, qtd_item,id_personagem)
@@ -202,6 +161,17 @@ VALUES
 (12, 10,22),
 (13, 10,22),
 (14, 10,22),
+
+(5, 10,24),
+(6, 10,24),
+(7, 10,24),
+(8, 10,24),
+(9, 10,24),
+(10, 10,24),
+(11, 10,24),
+(12, 10,24),
+(13, 10,24),
+(14, 10,24),
 
 
 (6, 10,27),
@@ -333,7 +303,7 @@ INSERT INTO objetivo (id_missao,id_objetivo, descricao, tipo, id_item, id_inimig
 (2, 2, 'Fale com Zoro','FalarComNPC',NULL,NULL,30,5),
 (2, 3, 'Fale com Rika, ela está na praça','FalarComNPC',NULL,NULL,24,6),
 (2, 4, 'Fale com Zoro','FalarComNPC',NULL,NULL,30,7),
-(2, 5, 'Derrote os marinheiros que estão de guarda nas espadas de Roronoa Zoro', 'DerrotarInimigo', NULL, NULL, NULL, null),
+(2, 5, 'Derrote os marinheiros que estão de guarda nas espadas de Roronoa Zoro', 'DerrotarInimigo', NULL, 11, NULL, null),
 (2, 6, 'Recupere as espadas de Roronoa Zoro', 'PegarItem', NULL, NULL, NULL, null),
 (2, 7, 'Liberte Roronoa Zoro e devolva suas espadas', 'FalarComNPC', NULL, NULL, NULL, null),
 
@@ -351,6 +321,39 @@ INSERT INTO save (nome) VALUES
 ('jogador1'),
 ('jogador2'),
 ('jogador3');
+
+-- poderia criar um tipo para poder especial e a fraqueza seria um tipo
+INSERT INTO poder_especial (id_missao,id_poder_especial,nome,tipo_poder ,id_personagem_poder, descricao, dano, energia) VALUES
+-- Fraqueza de todos os usuários de akuma no mi.
+/*(1,'Pistola de Kairoseki','Kairoseki', 1, 'Pistola com tiro de Kairoseki', 25, 10),
+('Fuzil de Kairoseki','Kairoseki',1,'Fuzil forte com tiro de Kairoseki',100,50),
+('Canhão de Kairoseki','Kairoseki',1,'Canhão de tiro de Kairoseki',200,100),
+('Balde de Água do Mar','Água do Mar',1,'Um balde de água do mar para atingir  usuários de Akuma no Mi.',50,10),
+
+-- Fraqueza do Sanji, mas não só dele especificamente
+('Mulher Feia','Mulher', 1, 'Mulher feia que impede que Sanji a ataque', 100, 0),
+('Mulher Bonita','Mulher', 1, 'Mullher bonita que além de impedir que Sanji a ataque, tira sua energia', 150, 0),
+
+-- Poderes especiais de espadachins que não cortam ferro.
+-- ('Espadada especial de Ferro','Ferro', 1, 'Espadada Especial de Ferro', 50, 100),
+
+-- Poderes especiais relacionadas a tritões
+('Lança de água','Tritões', 1, 'Lança de água do mar lançada pelo tritão.', 200, 100),
+('Mizu shot.','Tritões', 1, 'Tiro disparado pelo tritão de água', 80, 50),
+('Mizu Rain Shot.','Tritões', 1, 'Rajada de tiro disparado pelo tritão de água', 150, 100),
+*/
+-- Poderes especiais Luffy
+(1,1,'Gomu Gomu no Pistol','Akuma no mi',1,'Soco pistola do Luffy',80,50),
+(2,2,'Gomu Gomu no Gatling Gun','Akuma no mi',1,'Metralhadora de Soco pistola do Luffy',140,100),
+(2,3,'Gomu Gomu no Axe','Akuma no mi',1,'Luffy estica o pé lá no alto e desce de uma vez dando uma pézada da peste.',160,80),
+(1,4,'Gomu Gomu no Rocket','Akuma no mi',1,'Luffy se lança para atingir o alvo.',50,25),
+
+-- Poderes especiais do Zoro
+(1,5,'Ittoryu Iai: Shishi Sonson','Ferro',2,'Zoro usa uma espada só dando um corte selvagemente forte.',100,100),
+(1,6,'Santoryuu Tatsumaki','Ferro',2,'Zoro cria um furacão rodando as suas 3 espadas.',50,25),
+(1,7,'Santoryuu Onigiri','Ferro',2,'Zoro corta o alvo com 3 cortes rápidos',50,25),
+(1,8,'Santoryuu Daisen Sekai','Ferro',2,'Zoro corta qualquer alvo com o corte mais forte.',50,25);
+
 
 
 -- Constraints para evitar dependências ciclicas.
