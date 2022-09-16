@@ -119,6 +119,8 @@ def restart(player):
             data = [energia_personagem,vida_personagem,regiao_anterior,player['nome_save'],player['id_personagem']]
             cursor.execute(sql,data)
 
+    print(ascii_art.skull)
+
     print("Você morreu !!! Seja mais cuidadoso da próxima vez.\n"
     "Observe sua vida antes de entrar em combate\nComa itens para recuperar sua vida.\nBoa sorte e Bom jogo")
 
@@ -146,6 +148,52 @@ def equipar_item(player,item,qntd_item):
     
     return dano*int(qntd_item)
 
+def poder_especial(player,energia_atual):
+    with get_connection() as db:
+        with db:
+            cursor = db.cursor()
+            sql =   '''SELECT poder_especial.id_poder_especial,poder_especial.nome,poder_especial.dano,poder_especial.energia,poder_especial.descricao
+                    FROM poder_jogador
+                    INNER JOIN poder_especial ON poder_especial.id_poder_especial=poder_jogador.id_poder_especial where nome_save = %s ORDER BY poder_especial.id_poder_especial'''
+
+            data = [str(player['nome_save'])]
+            cursor.execute(sql,data)
+        poderes = cursor.fetchall()
+    
+    ids = [poder[0] for poder in poderes]
+    danos = [poder[2] for poder in poderes]
+    energias = [poder[3] for poder in poderes]
+
+
+    print("Você tem esses poderes especiais :\n")
+    for poder in poderes:
+        print("x"*15)
+        print(f"\nPODER {poder[0]}\n{poder[1]}\n{poder[4]}\nDano : {poder[2]}\nEnergia gasta : {poder[3]}\n")
+        print("x"*15)
+
+    invalid = True
+    while True:
+        escolha = input("Qual poder deseja usar :\nAperte Q para voltar\n>")
+        
+        if escolha.isdigit():
+            if int(escolha) in ids:
+                invalid = False
+                dados_poder = select_to_dict("select dano,energia from poder_especial where id_poder_especial = %s",escolha)
+                print(dados_poder)
+                if energia_atual -  dados_poder[0]['energia'] >= 0: 
+                    return dados_poder[0]['dano'],dados_poder[0]['energia']
+                else:
+                    print("Você não tem energia o suficieente\n")
+                    return 0,0
+        elif escolha == 'q':
+            return 0,0
+'''
+SELECT poder_especial.nome,poder_especial.dano,poder_especial.energia,poder_especial.descricao
+FROM poder_jogador
+INNER JOIN poder_especial ON poder_especial.id_poder_especial=poder_jogador.id_poder_especial;
+'''
+
+
 def luta(player,inimigo):
     
     dados_luta = select_to_dict("SELECT nome,vida_maxima,vida,fraqueza,energia_maxima,energia,experiencia from jogador where nome_save = %s and id_personagem = %s",player['nome_save'],player['id_personagem'])
@@ -164,17 +212,19 @@ def luta(player,inimigo):
     dano_extra = 1
     is_equipado = False
     luta_automatica = False
-
+    
+    print("Você entrou em uma luta !!! ⚔️  vs 🛡")
+    rodada = 1
     # enquanto algum dos dois ainda estiverem com vida > 0
     while vida_personagem > 0 and vida_inimigo > 0:
         # luta acontece
 
         if(turno % 2 == 0):
-            print("Você entrou em uma luta !!!\n")
+            poder_usado = False
 
             print("É tua vez de atacar :")
             while not luta_automatica:
-                luta_escolha = input("1 - Equipar itens\n2 - Poderes especiais\n3 - Partir pra Luta\n4 - Luta controlada por IA\n")
+                luta_escolha = input("1 - Equipar itens\n2 - Poderes especiais\n3 - Partir pra Luta\n4 - Luta controlada por IA\n>")
 
                 if luta_escolha == '1':
                     dano_extra = inventario(player)
@@ -182,8 +232,14 @@ def luta(player,inimigo):
                         is_equipado = True
 
                 elif luta_escolha == '2':
-                    print("Não tem ainda . . .\n")
+                    dano_poder,energia_gasta = poder_especial(player,energia)
+                    vida_inimigo -= dano_poder
+                    energia_personagem -= energia_gasta
+                    poder_usado = True
+                    if energia_personagem < 0:
+                        energia_personagem = 0
 
+                    break
                 elif luta_escolha == '3':
                     break
                 elif luta_escolha == '4':
@@ -195,10 +251,15 @@ def luta(player,inimigo):
 
             if not is_equipado:
                 dano_extra = 10
-            dano = ataque_simples_player(player,inimigo,experiencia_personagem,energia_personagem,dano_extra)
-            print(f"O dano foi de {dano}")
-            vida_inimigo -= dano
-            energia_personagem = energia_personagem * 0.95
+
+            if not poder_usado:
+                dano = ataque_simples_player(player,inimigo,experiencia_personagem,energia_personagem,dano_extra)
+                print(f"O dano foi de {dano}")
+                vida_inimigo -= dano
+                if energia_personagem < 0:
+                    energia_personagem = 0
+                else:
+                    energia_personagem = energia_personagem * 0.95
             # personagem ataca
 
         else:
@@ -211,7 +272,7 @@ def luta(player,inimigo):
 
         turno+=1
 
-        print(f"Tua vida 🤍 : {vida_personagem}\nVida inimigo : {vida_inimigo}\n")
+        print(f"Tua vida 🤍 : {vida_personagem}\nEnergia ⚡: {energia_personagem}\nVida inimigo 🖤: {vida_inimigo}\nEnergia inimigo ⚡ : {energia_inimigo}\n")
 
         time.sleep(2)
 
@@ -441,7 +502,7 @@ def inventario(player):
     '''
     i = 0
     for item in inventario_jogador:
-        print(f"{id_itens[i]} : {str(nomes[i])}\nPreço ฿{str(precos[i])}  Quantidade : {item['qtd_item']}x \nGanha {str(vidas[i])} de vida | Ganha {str(energias[i])} de energia\n{str(dano[i])} de dano adicional\n\n")
+        print(f"{id_itens[i]} : {str(nomes[i])}\nPreço ฿ {str(precos[i])}  Quantidade : {item['qtd_item']}x \nGanha {str(vidas[i])} de vida | Ganha {str(energias[i])} de energia\n{str(dano[i])} de dano adicional\n\n")
         i+=1
 
     escolha = input("\nO que deseja fazer ?\n1 - Consumir item\n2 - Equipar Item\n3 - Voltar\n> ")
