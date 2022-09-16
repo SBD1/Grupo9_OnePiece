@@ -775,39 +775,41 @@ def intro():
     for s in op.split('\n'):
         print(f'{s:^130}')
     print('='*130)
-    print('[1] - Usar um save existente.')
-    print('[2] - Criar um novo save.')
-    print('[q] - Sair.')
     while True:
-        value = input('Digite o número da sua opção: \n\n> ').strip()
+        print('\n[1] - Usar um save existente.')
+        print('[2] - Criar um novo save.')
+        print('[q] - Sair.')
+        value = input('\nDigite o número da sua opção: \n\n> ').strip()
         if value not in actions:
             print('Digite um número válido [1, 2, q].')
         else:
-            return actions[value]()
+            value = actions[value]()
+            if value: return value
 
 
 def choose_save() -> str:
     saves = get_saves()
 
     print('Selecione um save para carregar o jogo salvo.')
-    i = 0
-    for i, save in enumerate(saves):
-        print(f'[{i}] - {save["nome"]}.')
-    print(f'\n[{i+1}] - Voltar')
 
     save = None
     while not save:
-        value = input('Digite a opção escolhida: \n\n> ').strip()
+        i = 0
+        for i, save in enumerate(saves):
+            print(f'[{i}] - {save["nome"]}.')
+        print('\n[Q] - Voltar')
+
+        value = input('\nDigite a opção escolhida: \n\n> ').strip().lower()
         if value in saves:
             save = value
         elif value.isdigit():
             value = int(value)
             if value < len(saves):
                 save = saves[value]
-            elif value == i+1:
-                intro()
+        elif value == 'q':
+            return
         else:
-            print('Save não encontrado.')
+            print('Save não encontrado.\n')
 
     return save
 
