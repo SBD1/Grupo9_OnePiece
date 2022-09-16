@@ -270,6 +270,34 @@ BEGIN
 END;
 $transferir_item$ LANGUAGE plpgsql;
 
+    -- Remove item do inventário jogador
+CREATE OR REPLACE FUNCTION remover_item_inv_jogador() RETURNS trigger AS $remover_item_inv_jogador$
+BEGIN
+    if new.qtd_item = 0 then
+        delete from inventario_jogador where id_jogador_save = new.id_jogador_save and id_jogador_personagem = new.id_jogador_personagem and id_item = new.id_item;
+    end if;
+    return new;
+END;
+$remover_item_inv_jogador$ LANGUAGE plpgsql;
+
+CREATE TRIGGER remover_item_inv_jogador
+    AFTER UPDATE ON inventario_jogador
+    FOR EACH ROW EXECUTE PROCEDURE remover_item_inv_jogador();
+
+    -- Remove item do inventário personagem
+CREATE OR REPLACE FUNCTION remover_item_inv_personagem() RETURNS trigger AS $remover_item_inv_personagem$
+BEGIN
+    if new.qtd_item = 0 then
+        delete from inventario_personagem where id_jogador_save = new.id_jogador_save and id_jogador_personagem = new.id_jogador_personagem and id_item = new.id_item and id_personagem = new.id_personagem;
+    end if;
+    return new;
+END;
+$remover_item_inv_personagem$ LANGUAGE plpgsql;
+
+CREATE TRIGGER remover_item_inv_personagem
+    AFTER UPDATE ON inventario_personagem
+    FOR EACH ROW EXECUTE PROCEDURE remover_item_inv_personagem();
+
 
     -- Inventário lotado, não pode receber item.
 CREATE OR REPLACE FUNCTION check_inventario() 
