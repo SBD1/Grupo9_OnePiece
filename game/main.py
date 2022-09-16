@@ -86,9 +86,10 @@ def checa_ilha(player):
     
     if ilha_jogador[0]['tipo'] == 'Porto':
         if len(ilhas_possiveis) <= 0:
-            return
+            return True, []
         else:   
-            return ilhas_possiveis 
+            return True, ilhas_possiveis 
+    return False, []
                  
 
 def ataque_simples_player(atacante,atacado,experiencia,energia,dano_extra):
@@ -551,8 +552,10 @@ def menu(player):
 
         npcs_regiao = checa_personagem_regiao(posicao_atual)
         inimigos_regiao = checa_inimigo_regiao(posicao_atual,player)
-        ilhas_disponiveis = checa_ilha(player)
-        barcos = select_to_dict('select id_barco, id_regiao, nome, capacidade_de_itens from barco where grupo_ocupacao = %s and id_regiao = %s', player['grupo_ocupacao'], player['id_regiao'])
+        esta_no_porto, ilhas_disponiveis = checa_ilha(player)
+        barcos = []
+        if esta_no_porto:
+            barcos = select_to_dict('select id_barco, id_regiao, nome, capacidade_de_itens from barco where grupo_ocupacao = %s', player['grupo_ocupacao'])
 
         opcoes_menu = [
             'M - Mover personagem',
@@ -647,7 +650,8 @@ def inventario_barco(player, barcos):
             if item_selecionado == 'q':
                 continue
             qtd_item = input('\nQuantos itens deseja consumir?\n\n> ')
-            transferir_item(player, item_selecionado, qtd_item, barco['id_barco'])
+            if transferir_item(player, item_selecionado, qtd_item, barco['id_barco']):
+                print('\nAtualizado!')
         elif escolha == 'q':
             break
 
@@ -662,9 +666,9 @@ def transferir_item(player, id_item, qtd_item, id_personagem):
                 sql = "CALL transferir_item(%s,%s,%s,%s,%s)"
                 data = (player['nome_save'],player['id_personagem'], id_personagem, id_item, qtd_item)
                 cursor.execute(sql,data)
+                return True
     except Exception as e:
         print('Não foi possível concluir a transferência')
-        print(e)
 
 
 def get_inventario(player, id_personagem=None):
